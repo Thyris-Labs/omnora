@@ -1,0 +1,98 @@
+min_version = "2025.11.7"
+
+[tools]
+node = "25.9.0"
+pnpm = "10.33.0"
+go = "1.26.2"
+air = "1.64.5"
+dbmate = "2.31.0"
+"ubi:sqlc-dev/sqlc" = "1.30.0"
+
+[tasks.setup]
+description = "Install workspace dependencies"
+run = "mise install && pnpm install"
+
+[tasks.dev]
+description = "Run all apps in development mode"
+run = "pnpm exec turbo run dev --ui=tui"
+
+[tasks.build]
+description = "Build all apps"
+run = "pnpm exec turbo run build"
+
+[tasks.test]
+description = "Run all tests"
+run = "pnpm exec turbo run test"
+
+[tasks.lint]
+description = "Run linters across the monorepo"
+run = "pnpm exec turbo run lint"
+
+[tasks.format]
+description = "Format repository files"
+run = "pnpm exec turbo run format"
+
+[tasks."check"]
+description = "Run type checks across the monorepo"
+run = "pnpm exec turbo run check"
+
+[tasks."clean"]
+description = "Remove the backend binary"
+run = "pnpm exec turbo run clean"
+
+[tasks."generate:schemas"]
+description = "Generate SQL code from sqlc config"
+dir = "apps/backend"
+run = "sqlc generate"
+
+[tasks."migrate:up"]
+description = "Apply database migrations"
+dir = "apps/backend"
+run = "dbmate -d ./db/migrations up"
+
+[tasks."migrate:down"]
+description = "Rollback the latest database migration"
+dir = "apps/backend"
+run = "dbmate -d ./db/migrations down"
+
+[tasks."migrate:new"]
+description = "Create a new database migration"
+dir = "apps/backend"
+run = "dbmate -d ./db/migrations new"
+
+[tasks."backend:dev"]
+description = "Run the backend with live reload"
+dir = "apps/backend"
+run = "air"
+
+[tasks."backend:build"]
+description = "Build the backend binary"
+dir = "apps/backend"
+run = "go build -o main ./cmd/api"
+
+[tasks."backend:test"]
+description = "Run the backend test suite"
+dir = "apps/backend"
+run = "go test ./... -v"
+
+[tasks."docker:up"]
+description = "Start local services with Docker Compose"
+run = '''
+if docker compose up --build -d 2>/dev/null; then
+  :
+else
+  echo "Falling back to Docker Compose V1"
+  docker-compose up --build -d
+fi
+'''
+
+[tasks."docker:down"]
+description = "Stop local services with Docker Compose"
+run = '''
+if docker compose down 2>/dev/null; then
+  :
+else
+  echo "Falling back to Docker Compose V1"
+  docker-compose down
+fi
+'''

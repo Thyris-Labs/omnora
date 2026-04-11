@@ -1,0 +1,10 @@
+{
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "dev": "air",
+    "build": "go build -o main ./cmd/main.go",
+    "test": "go test ./... -v",
+    "clean": "rm main"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "omnora",
+  "devDependencies": {
+    "turbo": "^2.9.6"
+  },
+  "packageManager": "pnpm@10.33.0"
+}
