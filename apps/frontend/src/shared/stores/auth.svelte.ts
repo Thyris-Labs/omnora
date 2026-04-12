@@ -8,6 +8,11 @@ export const SignupSchema = v.object({
 	code: v.optional(v.string()),
 })
 
+export const SigninSchema = v.object({
+	email: v.pipe(v.string(), v.email()),
+	code: v.optional(v.string()),
+})
+
 class AuthStore {
 	verifying = $state(false)
 	submitting = $state(false)
@@ -37,6 +42,23 @@ class AuthStore {
 		this.errorMessage = null
 
 		const result = await apiFetch("/signup", {
+			method: "POST",
+			body: JSON.stringify(body)
+		})
+
+		this.submitting = false
+
+		if (result.isErr()) {
+			this.errorMessage = result.error.message
+			return
+		}
+	}
+
+	async signin(body: v.InferInput<typeof SigninSchema>) {
+		this.submitting = true
+		this.errorMessage = null
+
+		const result = await apiFetch("/signin", {
 			method: "POST",
 			body: JSON.stringify(body)
 		})
