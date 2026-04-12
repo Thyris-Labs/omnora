@@ -1,3 +1,5 @@
 main
 db/gen_queries
 db/schema.sql
+
+tmp/
