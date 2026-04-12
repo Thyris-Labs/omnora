@@ -6,11 +6,13 @@ import (
 	"log"
 	"os"
 
+	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Service struct {
-	db *pgxpool.Pool
+	db      *pgxpool.Pool
+	Queries *db.Queries
 }
 
 var (
@@ -28,14 +30,15 @@ func New() *Service {
 		return dbInstance
 	}
 
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?search_path=%s", username, password, host, port, database, schema)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
 	conn, err := pgxpool.New(context.Background(), connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	dbInstance = &Service{
-		db: conn,
+		db:      conn,
+		Queries: db.New(conn),
 	}
 
 	return dbInstance

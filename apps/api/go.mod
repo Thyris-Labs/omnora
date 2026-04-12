@@ -3,6 +3,7 @@ module github.com/Thyris-Labs/omnora
 go 1.26.2
 
 require (
+	github.com/gin-contrib/cors v1.7.7
 	github.com/gin-gonic/gin v1.12.0
 	github.com/jackc/pgx/v5 v5.9.1
 	github.com/redis/go-redis/v9 v9.18.0
