@@ -17,7 +17,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 		AllowCredentials: true,
 	}))
 
-	api := r.Group("/api")
+	api := r.Group("/api/v1")
 
 	s.auth.RegisterRoutes(api)
 

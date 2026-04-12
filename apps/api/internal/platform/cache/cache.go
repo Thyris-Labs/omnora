@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -30,9 +31,9 @@ func New() *Service {
 
 	client := redis.NewClient(opts)
 
-	cache := &Service{
+	cacheInstance = &Service{
 		Cache: client,
 	}
 
-	return cache
+	return cacheInstance
 }

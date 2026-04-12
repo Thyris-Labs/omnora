@@ -8,6 +8,7 @@ import (
 
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Service struct {

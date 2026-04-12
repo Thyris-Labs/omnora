@@ -5,6 +5,7 @@ import (
 
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
+	"github.com/google/uuid"
 )
 
 type authRepository struct {
@@ -19,6 +20,7 @@ func newAuthRepository(db *database.Service) authRepository {
 
 func (r *authRepository) CreateUser(body *signupBody) (*db.User, error) {
 	user, err := r.db.Queries.CreateUser(context.Background(), db.CreateUserParams{
+		ID:          uuid.NewString(),
 		Email:       body.Email,
 		Username:    body.Username,
 		DisplayName: body.Username,

@@ -3,6 +3,7 @@ package email
 import (
 	"os"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/resend/resend-go/v3"
 )
 
@@ -22,9 +23,9 @@ func New() *Service {
 
 	email := resend.NewClient(apiKey)
 
-	client := &Service{
+	clientInstance = &Service{
 		Client: email,
 	}
 
-	return client
+	return clientInstance
 }

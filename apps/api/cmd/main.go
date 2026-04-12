@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Thyris-Labs/omnora/internal/server"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
