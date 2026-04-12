@@ -1,9 +1,11 @@
 <script lang="ts">
-	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import { initAuthStore } from "../shared/stores/auth.svelte";
+	import "./layout.css";
 
 	let { children } = $props();
+
+	initAuthStore();
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<!-- <svelte:head><link rel="icon" href={favicon} /></svelte:head> -->
 {@render children()}

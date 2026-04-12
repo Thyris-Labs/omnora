@@ -1,0 +1,70 @@
+package apierror
+
+import (
+	"net/http"
+)
+
+const (
+	CodeInvalidRequest    = "ERR_INVALID_REQUEST"
+	MessageInvalidRequest = "The request data is invalid."
+	CodeNotFound          = "ERR_NOT_FOUND"
+	MessageNotFound       = "The requested resource was not found."
+	CodeInternalServer    = "ERR_INTERNAL_SERVER"
+	MessageInternalServer = "Something went wrong. Please try again later."
+)
+
+type Error struct {
+	StatusCode int    `json:"status"`
+	Code       string `json:"code"`
+	Message    string `json:"message"`
+	Cause      error  `json:"-"`
+}
+
+func New(statusCode int, code string, message string, cause error) *Error {
+	return &Error{
+		StatusCode: statusCode,
+		Code:       code,
+		Message:    message,
+		Cause:      cause,
+	}
+}
+
+func BadRequest(code string, message string, cause error) *Error {
+	if code == "" {
+		code = CodeInvalidRequest
+	}
+
+	if message == "" {
+		message = MessageInvalidRequest
+	}
+
+	return New(http.StatusBadRequest, code, message, cause)
+}
+
+func InvalidRequest(cause error) *Error {
+	return BadRequest(CodeInvalidRequest, MessageInvalidRequest, cause)
+}
+
+func NotFound(code string, message string, cause error) *Error {
+	if code == "" {
+		code = CodeNotFound
+	}
+
+	if message == "" {
+		message = MessageNotFound
+	}
+
+	return New(http.StatusNotFound, code, message, cause)
+}
+
+func Internal(code string, message string, cause error) *Error {
+	if code == "" {
+		code = CodeInternalServer
+	}
+
+	if message == "" {
+		message = MessageInternalServer
+	}
+
+	return New(http.StatusInternalServerError, code, message, cause)
+}

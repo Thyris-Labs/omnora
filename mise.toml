@@ -1,7 +1,7 @@
 min_version = "2025.11.7"
 
 [tools]
-node = "25.9.0"
+node = "25.6.0"
 pnpm = "10.33.0"
 go = "1.26.2"
 air = "1.64.5"
@@ -42,37 +42,37 @@ run = "pnpm exec turbo run clean"
 
 [tasks."generate:schemas"]
 description = "Generate SQL code from sqlc config"
-dir = "apps/backend"
+dir = "apps/api"
 run = "sqlc generate"
 
 [tasks."migrate:up"]
 description = "Apply database migrations"
-dir = "apps/backend"
+dir = "apps/api"
 run = "dbmate -d ./db/migrations up"
 
 [tasks."migrate:down"]
 description = "Rollback the latest database migration"
-dir = "apps/backend"
+dir = "apps/api"
 run = "dbmate -d ./db/migrations down"
 
 [tasks."migrate:new"]
 description = "Create a new database migration"
-dir = "apps/backend"
+dir = "apps/api"
 run = "dbmate -d ./db/migrations new"
 
 [tasks."backend:dev"]
 description = "Run the backend with live reload"
-dir = "apps/backend"
+dir = "apps/api"
 run = "air"
 
 [tasks."backend:build"]
 description = "Build the backend binary"
-dir = "apps/backend"
+dir = "apps/api"
 run = "go build -o main ./cmd/api"
 
 [tasks."backend:test"]
 description = "Run the backend test suite"
-dir = "apps/backend"
+dir = "apps/api"
 run = "go test ./... -v"
 
 [tasks."docker:up"]
