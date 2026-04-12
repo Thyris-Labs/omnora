@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+
+	"github.com/Thyris-Labs/omnora/internal/server"
+)
 
 func main() {
-	fmt.Println("hello world")
+	s := server.NewServer()
+
+	err := s.ListenAndServe()
+	if err != nil && err != http.ErrServerClosed {
+		log.Fatal(err)
+	}
 }
