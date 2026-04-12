@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"os"
@@ -13,6 +14,7 @@ import (
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/email"
+	"github.com/redis/go-redis/v9"
 	"github.com/resend/resend-go/v3"
 )
 
@@ -57,15 +59,19 @@ func cacheEmailForVerification(c *cache.Service, email string, code string) erro
 func checkCode(c *cache.Service, email string, code string) error {
 	generatedCode, err := c.Cache.Get(context.Background(), "verif:"+email).Result()
 	if err != nil {
-		return err
+		if errors.Is(err, redis.Nil) {
+			return fmt.Errorf("%w: %w", errVerificationCodeInvalid, err)
+		}
+
+		return fmt.Errorf("%w: %w", errVerificationCodeLookup, err)
 	}
 
 	if generatedCode != code {
-		return fmt.Errorf("given code doesn't match with generated code")
+		return fmt.Errorf("%w", errVerificationCodeInvalid)
 	}
 
 	if err := c.Cache.Del(context.Background(), "verif:"+email).Err(); err != nil {
-		return err
+		return fmt.Errorf("%w: %w", errVerificationCodeDelete, err)
 	}
 
 	return nil

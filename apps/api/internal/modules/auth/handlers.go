@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,12 +28,12 @@ func (h *authHandlers) verify(c *gin.Context) {
 	var body verifyEmailBody
 
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
 		return
 	}
 
 	if err := h.service.verifyEmail(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(err.StatusCode, err)
 		return
 	}
 
@@ -43,13 +44,13 @@ func (h *authHandlers) signup(c *gin.Context) {
 	var body signupBody
 
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
 		return
 	}
 
 	token, err := h.service.signup(&body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(err.StatusCode, err)
 		return
 	}
 
@@ -62,13 +63,13 @@ func (h *authHandlers) signin(c *gin.Context) {
 	var body signinBody
 
 	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
 		return
 	}
 
 	token, err := h.service.signin(&body)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(err.StatusCode, err)
 		return
 	}
 
