@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+:root {
+	--tint: 265;
+	--main-100: oklch(21.3% 0.004 var(--tint));
+	--main-200: oklch(23.1% 0.008 var(--tint));
+	--main-300: oklch(30.1% 0.006 var(--tint));
+	--main-400: oklch(33.7% 0.005 var(--tint));
+	--main-500: oklch(39.1% 0.012 var(--tint));
+	--main-600: oklch(47.9% 0.015 var(--tint));
+	--main-700: oklch(62.5% 0.022 var(--tint));
+	--main-800: oklch(75.0% 0.022 var(--tint));
+	--main-900: oklch(98.6% 0.007 var(--tint));
+}
+
+.dark {
+	--main-100: oklch(98.6% 0.007 var(--tint));
+	--main-200: oklch(75.0% 0.022 var(--tint));
+	--main-300: oklch(62.5% 0.022 var(--tint));
+	--main-400: oklch(47.9% 0.015 var(--tint));
+	--main-500: oklch(39.1% 0.012 var(--tint));
+	--main-600: oklch(33.7% 0.005 var(--tint));
+	--main-700: oklch(30.1% 0.006 var(--tint));
+	--main-800: oklch(23.1% 0.008 var(--tint));
+	--main-900: oklch(21.3% 0.004 var(--tint));
+}
+
+@theme {
+	--font-inter: "Inter Variable", sans-serif;
+
+	--color-main-900: var(--main-900);
+	--color-main-800: var(--main-800);
+	--color-main-700: var(--main-700);
+	--color-main-600: var(--main-600);
+	--color-main-500: var(--main-500);
+	--color-main-400: var(--main-400);
+	--color-main-300: var(--main-300);
+	--color-main-200: var(--main-200);
+	--color-main-100: var(--main-100);
+
+  --ease-out-expo: cubic-bezier(.19, 1, .22, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+}
+
+html, body {
+	background-color: var(--color-main-900);
+	color: var(--color-main-100);
+	font-family: "Inter Variable";
+}
