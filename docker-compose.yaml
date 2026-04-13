@@ -17,9 +17,9 @@ services:
     ulimits:
       memlock: -1
     environment:
-      DFLY_requirepass: ${DFLY_PASSWORD}
+      DFLY_requirepass: ${CACHE_PASSWORD}
     ports:
-      - "${DFLY_PORT}:6379"
+      - "${CACHE_PORT}:6379"
     volumes:
       - dragonfly_data:/data
 
