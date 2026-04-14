@@ -1,63 +1,89 @@
 <script lang="ts">
-	import { createForm, Field, Form } from "@formisch/svelte";
-	import { Button } from "bits-ui";
-	import { getAuthStore, SignupSchema } from "shared/stores/auth.svelte";
-
-	const signupForm = createForm({
-		schema: SignupSchema,
-	});
+	import { createForm, Form } from "@formisch/svelte";
+	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
+	import InputField from "ui/fields/input-field.svelte";
+	import OtpField from "ui/fields/otp-field.svelte";
+	import Button from "ui/primitives/button.svelte";
 
 	const authStore = getAuthStore();
+
+	const signupForm = createForm({
+		schema: createSignupSchema(() => authStore.verifying),
+	});
 </script>
 
-{#if !authStore.verifying}
-	<Form
-		of={signupForm}
-		onsubmit={(output) => authStore.verifyEmail(output.email)}
+<main class="flex min-h-screen bg-main-800 justify-center items-center">
+	<button
+		onclick={() => (authStore.verifying = !authStore.verifying)}
+		class="absolute left-0 top-0">test</button
 	>
-		<Field of={signupForm} path={["email"]}>
-			{#snippet children(field)}
-				<div>
-					<input {...field.props} value={field.input} type="email" />
-					{#if field.errors}
-						<div>{field.errors[0]}</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Field>
+	<div class="flex flex-col max-w-90 h-fit w-full items-center">
+		<h1 class="text-xl font-semibold">Sign up</h1>
+		<p class="text-main-400/75 mt-0.5">Create an account on Omnora</p>
 
-		<Field of={signupForm} path={["username"]}>
-			{#snippet children(field)}
-				<div>
-					<input {...field.props} value={field.input} type="text" />
-					{#if field.errors}
-						<div>{field.errors[0]}</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Field>
+		{#if !authStore.verifying}
+			<Form
+				of={signupForm}
+				onsubmit={(output) => authStore.verifyEmail(output.email)}
+				class="w-full"
+			>
+				<InputField
+					of={signupForm}
+					path={["email"]}
+					id="email-input"
+					label="Email"
+					type="email"
+					placeholder="john.doe@example.com"
+					autocomplete="email"
+				/>
 
-		{#if authStore.errorMessage}
-			<div>{authStore.errorMessage}</div>
+				<InputField
+					of={signupForm}
+					path={["username"]}
+					id="username-input"
+					label="Username"
+					type="text"
+					autocomplete="off"
+					data-1p-ignore
+					placeholder="johndoe"
+				/>
+
+				{#if authStore.errorMessage}
+					<div role="alert" class="mt-6 text-sm text-rose-500">
+						{authStore.errorMessage}
+					</div>
+				{/if}
+
+				<Button
+					type="submit"
+					disabled={authStore.submitting}
+					aria-busy={authStore.submitting}
+					class="mt-6 w-full"
+				>
+					Sign up
+				</Button>
+			</Form>
+		{:else}
+			<Form
+				of={signupForm}
+				onsubmit={(output) => authStore.signup(output)}
+				class="w-full"
+			>
+				<OtpField
+					of={signupForm}
+					path={["code"]}
+					id="verification-code-input"
+					label="Verification code"
+					maxlength={6}
+					autocomplete="one-time-code"
+					inputmode="numeric"
+					pattern="[0-9]*"
+					class="w-fit mx-auto"
+					labelClass="invisible absolute"
+				/>
+
+				<Button type="submit" class="mt-6 w-full">Verify Email</Button>
+			</Form>
 		{/if}
-
-		<Button.Root type="submit" disabled={authStore.submitting}>
-			Sign up
-		</Button.Root>
-	</Form>
-{:else}
-	<Form of={signupForm} onsubmit={(output) => authStore.signup(output)}>
-		<Field of={signupForm} path={["code"]}>
-			{#snippet children(field)}
-				<div>
-					<input {...field.props} value={field.input} type="text" />
-					{#if field.errors}
-						<div>{field.errors[0]}</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Field>
-
-		<Button.Root type="submit">Verify Email</Button.Root>
-	</Form>
-{/if}
+	</div>
+</main>
