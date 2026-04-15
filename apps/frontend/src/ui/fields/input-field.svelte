@@ -19,7 +19,7 @@
 		variants: {
 			spacing: {
 				default: {
-					root: "mt-4 first:mt-8",
+					root: "mt-4 first:mt-0",
 				},
 			},
 		},
