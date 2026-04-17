@@ -1,6 +1,8 @@
-import { getContext, setContext } from "svelte"
+import { setContext, getContext } from "svelte"
 import * as v from "valibot"
 import { apiFetch } from "shared/helpers/api"
+import { goto } from "$app/navigation"
+import { resolve } from "$app/paths"
 
 export function createSignupSchema(isVerifying: () => boolean) {
 	return v.pipe(
@@ -37,10 +39,6 @@ export function createSigninSchema(isVerifying: () => boolean) {
 	)
 }
 
-type SignupSchema = ReturnType<typeof createSignupSchema>
-type SigninSchema = ReturnType<typeof createSigninSchema>
-type SignupInput = v.InferInput<SignupSchema>
-type SigninInput = v.InferInput<SigninSchema>
 type VerifyFlow = "signup" | "signin"
 
 class AuthStore {
@@ -67,7 +65,7 @@ class AuthStore {
 		this.verifying = true
 	}
 
-	async signup(body: SignupInput) {
+	async signup(body: v.InferInput<ReturnType<typeof createSignupSchema>>) {
 		this.submitting = true
 		this.errorMessage = null
 
@@ -82,9 +80,11 @@ class AuthStore {
 			this.errorMessage = result.error.message
 			return
 		}
+
+		goto(resolve("/(app)/e/[environment_id]", { environment_id: "1" }))
 	}
 
-	async signin(body: SigninInput) {
+	async signin(body: v.InferInput<ReturnType<typeof createSigninSchema>>) {
 		this.submitting = true
 		this.errorMessage = null
 
@@ -99,6 +99,8 @@ class AuthStore {
 			this.errorMessage = result.error.message
 			return
 		}
+
+		goto(resolve("/(app)/e/[environment_id]", { environment_id: "1" }))
 	}
 }
 
