@@ -20,6 +20,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	api := r.Group("/api/v1")
 
 	s.auth.RegisterRoutes(api)
+	s.environments.RegisterRoutes(api)
 
 	return r
 }
