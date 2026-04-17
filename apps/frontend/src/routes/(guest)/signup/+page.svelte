@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createForm, Form, getInput, setErrors } from "@formisch/svelte";
-	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
 	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
+	import AuthShell from "ui/auth/auth-shell.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
@@ -68,96 +68,82 @@
 	}
 </script>
 
-<div class="min-h-screen flex items-center justify-center">
-	<main class="mx-auto w-full max-w-90 flex flex-col">
-		<div class="flex flex-col items-start gap-y-4">
-			<div
-				class="flex size-12 items-center justify-center bg-accent/10 border border-accent/60 text-accent"
-			>
-				<!-- FIXME: change this logo when we have our own -->
-				<PhFinnTheHumanFill class="size-7" />
-			</div>
-			<div class="flex flex-col gap-y-1">
-				<h1 class="text-xl font-semibold">Create an account</h1>
-				<p class="text-main-400/75">Lucky you, it's free!</p>
-			</div>
-		</div>
-
-		{#if !authStore.verifying}
-			<Form
+<AuthShell
+	title="Create an account"
+	description="Lucky you, it's free!"
+	footerPrompt="Already have an account? "
+	footerHref="/signin"
+	footerLabel="Sign in"
+>
+	{#if !authStore.verifying}
+		<Form
+			of={signupForm}
+			onsubmit={(output) => authStore.verifyEmail(output.email, "signup")}
+			class="mt-6 w-full"
+		>
+			<InputField
 				of={signupForm}
-				onsubmit={(output) => authStore.verifyEmail(output.email, "signup")}
-				class="mt-6 w-full"
-			>
-				<InputField
-					of={signupForm}
-					path={["email"]}
-					id="email-input"
-					label="Email"
-					type="email"
-					placeholder="john.doe@example.com"
-					autocomplete="email"
-				/>
+				path={["email"]}
+				id="email-input"
+				label="Email"
+				type="email"
+				placeholder="john.doe@example.com"
+				autocomplete="email"
+			/>
 
-				<InputField
-					of={signupForm}
-					path={["username"]}
-					id="username-input"
-					label="Username"
-					type="text"
-					autocomplete="off"
-					data-1p-ignore
-					placeholder="johndoe"
-					oninput={onInput}
-					inputClass={usernameState === "available" ? "border-accent!" : ""}
-				/>
-
-				{@render messages()}
-
-				<Button
-					type="submit"
-					disabled={authStore.submitting}
-					aria-busy={authStore.submitting}
-					class="mt-6 w-full px-4 py-2 font-medium"
-				>
-					Sign up
-				</Button>
-			</Form>
-		{:else}
-			<Form
+			<InputField
 				of={signupForm}
-				onsubmit={(output) => authStore.signup(output)}
-				class="mt-7 w-full flex flex-col items-center"
+				path={["username"]}
+				id="username-input"
+				label="Username"
+				type="text"
+				autocomplete="off"
+				data-1p-ignore
+				placeholder="johndoe"
+				oninput={onInput}
+				inputClass={usernameState === "available" ? "border-accent!" : ""}
+			/>
+
+			{@render messages()}
+
+			<Button
+				type="submit"
+				disabled={authStore.submitting}
+				aria-busy={authStore.submitting}
+				class="mt-6 w-full px-4 py-2 font-medium"
 			>
-				<OtpField
-					of={signupForm}
-					path={["code"]}
-					id="verification-code-input"
-					label="Verification code"
-					maxlength={6}
-					autocomplete="one-time-code"
-					inputmode="numeric"
-					pattern="[0-9]*"
-					class="w-fit mx-auto"
-					labelClass="invisible absolute"
-				/>
+				Sign up
+			</Button>
+		</Form>
+	{:else}
+		<Form
+			of={signupForm}
+			onsubmit={(output) => authStore.signup(output)}
+			class="mt-7 w-full flex flex-col items-center"
+		>
+			<OtpField
+				of={signupForm}
+				path={["code"]}
+				id="verification-code-input"
+				label="Verification code"
+				maxlength={6}
+				autocomplete="one-time-code"
+				inputmode="numeric"
+				pattern="[0-9]*"
+				class="w-fit mx-auto"
+				labelClass="invisible absolute"
+			/>
 
-				{#if authStore.errorMessage}
-					<ErrorMessage message={authStore.errorMessage} />
-				{/if}
+			{#if authStore.errorMessage}
+				<ErrorMessage message={authStore.errorMessage} />
+			{/if}
 
-				<Button type="submit" class="mt-8 w-full px-4 py-2 font-medium"
-					>Verify Email</Button
-				>
-			</Form>
-		{/if}
-
-		<p class="mt-4 text-sm text-main-500">
-			Already have an account?
-			<a class="text-main-50" href="/signin">Sign in</a>
-		</p>
-	</main>
-</div>
+			<Button type="submit" class="mt-8 w-full px-4 py-2 font-medium">
+				Verify Email
+			</Button>
+		</Form>
+	{/if}
+</AuthShell>
 
 {#snippet messages()}
 	{#if usernameState === "checking"}
