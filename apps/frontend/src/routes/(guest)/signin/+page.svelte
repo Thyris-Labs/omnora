@@ -17,7 +17,7 @@
 	<main class="mx-auto w-full max-w-90 flex flex-col">
 		<div class="flex flex-col items-start gap-y-4">
 			<div
-				class="flex size-12 items-center justify-center rounded-2xl bg-main-400 text-main-950"
+				class="flex size-12 items-center justify-center bg-accent/10 border border-accent/60 text-accent"
 			>
 				<!-- FIXME: change this logo when we have our own -->
 				<PhFinnTheHumanFill class="size-7" />
@@ -54,7 +54,7 @@
 					type="submit"
 					disabled={authStore.submitting}
 					aria-busy={authStore.submitting}
-					class="mt-6 w-full"
+					class="mt-6 w-full px-4 py-2"
 				>
 					Sign in
 				</Button>
@@ -78,7 +78,8 @@
 					labelClass="invisible absolute"
 				/>
 
-				<Button type="submit" class="mt-8 w-full">Verify Email</Button>
+				<Button type="submit" class="mt-8 w-full px-4 py-2">Verify Email</Button
+				>
 			</Form>
 		{/if}
 
