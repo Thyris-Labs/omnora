@@ -1,46 +1,45 @@
 @import "tailwindcss";
 
 :root {
-	--tint: 265;
-	--main-950: oklch(98.5% 0.002 var(--tint));
-	--main-900: oklch(96.7% 0.003 var(--tint));
-	--main-850: oklch(92.8% 0.006 var(--tint));
-	--main-800: oklch(87.2% 0.010 var(--tint));
-	--main-750: oklch(70.7% 0.022 var(--tint));
-	--main-700: oklch(55.1% 0.025 var(--tint));
-	--main-600: oklch(44.6% 0.025 var(--tint));
-	--main-500: oklch(37.3% 0.025 var(--tint));
-	--main-450: oklch(32.3% 0.025 var(--tint));
-	--main-300: oklch(27.8% 0.025 var(--tint));
-	--main-200: oklch(25% 0.025 var(--tint));
-	--main-100: oklch(21.0% 0.017 var(--tint));
-	--main-50: oklch(13.0% 0.015 var(--tint))
+	--tint: 0;
+	--main-950: oklch(100% 0 var(--tint));
+	--main-900: oklch(92.0% 0 var(--tint));
+	--main-800: oklch(83.8% 0 var(--tint));
+	--main-700: oklch(75.6% 0 var(--tint));
+	--main-600: oklch(67.4% 0 var(--tint));
+	--main-500: oklch(59.2% 0 var(--tint));
+	--main-400: oklch(51.0% 0 var(--tint));
+	--main-300: oklch(42.8% 0 var(--tint));
+	--main-200: oklch(34.6% 0 var(--tint));
+	--main-100: oklch(26.4% 0 var(--tint));
+	--main-50: oklch(18.2% 0 var(--tint));
+
+	--accent: oklch(78.4% 0.150 149.6°);
 }
 
 .dark {
-	--main-50: oklch(98.5% 0.002 var(--tint));
-	--main-100: oklch(96.7% 0.003 var(--tint));
-	--main-200: oklch(92.8% 0.006 var(--tint));
-	--main-300: oklch(87.2% 0.010 var(--tint));
-	--main-400: oklch(70.7% 0.022 var(--tint));
-	--main-500: oklch(55.1% 0.025 var(--tint));
-	--main-600: oklch(44.6% 0.025 var(--tint));
-	--main-700: oklch(37.3% 0.025 var(--tint));
-	--main-750: oklch(32.3% 0.025 var(--tint));
-	--main-800: oklch(27.8% 0.025 var(--tint));
-	--main-850: oklch(25.2% 0.022 var(--tint));
-	--main-900: oklch(21.0% 0.017 var(--tint));
-	--main-950: oklch(13.0% 0.015 var(--tint))
+	--main-50: oklch(100% 0 var(--tint));
+	--main-100: oklch(92.0% 0 var(--tint));
+	--main-200: oklch(83.8% 0 var(--tint));
+	--main-300: oklch(75.6% 0 var(--tint));
+	--main-400: oklch(67.4% 0 var(--tint));
+	--main-500: oklch(59.2% 0 var(--tint));
+	--main-600: oklch(51.0% 0 var(--tint));
+	--main-700: oklch(42.8% 0 var(--tint));
+	--main-800: oklch(34.6% 0 var(--tint));
+	--main-900: oklch(26.4% 0 var(--tint));
+	--main-950: oklch(18.2% 0 var(--tint));
+
+	--accent: oklch(78.4% 0.150 149.6);
 }
 
 @theme {
 	--font-inter: "Inter Variable", sans-serif;
 
+	--color-accent: var(--accent);
 	--color-main-950: var(--main-950);
 	--color-main-900: var(--main-900);
-	--color-main-850: var(--main-850);
 	--color-main-800: var(--main-800);
-	--color-main-750: var(--main-750);
 	--color-main-700: var(--main-700);
 	--color-main-600: var(--main-600);
 	--color-main-500: var(--main-500);
@@ -53,20 +52,12 @@
   --ease-out-expo: cubic-bezier(.19, 1, .22, 1);
   --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
 
-	--shadow-inner-input: inset 0px -1px 0px color-mix(in oklch, var(--main-50) 15%, transparent), inset 0px 0px 0px 1px color-mix(in oklch, var(--main-700), transparent 25%);
-	--shadow-inner-input-error: inset 0px -1px 0px color-mix(in oklch, var(--main-50) 15%, transparent), inset 0px 0px 0px 1px color-mix(in oklch, var(--color-rose-500) 65%, transparent);
-	--shadow-button: inset 0px -1px 0px color-mix(in oklch, var(--main-950) 25%, transparent), 
-									 inset 0px 1px 0px color-mix(in oklch, var(--main-50) 10%, transparent),
-	                 0px 0px 0px 1px var(--main-900),
-									 0px 2px 0px color-mix(in oklch, var(--main-50) 8%, transparent);
-	--shadow-button-pressed: inset 0px 1px 2px color-mix(in oklch, var(--main-950) 25%, transparent), 0px 0px 0px 1px var(--main-900), 0px 2px 0px color-mix(in oklch, var(--main-50) 8%, transparent);
-
 	--default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 html, body {
-	background-color: var(--color-main-900);
-	color: var(--color-main-100);
+	background-color: var(--color-main-950);
+	color: var(--color-main-50);
 	font-family: "Inter Variable";
 }
 

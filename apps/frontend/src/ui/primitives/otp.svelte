@@ -6,8 +6,8 @@
 	const otpVariants = tv({
 		slots: {
 			root: "mt-1 flex items-center gap-2",
-			cell: "flex size-11 select-none items-center justify-center rounded-lg bg-main-900 px-0 py-0 text-base font-medium tabular-nums text-main-100 shadow-inner-input transition-[background-color,color,box-shadow]",
-			caret: "h-5 w-px rounded-full bg-main-100",
+			cell: "flex size-11 select-none items-center justify-center bg-main-950 border border-main-900 aria-invalid:border-rose-700 px-0 py-0 text-base font-medium tabular-nums text-main-100 transition-[background-color,color,box-shadow,border-color] duration-100",
+			caret: "h-5 w-px bg-main-100",
 		},
 		variants: {
 			variant: {
@@ -68,7 +68,9 @@
 		}),
 	);
 
-	function preventDisabledInput(event: KeyboardEvent | InputEvent | ClipboardEvent) {
+	function preventDisabledInput(
+		event: KeyboardEvent | InputEvent | ClipboardEvent,
+	) {
 		if (!disabled) {
 			return;
 		}
@@ -115,7 +117,7 @@
 					resolvedState === "default" &&
 						currentCell.isActive &&
 						isFocused &&
-						"ring-2 ring-main-500 ring-offset-2 ring-offset-main-800",
+						"ring-3 ring-main-800 border-main-500",
 					cellClass,
 				)}
 			>
