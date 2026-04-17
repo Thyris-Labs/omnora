@@ -18,9 +18,6 @@
 				disabled: {
 					root: "opacity-70",
 				},
-				error: {
-					cell: "ring-2 ring-rose-500 ring-offset-2 ring-offset-main-800",
-				},
 			},
 		},
 		defaultVariants: {
@@ -53,13 +50,7 @@
 		...restProps
 	}: Props = $props();
 
-	const resolvedState = $derived(
-		disabled
-			? "disabled"
-			: ariaInvalid === true || ariaInvalid === "true"
-				? "error"
-				: state,
-	);
+	const resolvedState = $derived(disabled ? "disabled" : state);
 
 	const otpStyles = $derived(
 		otpVariants({

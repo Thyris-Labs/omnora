@@ -63,7 +63,7 @@
 			<Form
 				of={signinForm}
 				onsubmit={(output) => authStore.signin(output)}
-				class="mt-7 w-full"
+				class="mt-7 w-full flex flex-col items-center"
 			>
 				<OtpField
 					of={signinForm}
