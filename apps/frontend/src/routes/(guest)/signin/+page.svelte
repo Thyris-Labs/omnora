@@ -1,52 +1,90 @@
 <script lang="ts">
-	import { createForm, Field, Form } from "@formisch/svelte";
-	import { Button } from "bits-ui";
-	import { getAuthStore, SigninSchema } from "shared/stores/auth.svelte";
-
-	const signinForm = createForm({
-		schema: SigninSchema,
-	});
+	import { createForm, Form } from "@formisch/svelte";
+	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
+	import { createSigninSchema, getAuthStore } from "shared/stores/auth.svelte";
+	import InputField from "ui/fields/input-field.svelte";
+	import OtpField from "ui/fields/otp-field.svelte";
+	import Button from "ui/primitives/button.svelte";
 
 	const authStore = getAuthStore();
+
+	const signinForm = createForm({
+		schema: createSigninSchema(() => authStore.verifying),
+	});
 </script>
 
-{#if !authStore.verifying}
-	<Form
-		of={signinForm}
-		onsubmit={(output) => authStore.verifyEmail(output.email)}
-	>
-		<Field of={signinForm} path={["email"]}>
-			{#snippet children(field)}
-				<div>
-					<input {...field.props} value={field.input} type="email" />
-					{#if field.errors}
-						<div>{field.errors[0]}</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Field>
+<div class="min-h-screen bg-main-850 flex items-center justify-center">
+	<main class="mx-auto w-full max-w-90 flex flex-col">
+		<div class="flex flex-col items-start gap-y-4">
+			<div
+				class="flex size-12 items-center justify-center rounded-2xl bg-main-400 text-main-950"
+			>
+				<!-- FIXME: change this logo when we have our own -->
+				<PhFinnTheHumanFill class="size-7" />
+			</div>
+			<div class="flex flex-col gap-y-1">
+				<h1 class="text-xl font-semibold">Sign in</h1>
+				<p class="text-main-400/75">Access your Omnora account</p>
+			</div>
+		</div>
 
-		{#if authStore.errorMessage}
-			<div>{authStore.errorMessage}</div>
+		{#if !authStore.verifying}
+			<Form
+				of={signinForm}
+				onsubmit={(output) => authStore.verifyEmail(output.email)}
+				class="mt-6 w-full"
+			>
+				<InputField
+					of={signinForm}
+					path={["email"]}
+					id="signin-email-input"
+					label="Email"
+					type="email"
+					placeholder="john.doe@example.com"
+					autocomplete="email"
+				/>
+
+				{#if authStore.errorMessage}
+					<div role="alert" class="mt-6 text-sm text-rose-500">
+						{authStore.errorMessage}
+					</div>
+				{/if}
+
+				<Button
+					type="submit"
+					disabled={authStore.submitting}
+					aria-busy={authStore.submitting}
+					class="mt-6 w-full"
+				>
+					Sign in
+				</Button>
+			</Form>
+		{:else}
+			<Form
+				of={signinForm}
+				onsubmit={(output) => authStore.signin(output)}
+				class="mt-7 w-full"
+			>
+				<OtpField
+					of={signinForm}
+					path={["code"]}
+					id="signin-verification-code-input"
+					label="Verification code"
+					maxlength={6}
+					autocomplete="one-time-code"
+					inputmode="numeric"
+					pattern="[0-9]*"
+					class="w-fit mx-auto"
+					labelClass="invisible absolute"
+				/>
+
+				<Button type="submit" class="mt-8 w-full">Verify Email</Button>
+			</Form>
 		{/if}
 
-		<Button.Root type="submit" disabled={authStore.submitting}>
-			Sign in
-		</Button.Root>
-	</Form>
-{:else}
-	<Form of={signinForm} onsubmit={(output) => authStore.signin(output)}>
-		<Field of={signinForm} path={["code"]}>
-			{#snippet children(field)}
-				<div>
-					<input {...field.props} value={field.input} type="text" />
-					{#if field.errors}
-						<div>{field.errors[0]}</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Field>
-
-		<Button.Root type="submit">Verify Email</Button.Root>
-	</Form>
-{/if}
+		<p class="mt-4 text-sm text-main-500">
+			Don&apos;t have an account?
+			<a class="text-main-50" href="/signup">Sign up</a>
+		</p>
+	</main>
+</div>

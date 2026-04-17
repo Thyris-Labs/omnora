@@ -25,6 +25,8 @@
     "oxlint": "^1.59.0",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
+    "tailwind-merge": "^3.5.0",
+    "tailwind-variants": "^3.2.2",
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.2",
     "unplugin-icons": "^23.0.1",
