@@ -33,7 +33,7 @@ func (h *authHandlers) verify(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.verifyEmail(&body); err != nil {
+	if err := h.service.verifyEmail(c.Request.Context(), &body); err != nil {
 		c.JSON(err.StatusCode, err)
 		return
 	}
@@ -49,7 +49,7 @@ func (h *authHandlers) checkUsername(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.checkUsername(&body); err != nil {
+	if err := h.service.checkUsername(c.Request.Context(), &body); err != nil {
 		c.JSON(err.StatusCode, err)
 		return
 	}
@@ -65,7 +65,7 @@ func (h *authHandlers) signup(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.signup(&body)
+	token, err := h.service.signup(c.Request.Context(), &body)
 	if err != nil {
 		c.JSON(err.StatusCode, err)
 		return
@@ -84,7 +84,7 @@ func (h *authHandlers) signin(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.signin(&body)
+	token, err := h.service.signin(c.Request.Context(), &body)
 	if err != nil {
 		c.JSON(err.StatusCode, err)
 		return

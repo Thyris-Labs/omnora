@@ -12,7 +12,7 @@ import (
 )
 
 type Service struct {
-	db      *pgxpool.Pool
+	Client  *pgxpool.Pool
 	Queries *db.Queries
 }
 
@@ -38,7 +38,7 @@ func New() *Service {
 	}
 
 	dbInstance = &Service{
-		db:      conn,
+		Client:  conn,
 		Queries: db.New(conn),
 	}
 

@@ -34,13 +34,13 @@ func generateSessionToken() (string, error) {
 	return base64.RawURLEncoding.EncodeToString(token), nil
 }
 
-func cacheUser(c *cache.Service, token string, user *db.User) error {
+func cacheUser(ctx context.Context, c *cache.Service, token string, user *db.User) error {
 	marshalledUser, err := json.Marshal(user)
 	if err != nil {
 		return err
 	}
 
-	return c.Cache.Set(context.Background(), token, marshalledUser, UserSessionTTL).Err()
+	return c.Cache.Set(ctx, token, marshalledUser, UserSessionTTL).Err()
 }
 
 func generateCode() (string, error) {
@@ -52,12 +52,12 @@ func generateCode() (string, error) {
 	return fmt.Sprintf("%06d", n.Int64()), nil
 }
 
-func cacheEmailForVerification(c *cache.Service, email string, code string) error {
-	return c.Cache.Set(context.Background(), "verif:"+email, code, 10*time.Minute).Err()
+func cacheEmailForVerification(ctx context.Context, c *cache.Service, email string, code string) error {
+	return c.Cache.Set(ctx, "verif:"+email, code, 10*time.Minute).Err()
 }
 
-func checkCode(c *cache.Service, email string, code string) error {
-	generatedCode, err := c.Cache.Get(context.Background(), "verif:"+email).Result()
+func checkCode(ctx context.Context, c *cache.Service, email string, code string) error {
+	generatedCode, err := c.Cache.Get(ctx, "verif:"+email).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
 			return fmt.Errorf("%w: %w", errVerificationCodeInvalid, err)
@@ -70,14 +70,14 @@ func checkCode(c *cache.Service, email string, code string) error {
 		return fmt.Errorf("%w", errVerificationCodeInvalid)
 	}
 
-	if err := c.Cache.Del(context.Background(), "verif:"+email).Err(); err != nil {
+	if err := c.Cache.Del(ctx, "verif:"+email).Err(); err != nil {
 		return fmt.Errorf("%w: %w", errVerificationCodeDelete, err)
 	}
 
 	return nil
 }
 
-func sendMail(e *email.Service, email string, code string) error {
+func sendMail(ctx context.Context, e *email.Service, email string, code string) error {
 	hostEmail := os.Getenv("RESEND_HOST_EMAIL")
 	hostName := os.Getenv("RESEND_HOST_NAME")
 
@@ -88,7 +88,7 @@ func sendMail(e *email.Service, email string, code string) error {
 		Text:    "The code to verify your email is: " + code,
 	}
 
-	if _, err := e.Client.Emails.Send(params); err != nil {
+	if _, err := e.Client.Emails.SendWithContext(ctx, params); err != nil {
 		return err
 	}
 
