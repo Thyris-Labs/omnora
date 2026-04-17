@@ -2,6 +2,7 @@ package auth
 
 type verifyEmailBody struct {
 	Email string `json:"email" binding:"required,email"`
+	Flow  string `json:"flow" binding:"required,oneof=signup signin"`
 }
 
 type checkUsernameBody struct {

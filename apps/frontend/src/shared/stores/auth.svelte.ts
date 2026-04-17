@@ -41,19 +41,20 @@ type SignupSchema = ReturnType<typeof createSignupSchema>
 type SigninSchema = ReturnType<typeof createSigninSchema>
 type SignupInput = v.InferInput<SignupSchema>
 type SigninInput = v.InferInput<SigninSchema>
+type VerifyFlow = "signup" | "signin"
 
 class AuthStore {
 	verifying = $state(false)
 	submitting = $state(false)
 	errorMessage = $state<string | null>(null)
 
-	async verifyEmail(email: string) {
+	async verifyEmail(email: string, flow: VerifyFlow) {
 		this.submitting = true
 		this.errorMessage = null
 
 		const result = await apiFetch("/verify", {
 			method: "POST",
-			body: JSON.stringify({ email }),
+			body: JSON.stringify({ email, flow }),
 		})
 
 		this.submitting = false

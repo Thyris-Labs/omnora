@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { createForm, Form, getInput, setErrors } from "@formisch/svelte";
 	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
-	import PhWarningDuotone from "~icons/ph/warning-duotone";
 	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
 	import { useDebounce } from "runed";
 	import { apiFetch } from "shared/helpers/api";
+	import ErrorMessage from "ui/auth/error-message.svelte";
 
 	type UsernameState = "idle" | "checking" | "taken" | "available" | "error";
 
 	const authStore = getAuthStore();
+	authStore.errorMessage = null;
 	const signupForm = createForm({
 		schema: createSignupSchema(() => authStore.verifying),
 	});
@@ -85,7 +86,7 @@
 		{#if !authStore.verifying}
 			<Form
 				of={signupForm}
-				onsubmit={(output) => authStore.verifyEmail(output.email)}
+				onsubmit={(output) => authStore.verifyEmail(output.email, "signup")}
 				class="mt-6 w-full"
 			>
 				<InputField
@@ -108,6 +109,7 @@
 					data-1p-ignore
 					placeholder="johndoe"
 					oninput={onInput}
+					inputClass={usernameState === "available" ? "border-accent!" : ""}
 				/>
 
 				{@render messages()}
@@ -140,6 +142,10 @@
 					labelClass="invisible absolute"
 				/>
 
+				{#if authStore.errorMessage}
+					<ErrorMessage message={authStore.errorMessage} />
+				{/if}
+
 				<Button type="submit" class="mt-8 w-full px-4 py-2 font-medium"
 					>Verify Email</Button
 				>
@@ -154,16 +160,6 @@
 </div>
 
 {#snippet messages()}
-	{#if authStore.errorMessage}
-		<div
-			role="alert"
-			class="mt-6 text-sm bg-rose-500/20 w-fit py-1.5 px-2.5 text-rose-500 flex items-center gap-x-2"
-		>
-			<PhWarningDuotone />
-			{authStore.errorMessage}
-		</div>
-	{/if}
-
 	{#if usernameState === "checking"}
 		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-main-600">
 			Checking availability...
@@ -174,5 +170,9 @@
 		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-accent">
 			{usernameMessage}
 		</div>
+	{/if}
+
+	{#if authStore.errorMessage}
+		<ErrorMessage message={authStore.errorMessage} />
 	{/if}
 {/snippet}

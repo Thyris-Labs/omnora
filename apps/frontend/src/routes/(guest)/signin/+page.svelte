@@ -5,8 +5,10 @@
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
+	import ErrorMessage from "ui/auth/error-message.svelte";
 
 	const authStore = getAuthStore();
+	authStore.errorMessage = null;
 
 	const signinForm = createForm({
 		schema: createSigninSchema(() => authStore.verifying),
@@ -31,7 +33,7 @@
 		{#if !authStore.verifying}
 			<Form
 				of={signinForm}
-				onsubmit={(output) => authStore.verifyEmail(output.email)}
+				onsubmit={(output) => authStore.verifyEmail(output.email, "signin")}
 				class="mt-6 w-full"
 			>
 				<InputField
@@ -45,9 +47,7 @@
 				/>
 
 				{#if authStore.errorMessage}
-					<div role="alert" class="mt-6 text-sm text-rose-500">
-						{authStore.errorMessage}
-					</div>
+					<ErrorMessage message={authStore.errorMessage} />
 				{/if}
 
 				<Button
@@ -77,6 +77,10 @@
 					class="w-fit mx-auto"
 					labelClass="invisible absolute"
 				/>
+
+				{#if authStore.errorMessage}
+					<ErrorMessage message={authStore.errorMessage} />
+				{/if}
 
 				<Button type="submit" class="mt-8 w-full px-4 py-2">Verify Email</Button
 				>

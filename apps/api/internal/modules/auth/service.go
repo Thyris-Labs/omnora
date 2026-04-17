@@ -24,9 +24,11 @@ func newAuthService(cache *cache.Service, email *email.Service, repo *authReposi
 }
 
 func (s *authService) verifyEmail(body *verifyEmailBody) *apierror.Error {
-	user, _ := s.repo.GetUserByEmail(body.Email)
-	if user != nil {
-		return apierror.BadRequest(errCodeEmailAlreadyExist, errMessageEmailAlreadyExist, nil)
+	if body.Flow == "signup" {
+		user, _ := s.repo.GetUserByEmail(body.Email)
+		if user != nil {
+			return apierror.BadRequest(errCodeEmailAlreadyExist, errMessageEmailAlreadyExist, nil)
+		}
 	}
 
 	code, err := generateCode()
