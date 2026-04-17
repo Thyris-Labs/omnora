@@ -20,6 +20,7 @@ func newAuthHandlers(service *authService) *authHandlers {
 
 func (h *authHandlers) RegisterRoutes(api *gin.RouterGroup) {
 	api.POST("/verify", h.verify)
+	api.POST("/check_username", h.checkUsername)
 	api.POST("/signup", h.signup)
 	api.POST("/signin", h.signin)
 }
@@ -38,6 +39,22 @@ func (h *authHandlers) verify(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, nil)
+}
+
+func (h *authHandlers) checkUsername(c *gin.Context) {
+	var body checkUsernameBody
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
+		return
+	}
+
+	if err := h.service.checkUsername(&body); err != nil {
+		c.JSON(err.StatusCode, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
 }
 
 func (h *authHandlers) signup(c *gin.Context) {

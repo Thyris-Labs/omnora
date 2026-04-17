@@ -8,3 +8,6 @@ RETURNING *;
 
 -- name: GetUser :one
 SELECT * FROM users WHERE email = $1;
+
+-- name: CheckUsername :one
+SELECT id FROM users WHERE username = $1;

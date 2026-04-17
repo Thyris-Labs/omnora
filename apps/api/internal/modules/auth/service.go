@@ -24,6 +24,11 @@ func newAuthService(cache *cache.Service, email *email.Service, repo *authReposi
 }
 
 func (s *authService) verifyEmail(body *verifyEmailBody) *apierror.Error {
+	user, _ := s.repo.GetUserByEmail(body.Email)
+	if user != nil {
+		return apierror.BadRequest(errCodeEmailAlreadyExist, errMessageEmailAlreadyExist, nil)
+	}
+
 	code, err := generateCode()
 	if err != nil {
 		return apierror.Internal(errCodeVerificationCodeGeneration, errMessageVerificationStartFailed, err)
@@ -35,6 +40,14 @@ func (s *authService) verifyEmail(body *verifyEmailBody) *apierror.Error {
 
 	if err := sendMail(s.email, body.Email, code); err != nil {
 		return apierror.Internal(errCodeVerificationEmailSend, errMessageVerificationStartFailed, err)
+	}
+
+	return nil
+}
+
+func (s *authService) checkUsername(body *checkUsernameBody) *apierror.Error {
+	if exist := s.repo.CheckUsername(body.Username); exist {
+		return apierror.BadRequest(errCodeUsernameAlreadyExist, errMessageUsernameAlreadyExist, nil)
 	}
 
 	return nil
@@ -67,7 +80,7 @@ func (s *authService) signin(body *signinBody) (*string, *apierror.Error) {
 		return nil, mapCheckCodeError(err)
 	}
 
-	user, err := s.repo.GetUser(body)
+	user, err := s.repo.GetUserByEmail(body.Email)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, apierror.NotFound(errCodeUserNotFound, errMessageUserNotFound, err)

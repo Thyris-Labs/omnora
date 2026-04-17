@@ -13,6 +13,14 @@ export class ApiError extends TaggedError("ApiError")<{
 	message: string
 }>() { }
 
+export class ApiAbortError extends TaggedError("ApiAbortError")<{
+	status: number
+	code: string
+	message: string
+}>() { }
+
+export type ApiRequestError = ApiError | ApiAbortError
+
 async function parseApiError(response: Response): Promise<ApiError> {
 	const body = await response.json().catch(() => null)
 	const parsed = v.safeParse(ApiErrorSchema, body)
@@ -31,7 +39,7 @@ async function parseApiError(response: Response): Promise<ApiError> {
 export async function apiFetch(
 	path: string,
 	init?: RequestInit,
-): Promise<ResultType<Response, ApiError>> {
+): Promise<ResultType<Response, ApiRequestError>> {
 	return Result.tryPromise({
 		try: () =>
 			fetch(import.meta.env.VITE_API_URL + path, {
@@ -42,12 +50,21 @@ export async function apiFetch(
 					...init?.headers,
 				},
 			}),
-		catch: (cause) =>
-			new ApiError({
+		catch: (cause) => {
+			if (cause instanceof DOMException && cause.name === "AbortError") {
+				return new ApiAbortError({
+					status: 0,
+					code: "ERR_ABORTED",
+					message: "The request was aborted.",
+				})
+			}
+
+			return new ApiError({
 				status: 0,
 				code: "ERR_NETWORK",
 				message: cause instanceof Error ? cause.message : "Could not reach the server.",
-			}),
+			})
+		},
 	}).then((result) =>
 		result.andThenAsync(async (response) => {
 			if (!response.ok) return Result.err(await parseApiError(response))

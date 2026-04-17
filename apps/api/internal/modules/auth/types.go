@@ -4,6 +4,10 @@ type verifyEmailBody struct {
 	Email string `json:"email" binding:"required,email"`
 }
 
+type checkUsernameBody struct {
+	Username string `json:"username" binding:"required"`
+}
+
 type signupBody struct {
 	Email    string `json:"email" binding:"required,email"`
 	Username string `json:"username" binding:"required"`

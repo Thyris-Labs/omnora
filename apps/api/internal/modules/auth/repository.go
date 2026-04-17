@@ -32,11 +32,20 @@ func (r *authRepository) CreateUser(body *signupBody) (*db.User, error) {
 	return &user, nil
 }
 
-func (r *authRepository) GetUser(body *signinBody) (*db.User, error) {
-	user, err := r.db.Queries.GetUser(context.Background(), body.Email)
+func (r *authRepository) GetUserByEmail(email string) (*db.User, error) {
+	user, err := r.db.Queries.GetUser(context.Background(), email)
 	if err != nil {
 		return nil, err
 	}
 
 	return &user, nil
+}
+
+func (r *authRepository) CheckUsername(username string) bool {
+	_, err := r.db.Queries.CheckUsername(context.Background(), username)
+	if err != nil {
+		return false
+	}
+
+	return true
 }

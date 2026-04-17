@@ -1,16 +1,70 @@
 <script lang="ts">
-	import { createForm, Form } from "@formisch/svelte";
+	import { createForm, Form, getInput, setErrors } from "@formisch/svelte";
 	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
+	import PhWarningDuotone from "~icons/ph/warning-duotone";
 	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
+	import { useDebounce } from "runed";
+	import { apiFetch } from "shared/helpers/api";
+
+	type UsernameState = "idle" | "checking" | "taken" | "available" | "error";
 
 	const authStore = getAuthStore();
-
 	const signupForm = createForm({
 		schema: createSignupSchema(() => authStore.verifying),
 	});
+
+	let usernameState = $state<UsernameState>("idle");
+	let usernameMessage = $state<string | null>(null);
+	let controller = $state<AbortController | null>();
+
+	const checkUsername = useDebounce(async () => {
+		const username = getInput(signupForm, { path: ["username"] });
+		if (!username) {
+			controller = null;
+			usernameState = "idle";
+			return;
+		}
+
+		const currentController = new AbortController();
+		controller = currentController;
+
+		usernameState = "checking";
+		usernameMessage = null;
+		setErrors(signupForm, {
+			path: ["username"],
+			errors: null,
+		});
+
+		const result = await apiFetch(`/check_username`, {
+			method: "POST",
+			body: JSON.stringify({ username }),
+			signal: currentController.signal,
+		});
+
+		if (result.isErr()) {
+			if (result.error.code === "ERR_ABORTED") return;
+
+			controller = null;
+			usernameState = "taken";
+			setErrors(signupForm, {
+				path: ["username"],
+				errors: [result.error.message],
+			});
+			return;
+		}
+
+		controller = null;
+		usernameState = "available";
+		usernameMessage = "This username is available.";
+	}, 200);
+
+	function onInput() {
+		controller?.abort();
+		void checkUsername();
+	}
 </script>
 
 <div class="min-h-screen flex items-center justify-center">
@@ -53,13 +107,10 @@
 					autocomplete="off"
 					data-1p-ignore
 					placeholder="johndoe"
+					oninput={onInput}
 				/>
 
-				{#if authStore.errorMessage}
-					<div role="alert" class="mt-6 text-sm text-rose-500">
-						{authStore.errorMessage}
-					</div>
-				{/if}
+				{@render messages()}
 
 				<Button
 					type="submit"
@@ -101,3 +152,27 @@
 		</p>
 	</main>
 </div>
+
+{#snippet messages()}
+	{#if authStore.errorMessage}
+		<div
+			role="alert"
+			class="mt-6 text-sm bg-rose-500/20 w-fit py-1.5 px-2.5 text-rose-500 flex items-center gap-x-2"
+		>
+			<PhWarningDuotone />
+			{authStore.errorMessage}
+		</div>
+	{/if}
+
+	{#if usernameState === "checking"}
+		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-main-600">
+			Checking availability...
+		</div>
+	{/if}
+
+	{#if usernameState === "available"}
+		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-accent">
+			{usernameMessage}
+		</div>
+	{/if}
+{/snippet}

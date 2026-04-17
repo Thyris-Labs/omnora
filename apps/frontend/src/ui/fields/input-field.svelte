@@ -49,6 +49,10 @@
 		inputClass = "",
 		labelClass = "",
 		errorClass = "",
+		onfocus,
+		oninput,
+		onchange,
+		onblur,
 		...restProps
 	}: InputFieldProps = $props();
 
@@ -56,6 +60,36 @@
 
 	const inputId = $derived(id ?? `field-${String(path).replaceAll(",", "-")}`);
 	const errorId = $derived(`${inputId}-error`);
+
+	function mergeFieldProps(fieldProps: {
+		name: string;
+		autofocus: boolean;
+		onfocus: NonNullable<InputFieldProps["onfocus"]>;
+		oninput: NonNullable<InputFieldProps["oninput"]>;
+		onchange: NonNullable<InputFieldProps["onchange"]>;
+		onblur: NonNullable<InputFieldProps["onblur"]>;
+		[key: symbol]: unknown;
+	}) {
+		return {
+			...fieldProps,
+			onfocus(event: FocusEvent & { currentTarget: EventTarget & HTMLInputElement }) {
+				fieldProps.onfocus(event);
+				onfocus?.(event);
+			},
+			oninput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+				fieldProps.oninput(event);
+				oninput?.(event);
+			},
+			onchange(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+				fieldProps.onchange(event);
+				onchange?.(event);
+			},
+			onblur(event: FocusEvent & { currentTarget: EventTarget & HTMLInputElement }) {
+				fieldProps.onblur(event);
+				onblur?.(event);
+			},
+		};
+	}
 </script>
 
 <Field {of} {path}>
@@ -64,7 +98,7 @@
 			<label for={inputId} class={cn(labelStyles(), labelClass)}>{label}</label>
 			<Input
 				{...restProps}
-				{...field.props}
+				{...mergeFieldProps(field.props)}
 				id={inputId}
 				value={field.input ?? ""}
 				class={cn("mt-1", inputClass)}

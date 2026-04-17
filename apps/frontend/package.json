@@ -23,6 +23,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
+    "runed": "^0.37.1",
     "svelte": "^5.55.2",
     "svelte-check": "^4.4.6",
     "tailwind-merge": "^3.5.0",
