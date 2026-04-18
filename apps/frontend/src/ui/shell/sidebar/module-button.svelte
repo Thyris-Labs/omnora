@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { MODULES } from "modules/registry";
 	import type { Module } from "shared/types/module";
 	import Button from "ui/primitives/button.svelte";
-	import { MODULES } from "./modules-informations";
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
