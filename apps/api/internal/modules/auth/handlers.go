@@ -18,11 +18,17 @@ func newAuthHandlers(service *authService) *authHandlers {
 	}
 }
 
-func (h *authHandlers) RegisterRoutes(api *gin.RouterGroup) {
+func (h *authHandlers) RegisterRoutes(api *gin.RouterGroup, protected *gin.RouterGroup) {
 	api.POST("/verify", h.verify)
 	api.POST("/check_username", h.checkUsername)
 	api.POST("/signup", h.signup)
 	api.POST("/signin", h.signin)
+
+	protected.GET("/auth/check", h.check)
+}
+
+func (h *authHandlers) check(c *gin.Context) {
+	c.JSON(http.StatusOK, nil)
 }
 
 func (h *authHandlers) verify(c *gin.Context) {
