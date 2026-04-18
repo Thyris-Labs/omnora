@@ -15,7 +15,8 @@
 			},
 			state: {
 				default: "",
-				active: "text-main-50 bg-main-900 border border-main-800",
+				active:
+					"text-main-50 bg-main-900 border border-main-800 hover:text-main-200",
 				disabled: "opacity-70",
 			},
 		},
