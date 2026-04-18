@@ -26,7 +26,7 @@ func (h *userService) setup(ctx context.Context, user *db.User) (*setupReturnBod
 	}
 
 	body.User = user
-	body.Environments = data.environments
+	body.Environments = data
 
 	return &body, nil
 }
