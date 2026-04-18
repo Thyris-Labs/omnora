@@ -110,7 +110,7 @@ class AuthStore {
 			return
 		}
 
-		goto(resolve("/(app)"))
+		goto(resolve("/(app)/e"))
 	}
 
 	async signin(body: v.InferInput<ReturnType<typeof createSigninSchema>>) {
@@ -129,7 +129,7 @@ class AuthStore {
 			return
 		}
 
-		goto(resolve("/(app)"))
+		goto(resolve("/(app)/e"))
 	}
 
 	get user(): User {
