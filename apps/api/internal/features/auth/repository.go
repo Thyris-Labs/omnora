@@ -7,6 +7,7 @@ import (
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type authRepository struct {
@@ -35,6 +36,10 @@ func (r *authRepository) CreateUser(ctx context.Context, body *signupBody) (*db.
 		Email:       body.Email,
 		Username:    body.Username,
 		DisplayName: body.Username,
+		Avatar: pgtype.Text{
+			String: "https://i.pinimg.com/1200x/92/41/92/924192b2cdbec6802e7fe4229e2e1bd9.jpg",
+			Valid:  true,
+		},
 	})
 	if err != nil {
 		return nil, err
@@ -44,6 +49,10 @@ func (r *authRepository) CreateUser(ctx context.Context, body *signupBody) (*db.
 		ID:      uuid.NewString(),
 		Name:    fmt.Sprintf("%s's Environment", user.Username),
 		OwnerID: user.ID,
+		Avatar: pgtype.Text{
+			String: "https://i.pinimg.com/736x/7d/75/75/7d7575efd18ed31b8bde75e1a8dbfd9a.jpg",
+			Valid:  true,
+		},
 	})
 	if err != nil {
 		return nil, err

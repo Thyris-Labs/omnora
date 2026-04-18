@@ -1,8 +1,8 @@
 -- name: CreateEnvironment :one
 INSERT INTO environments (
-    id, name, owner_id
+    id, name, owner_id, avatar
 ) VALUES (
-    $1, $2, $3
+    $1, $2, $3, $4
 )
 RETURNING *;
 
