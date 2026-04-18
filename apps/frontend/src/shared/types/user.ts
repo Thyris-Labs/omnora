@@ -1,4 +1,4 @@
-import type { Basics, Environment } from "./index"
+import type { Basics, Environment } from "."
 
 interface IUser extends Basics {
 	email: string
