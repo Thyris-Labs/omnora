@@ -9,7 +9,6 @@
 	let { id, type }: Module = $props();
 	let Icon = $derived(MODULES[type].Icon);
 
-	const currEnvId = page.params.environment_id ?? "";
 	const isActive = $derived(page.params.module_id === id);
 </script>
 
@@ -18,7 +17,7 @@
 	onclick={() =>
 		goto(
 			resolve("/(app)/e/[environment_id]/m/[module_id]", {
-				environment_id: currEnvId,
+				environment_id: page.params.environment_id!,
 				module_id: id,
 			}),
 		)}
