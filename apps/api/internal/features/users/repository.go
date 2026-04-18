@@ -17,19 +17,11 @@ func newUserRepository(db *database.Service) userRepository {
 	}
 }
 
-type userData struct {
-	environments []db.Environment
-}
-
-func (r *userRepository) GetUserData(ctx context.Context, userID string) (*userData, error) {
-	var userData userData
-
-	environments, err := r.db.Queries.GetEnvironmentsByUser(ctx, userID)
+func (r *userRepository) GetUserData(ctx context.Context, userID string) ([]db.GetEnvironmentsWithModulesByUserRow, error) {
+	environments, err := r.db.Queries.GetEnvironmentsWithModulesByUser(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
-	userData.environments = environments
-
-	return &userData, nil
+	return environments, nil
 }

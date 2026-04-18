@@ -111,6 +111,7 @@
 				disabled={authStore.submitting}
 				aria-busy={authStore.submitting}
 				class="mt-6 w-full px-4 py-2 font-medium"
+				variant="action"
 			>
 				Sign up
 			</Button>
@@ -138,7 +139,11 @@
 				<ErrorMessage message={authStore.errorMessage} />
 			{/if}
 
-			<Button type="submit" class="mt-8 w-full px-4 py-2 font-medium">
+			<Button
+				type="submit"
+				class="mt-8 w-full px-4 py-2 font-medium"
+				variant="action"
+			>
 				Verify Email
 			</Button>
 		</Form>

@@ -8,11 +8,14 @@
 		base: "inline-flex active:scale-[0.98] items-center justify-center text-base transition-[background-color,box-shadow,transform,scale,color] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
 		variants: {
 			variant: {
-				default: "bg-main-50 hover:bg-main-100 text-main-900",
+				default:
+					"flex w-full justify-start gap-x-2 px-2 py-1.5 text-sm text-main-500 hover:text-main-300 hover:bg-main-900",
+				action: "bg-main-50 hover:bg-main-100 text-main-900",
 				ghost: "",
 			},
 			state: {
 				default: "",
+				active: "text-main-50 bg-main-900 border border-main-800",
 				disabled: "opacity-70",
 			},
 		},

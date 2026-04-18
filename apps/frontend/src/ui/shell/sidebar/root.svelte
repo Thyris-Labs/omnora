@@ -4,23 +4,38 @@
 	import PhMagnifyingGlassDuotone from "~icons/ph/magnifying-glass-duotone";
 	import PhDotsThreeBold from "~icons/ph/dots-three-bold";
 	import { getAuthStore } from "shared/stores/auth.svelte";
+	import { page } from "$app/state";
+	import ModuleButton from "./module-button.svelte";
 
 	const user = getAuthStore().user;
+	const modules = $derived.by(() => {
+		const currEnvID = page.params.environment_id;
+		if (!currEnvID) return [];
+
+		const environment = user.environments.find((e) => e.id === currEnvID);
+		if (!environment) return [];
+
+		return environment.modules;
+	});
 </script>
 
-<aside class="w-60 border-r border-main-900 flex-1 flex flex-col">
+<aside class="w-60 border-r border-main-900 flex flex-col">
 	<Input
 		id="search-bar"
 		name="search-bar"
 		variant="ghost"
 		class="border-b border-main-900 py-2.5 px-2 focus-visible:ring-0"
-		leftIconClass="text-main-600"
+		leftIconClass="text-main-600 mb-0.25"
 		placeholder="Find..."
 		icons={{ left: PhMagnifyingGlassDuotone }}
 	/>
 
 	<nav class="flex-1">
-		<ul></ul>
+		<ul class="flex flex-col p-2">
+			{#each modules as module (module.id)}
+				<ModuleButton {...module} />
+			{/each}
+		</ul>
 	</nav>
 
 	<div

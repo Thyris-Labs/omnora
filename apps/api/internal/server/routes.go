@@ -24,6 +24,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	s.auth.RegisterRoutes(api, protected)
 	s.environments.RegisterRoutes(protected)
 	s.users.RegisterRoutes(protected)
+	s.modules.RegisterRoutes(protected)
 
 	return r
 }
