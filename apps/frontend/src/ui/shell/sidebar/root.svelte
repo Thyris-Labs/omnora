@@ -25,7 +25,7 @@
 		name="search-bar"
 		variant="ghost"
 		class="border-b border-main-900 py-2.5 px-2 focus-visible:ring-0"
-		leftIconClass="text-main-600"
+		leftIconClass="text-main-600 mb-0.25"
 		placeholder="Find..."
 		icons={{ left: PhMagnifyingGlassDuotone }}
 	/>

@@ -44,6 +44,7 @@
 
 			<Button
 				type="submit"
+				variant="action"
 				disabled={authStore.submitting}
 				aria-busy={authStore.submitting}
 				class="mt-6 w-full px-4 py-2"
@@ -74,7 +75,9 @@
 				<ErrorMessage message={authStore.errorMessage} />
 			{/if}
 
-			<Button type="submit" class="mt-8 w-full px-4 py-2">Verify Email</Button>
+			<Button type="submit" variant="action" class="mt-8 w-full px-4 py-2">
+				Verify Email
+			</Button>
 		</Form>
 	{/if}
 </AuthShell>

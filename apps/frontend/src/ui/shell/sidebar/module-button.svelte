@@ -2,12 +2,27 @@
 	import type { Module } from "shared/types/module";
 	import Button from "ui/primitives/button.svelte";
 	import { MODULES } from "./modules-informations";
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
+	import { page } from "$app/state";
 
 	let { id, type }: Module = $props();
 	let Icon = $derived(MODULES[type].Icon);
+
+	const currEnvId = page.params.environment_id ?? "";
+	const isActive = $derived(page.params.module_id === id);
 </script>
 
-<Button variant="ghost" class="flex w-full justify-start gap-x-2 px-3 py-2">
+<Button
+	state={isActive ? "active" : "default"}
+	onclick={() =>
+		goto(
+			resolve("/(app)/e/[environment_id]/m/[module_id]", {
+				environment_id: currEnvId,
+				module_id: id,
+			}),
+		)}
+>
 	<Icon class="size-4.5" />
 	{MODULES[type].name}
 </Button>
