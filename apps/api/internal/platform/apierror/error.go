@@ -5,12 +5,14 @@ import (
 )
 
 const (
-	CodeInvalidRequest    = "ERR_INVALID_REQUEST"
-	MessageInvalidRequest = "The request data is invalid."
-	CodeNotFound          = "ERR_NOT_FOUND"
-	MessageNotFound       = "The requested resource was not found."
-	CodeInternalServer    = "ERR_INTERNAL_SERVER"
-	MessageInternalServer = "Something went wrong. Please try again later."
+	CodeInvalidRequest         = "ERR_INVALID_REQUEST"
+	MessageInvalidRequest      = "The request data is invalid."
+	CodeNotFound               = "ERR_NOT_FOUND"
+	MessageNotFound            = "The requested resource was not found."
+	CodeInternalServer         = "ERR_INTERNAL_SERVER"
+	MessageInternalServer      = "Something went wrong. Please try again later."
+	CodeUnauthorizedRequest    = "ERR_UNAUTHORIZED_REQUEST"
+	MessageUnauthorizedRequest = "Unauthorized."
 )
 
 type Error struct {
@@ -43,6 +45,10 @@ func BadRequest(code string, message string, cause error) *Error {
 
 func InvalidRequest(cause error) *Error {
 	return BadRequest(CodeInvalidRequest, MessageInvalidRequest, cause)
+}
+
+func UnauthorizedRequest() *Error {
+	return New(http.StatusUnauthorized, CodeUnauthorizedRequest, MessageUnauthorizedRequest, nil)
 }
 
 func NotFound(code string, message string, cause error) *Error {
