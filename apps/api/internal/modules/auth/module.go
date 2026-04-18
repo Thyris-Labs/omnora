@@ -14,7 +14,7 @@ type Dependencies struct {
 }
 
 type Module interface {
-	RegisterRoutes(api *gin.RouterGroup)
+	RegisterRoutes(api *gin.RouterGroup, protected *gin.RouterGroup)
 }
 
 func New(deps Dependencies) Module {

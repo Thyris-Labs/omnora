@@ -1,3 +1,9 @@
-<script lang="ts"></script>
+<script lang="ts">
+	import { EnvironmentsBar } from "ui/shell/environments-bar";
+	import { Sidebar } from "ui/shell/sidebar";
+</script>
 
-Hello world
+<div class="flex flex-col h-dvh">
+	<EnvironmentsBar />
+	<Sidebar />
+</div>

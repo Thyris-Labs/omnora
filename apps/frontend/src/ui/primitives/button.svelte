@@ -5,10 +5,11 @@
 	import type { ButtonRootProps } from "bits-ui";
 
 	const buttonVariants = tv({
-		base: "inline-flex active:scale-[0.98] items-center justify-center text-base transition-[background-color,box-shadow,transform,scale] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-800 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
+		base: "inline-flex active:scale-[0.98] items-center justify-center text-base transition-[background-color,box-shadow,transform,scale,color] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
 		variants: {
 			variant: {
 				default: "bg-main-50 hover:bg-main-100 text-main-900",
+				ghost: "",
 			},
 			state: {
 				default: "",

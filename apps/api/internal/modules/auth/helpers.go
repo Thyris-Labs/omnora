@@ -40,7 +40,7 @@ func cacheUser(ctx context.Context, c *cache.Service, token string, user *db.Use
 		return err
 	}
 
-	return c.Cache.Set(ctx, token, marshalledUser, UserSessionTTL).Err()
+	return c.Cache.Set(ctx, "user:"+token, marshalledUser, UserSessionTTL).Err()
 }
 
 func generateCode() (string, error) {

@@ -1,8 +1,14 @@
 import { setContext, getContext } from "svelte"
 import * as v from "valibot"
-import { apiFetch } from "shared/helpers/api"
+import { apiFetch, type ApiRequestError } from "shared/helpers/api"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
+import type { Environment, User } from "shared/types"
+
+interface SetupResponse {
+	user: Omit<User, "environments">
+	environments: Array<Environment>
+}
 
 export function createSignupSchema(isVerifying: () => boolean) {
 	return v.pipe(
@@ -42,9 +48,32 @@ export function createSigninSchema(isVerifying: () => boolean) {
 type VerifyFlow = "signup" | "signin"
 
 class AuthStore {
+	userData = $state<User | null>(null)
+
 	verifying = $state(false)
 	submitting = $state(false)
 	errorMessage = $state<string | null>(null)
+
+	async setup(signal?: AbortSignal): Promise<ApiRequestError | null> {
+		if (this.userData) return null
+
+		const result = await apiFetch("/users/setup", { signal })
+
+		if (result.isErr()) {
+			if (result.error.status === 401) this.userData = null
+			return result.error
+		}
+
+		const body = await result.value.json().catch(() => null) as SetupResponse | null
+		if (!body) return null
+
+		this.userData = {
+			...body.user,
+			environments: body.environments,
+		}
+
+		return null
+	}
 
 	async verifyEmail(email: string, flow: VerifyFlow) {
 		this.submitting = true
@@ -81,7 +110,7 @@ class AuthStore {
 			return
 		}
 
-		goto(resolve("/(app)/e/[environment_id]", { environment_id: "1" }))
+		goto(resolve("/(app)"))
 	}
 
 	async signin(body: v.InferInput<ReturnType<typeof createSigninSchema>>) {
@@ -100,7 +129,12 @@ class AuthStore {
 			return
 		}
 
-		goto(resolve("/(app)/e/[environment_id]", { environment_id: "1" }))
+		goto(resolve("/(app)"))
+	}
+
+	get user(): User {
+		if (!this.userData) throw new Error("User is not ready")
+		return this.userData
 	}
 }
 

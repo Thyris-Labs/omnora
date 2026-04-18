@@ -8,6 +8,7 @@ import (
 
 	"github.com/Thyris-Labs/omnora/internal/modules/auth"
 	"github.com/Thyris-Labs/omnora/internal/modules/environments"
+	"github.com/Thyris-Labs/omnora/internal/modules/users"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
 	"github.com/Thyris-Labs/omnora/internal/platform/email"
@@ -22,6 +23,7 @@ type Server struct {
 	// modules
 	auth         auth.Module
 	environments environments.Module
+	users        users.Module
 }
 
 func NewServer() *http.Server {
@@ -33,6 +35,7 @@ func NewServer() *http.Server {
 
 	authMod := auth.New(auth.Dependencies{DB: dbSvc, Cache: cacheSvc, Email: emailSvc})
 	environmentsMod := environments.New(environments.Dependencies{DB: dbSvc})
+	usersMod := users.New(users.Dependencies{DB: dbSvc})
 
 	newServer := &Server{
 		db:    dbSvc,
@@ -41,6 +44,7 @@ func NewServer() *http.Server {
 
 		auth:         authMod,
 		environments: environmentsMod,
+		users:        usersMod,
 	}
 
 	server := &http.Server{

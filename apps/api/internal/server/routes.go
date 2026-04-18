@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/Thyris-Labs/omnora/internal/server/middlewares"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -18,9 +19,11 @@ func (s *Server) RegisterRoutes() http.Handler {
 	}))
 
 	api := r.Group("/api/v1")
+	protected := api.Group("", middlewares.Auth(s.cache))
 
-	s.auth.RegisterRoutes(api)
-	s.environments.RegisterRoutes(api)
+	s.auth.RegisterRoutes(api, protected)
+	s.environments.RegisterRoutes(protected)
+	s.users.RegisterRoutes(protected)
 
 	return r
 }
