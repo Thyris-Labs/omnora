@@ -14,7 +14,7 @@
 	<Button
 		variant="ghost"
 		class={cn(
-			"pl-2.5 pr-3 gap-x-2 select-none h-full py-1.75 text-sm relative",
+			"pl-2.5 pr-3 gap-x-2 select-none h-full py-1.75 text-sm relative active:scale-100",
 			isActive ? "text-main-50" : "text-main-50/30 hover:text-main-50/50",
 			isActive &&
 				"after:absolute after:content-[''] after:w-full after:h-px after:bg-main-950 after:-bottom-px after:left-0",

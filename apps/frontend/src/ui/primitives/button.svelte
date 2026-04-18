@@ -9,14 +9,14 @@
 		variants: {
 			variant: {
 				default:
-					"flex w-full justify-start gap-x-2 px-2 py-1.5 text-sm text-main-500 hover:text-main-300 hover:bg-main-900",
+					"flex w-full justify-start gap-x-2 px-2 py-1.5 text-sm text-main-500 hover:text-main-300 hover:bg-main-900 border border-transparent",
 				action: "bg-main-50 hover:bg-main-100 text-main-900",
 				ghost: "",
 			},
 			state: {
 				default: "",
 				active:
-					"text-main-50 bg-main-900 border border-main-800 hover:text-main-200",
+					"text-main-50 bg-main-900 border border-main-800 hover:text-main-50",
 				disabled: "opacity-70",
 			},
 		},
