@@ -15,5 +15,7 @@ func GetUser(c *gin.Context) *db.User {
 		return nil
 	}
 
-	return u.(*db.User)
+	user := u.(db.User)
+
+	return &user
 }

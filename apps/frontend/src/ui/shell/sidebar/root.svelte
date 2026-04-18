@@ -3,6 +3,9 @@
 	import Input from "ui/primitives/input.svelte";
 	import PhMagnifyingGlassDuotone from "~icons/ph/magnifying-glass-duotone";
 	import PhDotsThreeBold from "~icons/ph/dots-three-bold";
+	import { getAuthStore } from "shared/stores/auth.svelte";
+
+	const user = getAuthStore().user;
 </script>
 
 <aside class="w-60 border-r border-main-900 flex-1 flex flex-col">
@@ -23,12 +26,8 @@
 	<div
 		class="h-11 flex items-center px-3 gap-x-2 border-t border-main-900 text-sm"
 	>
-		<img
-			class="size-6 rounded-full object-cover"
-			alt=""
-			src="https://i.pinimg.com/736x/0b/ed/9c/0bed9c847df1776b9c18fe7edb0ad0a2.jpg"
-		/>
-		okzmo
+		<img class="size-6 rounded-full object-cover" alt="" src={user.avatar} />
+		{user.display_name}
 
 		<Button
 			aria-label="settings"
