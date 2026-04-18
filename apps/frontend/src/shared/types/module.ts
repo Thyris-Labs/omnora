@@ -1,6 +1,5 @@
+import type { ModuleTypes } from "modules/registry"
 import type { Basics } from "."
-
-export type ModuleTypes = "NOTES"
 
 export interface Module extends Basics {
 	type: ModuleTypes
