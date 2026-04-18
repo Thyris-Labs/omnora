@@ -8,6 +8,7 @@ import (
 
 	"github.com/Thyris-Labs/omnora/internal/features/auth"
 	"github.com/Thyris-Labs/omnora/internal/features/environments"
+	"github.com/Thyris-Labs/omnora/internal/features/modules"
 	"github.com/Thyris-Labs/omnora/internal/features/users"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
@@ -24,9 +25,12 @@ type Server struct {
 	auth         auth.Feature
 	environments environments.Feature
 	users        users.Feature
+	modules      modules.Feature
 }
 
 func NewServer() *http.Server {
+	registerValidators()
+
 	port := os.Getenv("PORT")
 
 	dbSvc := database.New()
@@ -36,6 +40,7 @@ func NewServer() *http.Server {
 	authFeature := auth.New(auth.Dependencies{DB: dbSvc, Cache: cacheSvc, Email: emailSvc})
 	environmentsFeature := environments.New(environments.Dependencies{DB: dbSvc})
 	usersFeature := users.New(users.Dependencies{DB: dbSvc})
+	modulesFeature := modules.New(modules.Dependencies{DB: dbSvc})
 
 	newServer := &Server{
 		db:    dbSvc,
@@ -45,6 +50,7 @@ func NewServer() *http.Server {
 		auth:         authFeature,
 		environments: environmentsFeature,
 		users:        usersFeature,
+		modules:      modulesFeature,
 	}
 
 	server := &http.Server{
