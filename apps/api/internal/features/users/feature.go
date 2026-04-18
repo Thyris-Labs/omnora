@@ -9,11 +9,11 @@ type Dependencies struct {
 	DB *database.Service
 }
 
-type Module interface {
+type Feature interface {
 	RegisterRoutes(api *gin.RouterGroup)
 }
 
-func New(deps Dependencies) Module {
+func New(deps Dependencies) Feature {
 	repo := newUserRepository(deps.DB)
 	service := newUserService(&repo)
 	return newUserHandlers(&service)

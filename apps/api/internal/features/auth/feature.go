@@ -13,11 +13,11 @@ type Dependencies struct {
 	Email *email.Service
 }
 
-type Module interface {
+type Feature interface {
 	RegisterRoutes(api *gin.RouterGroup, protected *gin.RouterGroup)
 }
 
-func New(deps Dependencies) Module {
+func New(deps Dependencies) Feature {
 	repo := newAuthRepository(deps.DB)
 	service := newAuthService(deps.Cache, deps.Email, &repo)
 	return newAuthHandlers(&service)

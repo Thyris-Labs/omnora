@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Thyris-Labs/omnora/internal/modules/auth"
-	"github.com/Thyris-Labs/omnora/internal/modules/environments"
-	"github.com/Thyris-Labs/omnora/internal/modules/users"
+	"github.com/Thyris-Labs/omnora/internal/features/auth"
+	"github.com/Thyris-Labs/omnora/internal/features/environments"
+	"github.com/Thyris-Labs/omnora/internal/features/users"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
 	"github.com/Thyris-Labs/omnora/internal/platform/email"
@@ -20,10 +20,10 @@ type Server struct {
 	cache *cache.Service
 	email *email.Service
 
-	// modules
-	auth         auth.Module
-	environments environments.Module
-	users        users.Module
+	// features
+	auth         auth.Feature
+	environments environments.Feature
+	users        users.Feature
 }
 
 func NewServer() *http.Server {
@@ -33,18 +33,18 @@ func NewServer() *http.Server {
 	cacheSvc := cache.New()
 	emailSvc := email.New()
 
-	authMod := auth.New(auth.Dependencies{DB: dbSvc, Cache: cacheSvc, Email: emailSvc})
-	environmentsMod := environments.New(environments.Dependencies{DB: dbSvc})
-	usersMod := users.New(users.Dependencies{DB: dbSvc})
+	authFeature := auth.New(auth.Dependencies{DB: dbSvc, Cache: cacheSvc, Email: emailSvc})
+	environmentsFeature := environments.New(environments.Dependencies{DB: dbSvc})
+	usersFeature := users.New(users.Dependencies{DB: dbSvc})
 
 	newServer := &Server{
 		db:    dbSvc,
 		cache: cacheSvc,
 		email: emailSvc,
 
-		auth:         authMod,
-		environments: environmentsMod,
-		users:        usersMod,
+		auth:         authFeature,
+		environments: environmentsFeature,
+		users:        usersFeature,
 	}
 
 	server := &http.Server{
