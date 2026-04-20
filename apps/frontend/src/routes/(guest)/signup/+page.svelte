@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createForm, Form, getInput, setErrors } from "@formisch/svelte";
-	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
+	import { getAuthStore } from "shared/stores/auth.svelte";
 	import AuthShell from "ui/auth/auth-shell.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
@@ -8,6 +8,7 @@
 	import { useDebounce } from "runed";
 	import { apiFetch } from "shared/helpers/api";
 	import ErrorMessage from "ui/auth/error-message.svelte";
+	import { createSignupSchema } from "shared/schemas/auth";
 
 	type UsernameState = "idle" | "checking" | "taken" | "available" | "error";
 

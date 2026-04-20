@@ -2,34 +2,16 @@
 	import { createForm, Form, reset } from "@formisch/svelte";
 	import { getAuthStore } from "shared/stores/auth.svelte";
 	import InputField from "ui/fields/input-field.svelte";
-	import * as v from "valibot";
 	import SettingsSection from "./section.svelte";
 	import SaveBar from "./save-bar.svelte";
+	import { updateUserDataSchema } from "shared/schemas/settings";
 
 	let user = getAuthStore().user;
-
 	const accountUpdateForm = createForm({
-		schema: v.object({
-			avatar: v.pipe(
-				v.file(),
-				v.mimeType(
-					["image/jpeg", "image/png"],
-					"Please select a JPEG or PNG file.",
-				),
-				v.maxSize(1024 * 1024 * 10, "Please select a file smaller than 10 MB."),
-			),
-			displayName: v.pipe(
-				v.string(),
-				v.maxLength(24, "Your display name must be less than 24 characters"),
-			),
-			username: v.pipe(
-				v.string(),
-				v.maxLength(24, "Your username must be less than 24 characters"),
-			),
-		}),
+		schema: updateUserDataSchema,
 		initialInput: {
-			displayName: user.display_name,
 			username: user.username,
+			displayName: user.display_name,
 		},
 	});
 </script>

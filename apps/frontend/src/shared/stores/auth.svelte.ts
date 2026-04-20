@@ -1,48 +1,13 @@
 import { setContext, getContext } from "svelte"
-import * as v from "valibot"
 import { apiFetch, type ApiRequestError } from "shared/helpers/api"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
 import type { Environment, User } from "shared/types"
+import type { SigninPayload, SignupPayload } from "shared/schemas/auth"
 
 interface SetupResponse {
 	user: Omit<User, "environments">
 	environments: Array<Environment>
-}
-
-export function createSignupSchema(isVerifying: () => boolean) {
-	return v.pipe(
-		v.object({
-			email: v.pipe(v.string("An email is required"), v.trim(), v.email("The given email is invalid.")),
-			username: v.pipe(v.string("A username is required"), v.trim()),
-			code: v.optional(v.pipe(v.string(), v.trim())),
-		}),
-		v.forward(
-			v.partialCheck(
-				[["code"]],
-				({ code }) => !isVerifying() || Boolean(code),
-				"A verification code is required",
-			),
-			["code"],
-		),
-	)
-}
-
-export function createSigninSchema(isVerifying: () => boolean) {
-	return v.pipe(
-		v.object({
-			email: v.pipe(v.string("An email is required"), v.trim(), v.email("The given email is invalid.")),
-			code: v.optional(v.pipe(v.string(), v.trim())),
-		}),
-		v.forward(
-			v.partialCheck(
-				[["code"]],
-				({ code }) => !isVerifying() || Boolean(code),
-				"A verification code is required",
-			),
-			["code"],
-		),
-	)
 }
 
 type VerifyFlow = "signup" | "signin"
@@ -94,7 +59,7 @@ class AuthStore {
 		this.verifying = true
 	}
 
-	async signup(body: v.InferInput<ReturnType<typeof createSignupSchema>>) {
+	async signup(body: SignupPayload) {
 		this.submitting = true
 		this.errorMessage = null
 
@@ -113,7 +78,7 @@ class AuthStore {
 		goto(resolve("/(app)/e"))
 	}
 
-	async signin(body: v.InferInput<ReturnType<typeof createSigninSchema>>) {
+	async signin(body: SigninPayload) {
 		this.submitting = true
 		this.errorMessage = null
 

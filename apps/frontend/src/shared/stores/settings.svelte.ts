@@ -1,3 +1,4 @@
+import type { UpdateUserDataPayload } from "shared/schemas/settings"
 import { getContext, setContext } from "svelte"
 
 class SettingsStore {
@@ -7,8 +8,8 @@ class SettingsStore {
 		this.isOpen = true
 	}
 
-	closeSettings() {
-		this.isOpen = false
+	async saveAccountData(body: UpdateUserDataPayload) {
+
 	}
 }
 
