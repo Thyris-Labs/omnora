@@ -132,6 +132,21 @@ class AuthStore {
 		goto(resolve("/(app)/e"))
 	}
 
+	async logout() {
+		const result = await apiFetch("/logout", {
+			method: "POST",
+		})
+
+		if (result.isErr()) {
+			console.error(result.error)
+			return
+		}
+
+		this.userData = null
+
+		goto(resolve("/signin"))
+	}
+
 	get user(): User {
 		if (!this.userData) throw new Error("User is not ready")
 		return this.userData
