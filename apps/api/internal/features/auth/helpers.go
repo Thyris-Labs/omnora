@@ -43,6 +43,10 @@ func cacheUser(ctx context.Context, c *cache.Service, token string, user *db.Use
 	return c.Cache.Set(ctx, "user:"+token, marshalledUser, UserSessionTTL).Err()
 }
 
+func deleteCachedUser(ctx context.Context, c *cache.Service, token string) error {
+	return c.Cache.Del(ctx, token).Err()
+}
+
 func generateCode() (string, error) {
 	n, err := rand.Int(rand.Reader, big.NewInt(1_000_000))
 	if err != nil {

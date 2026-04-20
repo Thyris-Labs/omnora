@@ -104,6 +104,14 @@ func (s *authService) signin(ctx context.Context, body *signinBody) (*string, *a
 	return &token, nil
 }
 
+func (s *authService) logout(ctx context.Context, token string) *apierror.Error {
+	if err := deleteCachedUser(ctx, s.cache, token); err != nil {
+		return apierror.Internal(errCodeDeleteSessionCache, errMessageDeleteSessionCache, err)
+	}
+
+	return nil
+}
+
 func mapCheckCodeError(err error) *apierror.Error {
 	switch {
 	case errors.Is(err, errVerificationCodeInvalid):
