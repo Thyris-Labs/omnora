@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Input from "ui/primitives/input.svelte";
 	import PhMagnifyingGlassDuotone from "~icons/ph/magnifying-glass-duotone";
-	import { getAuthStore } from "shared/stores/auth.svelte";
 	import { page } from "$app/state";
 	import ModuleButton from "./module-button.svelte";
 	import UserBar from "./user-bar.svelte";
+	import { auth } from "shared/stores/auth.svelte";
 
-	const environments = getAuthStore().user.environments;
+	const environments = auth.user.environments;
 	const modules = $derived.by(() => {
 		const currEnvID = page.params.environment_id;
 		if (!currEnvID) return [];

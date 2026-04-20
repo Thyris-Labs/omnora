@@ -2,12 +2,9 @@
 	import PhDotsThreeBold from "~icons/ph/dots-three-bold";
 	import PhSignOutDuotone from "~icons/ph/sign-out-duotone";
 	import PhGearDuotone from "~icons/ph/gear-duotone";
-	import { getAuthStore } from "shared/stores/auth.svelte";
-	import { getSettingsStore } from "shared/stores/settings.svelte";
 	import DropdownMenu from "ui/primitives/dropdown-menu";
-
-	const settings = getSettingsStore();
-	const auth = getAuthStore();
+	import { settings } from "shared/stores/settings.svelte";
+	import { auth } from "shared/stores/auth.svelte";
 </script>
 
 <DropdownMenu.Root>
@@ -17,10 +14,10 @@
 		<img
 			class="size-6 rounded-full object-cover"
 			alt=""
-			src={auth.user.avatar}
+			src={auth.userData?.avatar}
 			draggable="false"
 		/>
-		{auth.user.display_name}
+		{auth.userData?.displayName}
 
 		<span
 			aria-hidden="true"

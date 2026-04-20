@@ -39,7 +39,7 @@ func NewServer() *http.Server {
 
 	authFeature := auth.New(auth.Dependencies{DB: dbSvc, Cache: cacheSvc, Email: emailSvc})
 	environmentsFeature := environments.New(environments.Dependencies{DB: dbSvc})
-	usersFeature := users.New(users.Dependencies{DB: dbSvc})
+	usersFeature := users.New(users.Dependencies{DB: dbSvc, Cache: cacheSvc})
 	modulesFeature := modules.New(modules.Dependencies{DB: dbSvc})
 
 	newServer := &Server{

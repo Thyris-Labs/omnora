@@ -25,3 +25,16 @@ func (r *userRepository) GetUserData(ctx context.Context, userID string) ([]db.G
 
 	return environments, nil
 }
+
+func (r *userRepository) UpdateUser(ctx context.Context, userID string, body *updateBody) error {
+	err := r.db.Queries.UpdateUser(ctx, db.UpdateUserParams{
+		ID:          userID,
+		Username:    body.Username,
+		DisplayName: body.DisplayName,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -6,3 +6,8 @@ type setupReturnBody struct {
 	User         *db.User                                 `json:"user"`
 	Environments []db.GetEnvironmentsWithModulesByUserRow `json:"environments"`
 }
+
+type updateBody struct {
+	DisplayName string `json:"displayName" binding:"required,max=24"`
+	Username    string `json:"username" binding:"required,max=24"`
+}

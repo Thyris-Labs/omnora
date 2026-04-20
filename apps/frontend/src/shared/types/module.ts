@@ -3,6 +3,6 @@ import type { Basics } from "."
 
 export interface Module extends Basics {
 	type: ModuleTypes
-	environment_id: string
+	environmentId: string
 }
 

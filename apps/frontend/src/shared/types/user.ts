@@ -3,7 +3,7 @@ import type { Basics, Environment } from "."
 interface IUser extends Basics {
 	email: string
 	username: string
-	display_name: string
+	displayName: string
 	avatar: string
 }
 

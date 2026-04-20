@@ -118,12 +118,4 @@ class AuthStore {
 	}
 }
 
-const AUTH_KEY = Symbol("AUTH_STORE")
-
-export function initAuthStore() {
-	return setContext(AUTH_KEY, new AuthStore())
-}
-
-export function getAuthStore() {
-	return getContext<ReturnType<typeof initAuthStore>>(AUTH_KEY)
-}
+export const auth = new AuthStore();

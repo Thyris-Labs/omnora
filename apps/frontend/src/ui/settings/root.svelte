@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { Tabs } from "bits-ui";
-	import { getSettingsStore } from "shared/stores/settings.svelte";
 	import Dialog from "ui/primitives/dialog";
 	import PhXBold from "~icons/ph/x-bold";
 	import AccountTab from "./account-tab.svelte";
+	import { settings } from "shared/stores/settings.svelte";
 
 	const TABS = ["account"] as const;
 
-	const settings = getSettingsStore();
 	let activeTab = $state<(typeof TABS)[number]>("account");
 </script>
 

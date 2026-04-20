@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { createForm, Form } from "@formisch/svelte";
-	import { getAuthStore } from "shared/stores/auth.svelte";
 	import AuthShell from "ui/auth/auth-shell.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
 	import ErrorMessage from "ui/auth/error-message.svelte";
 	import { createSigninSchema } from "shared/schemas/auth";
+	import { auth } from "shared/stores/auth.svelte";
 
-	const authStore = getAuthStore();
-	authStore.errorMessage = null;
+	auth.errorMessage = null;
 
 	const signinForm = createForm({
-		schema: createSigninSchema(() => authStore.verifying),
+		schema: createSigninSchema(() => auth.verifying),
 	});
 </script>
 
@@ -23,10 +22,10 @@
 	footerHref="/signup"
 	footerLabel="Sign up"
 >
-	{#if !authStore.verifying}
+	{#if !auth.verifying}
 		<Form
 			of={signinForm}
-			onsubmit={(output) => authStore.verifyEmail(output.email, "signin")}
+			onsubmit={(output) => auth.verifyEmail(output.email, "signin")}
 			class="mt-6 w-full"
 		>
 			<InputField
@@ -39,15 +38,15 @@
 				autocomplete="email"
 			/>
 
-			{#if authStore.errorMessage}
-				<ErrorMessage message={authStore.errorMessage} />
+			{#if auth.errorMessage}
+				<ErrorMessage message={auth.errorMessage} />
 			{/if}
 
 			<Button
 				type="submit"
 				variant="action"
-				disabled={authStore.submitting}
-				aria-busy={authStore.submitting}
+				disabled={auth.submitting}
+				aria-busy={auth.submitting}
 				class="mt-6 w-full px-4 py-2"
 			>
 				Sign in
@@ -56,7 +55,7 @@
 	{:else}
 		<Form
 			of={signinForm}
-			onsubmit={(output) => authStore.signin(output)}
+			onsubmit={(output) => auth.signin(output)}
 			class="mt-7 w-full flex flex-col items-center"
 		>
 			<OtpField
@@ -72,8 +71,8 @@
 				labelClass="invisible absolute"
 			/>
 
-			{#if authStore.errorMessage}
-				<ErrorMessage message={authStore.errorMessage} />
+			{#if auth.errorMessage}
+				<ErrorMessage message={auth.errorMessage} />
 			{/if}
 
 			<Button type="submit" variant="action" class="mt-8 w-full px-4 py-2">

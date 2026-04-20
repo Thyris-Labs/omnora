@@ -81,7 +81,7 @@
 	{#if LeftIcon}
 		<div
 			class={cn(
-				"pointer-events-none absolute inset-y-0 left-0 z-10 flex items-center pl-3 text-main-500",
+				"pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-main-500 z-10",
 				leftIconClass,
 			)}
 		>

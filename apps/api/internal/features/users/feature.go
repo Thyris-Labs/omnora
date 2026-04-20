@@ -1,12 +1,14 @@
 package users
 
 import (
+	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/database"
 	"github.com/gin-gonic/gin"
 )
 
 type Dependencies struct {
-	DB *database.Service
+	DB    *database.Service
+	Cache *cache.Service
 }
 
 type Feature interface {
@@ -15,6 +17,6 @@ type Feature interface {
 
 func New(deps Dependencies) Feature {
 	repo := newUserRepository(deps.DB)
-	service := newUserService(&repo)
+	service := newUserService(&repo, deps.Cache)
 	return newUserHandlers(&service)
 }

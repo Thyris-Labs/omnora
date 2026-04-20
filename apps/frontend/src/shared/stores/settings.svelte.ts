@@ -1,5 +1,6 @@
+import { apiFetch } from "shared/helpers/api"
 import type { UpdateUserDataPayload } from "shared/schemas/settings"
-import { getContext, setContext } from "svelte"
+import { auth } from "./auth.svelte"
 
 class SettingsStore {
 	isOpen = $state(false)
@@ -9,16 +10,25 @@ class SettingsStore {
 	}
 
 	async saveAccountData(body: UpdateUserDataPayload) {
+		const result = await apiFetch("/users/update", {
+			method: "PATCH",
+			body: JSON.stringify(body)
+		})
 
+		if (result.isErr()) {
+			console.error(result.error)
+			return false
+		}
+
+		if (!auth.userData) return false
+		auth.userData = {
+			...auth.userData,
+			displayName: body.displayName,
+			username: body.username
+		}
+
+		return true
 	}
 }
 
-const SETTINGS_KEY = Symbol("SETTINGS_STORE")
-
-export function initSettingsStore() {
-	return setContext(SETTINGS_KEY, new SettingsStore())
-}
-
-export function getSettingsStore() {
-	return getContext<ReturnType<typeof initSettingsStore>>(SETTINGS_KEY)
-}
+export const settings = new SettingsStore();

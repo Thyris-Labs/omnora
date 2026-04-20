@@ -1,19 +1,30 @@
 <script lang="ts">
 	import { createForm, Form, reset } from "@formisch/svelte";
-	import { getAuthStore } from "shared/stores/auth.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import SettingsSection from "./section.svelte";
 	import SaveBar from "./save-bar.svelte";
 	import { updateUserDataSchema } from "shared/schemas/settings";
+	import { settings } from "shared/stores/settings.svelte";
+	import { auth } from "shared/stores/auth.svelte";
 
-	let user = getAuthStore().user;
 	const accountUpdateForm = createForm({
 		schema: updateUserDataSchema,
 		initialInput: {
-			username: user.username,
-			displayName: user.display_name,
+			username: auth.userData?.username,
+			displayName: auth.userData?.displayName,
 		},
 	});
+
+	let user = auth.user;
+
+	async function saveAccountData(output: Parameters<typeof settings.saveAccountData>[0]) {
+		const didSave = await settings.saveAccountData(output);
+		if (!didSave) return;
+
+		reset(accountUpdateForm, {
+			initialInput: output,
+		});
+	}
 </script>
 
 <div class="flex flex-col">
@@ -23,7 +34,7 @@
 	>
 		<Form
 			of={accountUpdateForm}
-			onsubmit={(output) => console.log(output)}
+			onsubmit={saveAccountData}
 			class="flex flex-col gap-y-6"
 		>
 			<div class="aspect-square w-24 border border-main-900 p-2">
@@ -37,7 +48,7 @@
 					id="displayname-input"
 					label="Display Name"
 					type="text"
-					placeholder={user.display_name}
+					placeholder={user.displayName}
 				/>
 
 				<InputField
