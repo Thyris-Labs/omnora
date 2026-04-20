@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as DropdownMenu from "ui/primitives/dropdown-menu";
 	import PhDotsThreeBold from "~icons/ph/dots-three-bold";
 	import PhSignOutDuotone from "~icons/ph/sign-out-duotone";
 	import PhGearDuotone from "~icons/ph/gear-duotone";
 	import { getAuthStore } from "shared/stores/auth.svelte";
 	import { getSettingsStore } from "shared/stores/settings.svelte";
+	import DropdownMenu from "ui/primitives/dropdown-menu";
 
 	const settings = getSettingsStore();
 	const auth = getAuthStore();

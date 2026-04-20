@@ -23,7 +23,8 @@
 			<div {...wrapperProps}>
 				<div
 					{...props}
-					transition:presence={{ duration: 140, y: 4 }}
+					in:presence={{ duration: 0 }}
+					out:presence={{ duration: 140, y: 4, blur: 4 }}
 					class={cn(
 						"z-50 border border-main-900 bg-main-950 p-1 shadow-xl shadow-black/20 focus-visible:outline-none",
 						className,
