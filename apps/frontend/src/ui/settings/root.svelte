@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Dialog, Tabs } from "bits-ui";
+	import { Tabs } from "bits-ui";
 	import { getSettingsStore } from "shared/stores/settings.svelte";
+	import Dialog from "ui/primitives/dialog";
 	import PhXBold from "~icons/ph/x-bold";
 	import AccountTab from "./account-tab.svelte";
 
@@ -12,9 +13,9 @@
 
 <Dialog.Root bind:open={settings.isOpen}>
 	<Dialog.Portal>
-		<Dialog.Overlay class="fixed inset-0 bg-black/60" />
+		<Dialog.Overlay />
 		<Dialog.Content
-			class="fixed left-1/2 top-1/2 flex h-150 w-200 -translate-1/2 overflow-hidden border border-main-900 bg-main-950 focus-visible:outline-none"
+			class="flex h-150 w-200 overflow-hidden"
 		>
 			<Tabs.Root
 				bind:value={activeTab}
