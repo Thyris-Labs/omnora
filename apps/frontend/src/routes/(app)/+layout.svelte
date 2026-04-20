@@ -5,6 +5,10 @@
 	import { onMount } from "svelte";
 	import { getAuthStore } from "shared/stores/auth.svelte";
 	import { apiFetch } from "shared/helpers/api";
+	import { initSettingsStore } from "shared/stores/settings.svelte";
+	import { Settings } from "ui/settings";
+
+	initSettingsStore();
 
 	let { children } = $props();
 	const authStore = getAuthStore();
@@ -68,6 +72,7 @@
 
 {#if appReady}
 	{@render children()}
+	<Settings />
 {:else if setupFailed}
 	<div
 		class="min-h-dvh bg-main-950 text-main-100 flex items-center justify-center px-6"
