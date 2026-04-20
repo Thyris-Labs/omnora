@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { createForm, Form } from "@formisch/svelte";
+	import { createForm, Form, reset } from "@formisch/svelte";
 	import { getAuthStore } from "shared/stores/auth.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import * as v from "valibot";
 	import SettingsSection from "./section.svelte";
+	import SaveBar from "./save-bar.svelte";
 
 	let user = getAuthStore().user;
 
@@ -26,7 +27,6 @@
 				v.maxLength(24, "Your username must be less than 24 characters"),
 			),
 		}),
-
 		initialInput: {
 			displayName: user.display_name,
 			username: user.username,
@@ -67,6 +67,10 @@
 					placeholder={user.username}
 				/>
 			</div>
+
+			{#if accountUpdateForm.isDirty}
+				<SaveBar onReset={() => reset(accountUpdateForm)} />
+			{/if}
 		</Form>
 	</SettingsSection>
 </div>
