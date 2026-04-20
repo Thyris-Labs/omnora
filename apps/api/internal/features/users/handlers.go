@@ -56,3 +56,26 @@ func (h *userHandlers) updateUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, nil)
 }
+
+func (h *userHandlers) updateAvatar(c *gin.Context) {
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
+		return
+	}
+
+	user := utils.GetUser(c)
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, apierror.UnauthorizedRequest())
+		return
+	}
+
+	avatarUrl, serr := h.service.updateAvatar(c.Request.Context(), user, token, file)
+	if serr != nil {
+		c.JSON(serr.StatusCode, serr)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"avatarUrl": avatarUrl})
+}

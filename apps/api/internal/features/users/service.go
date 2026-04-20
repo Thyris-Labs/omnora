@@ -2,21 +2,25 @@ package users
 
 import (
 	"context"
+	"mime/multipart"
 
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
+	"github.com/Thyris-Labs/omnora/internal/platform/storage"
 )
 
 type userService struct {
-	repo  *userRepository
-	cache *cache.Service
+	repo    *userRepository
+	cache   *cache.Service
+	storage *storage.Service
 }
 
-func newUserService(repo *userRepository, cache *cache.Service) userService {
+func newUserService(repo *userRepository, cache *cache.Service, storage *storage.Service) userService {
 	return userService{
-		repo:  repo,
-		cache: cache,
+		repo:    repo,
+		cache:   cache,
+		storage: storage,
 	}
 }
 
@@ -47,4 +51,13 @@ func (h *userService) updateUser(ctx context.Context, user *db.User, userToken s
 	}
 
 	return nil
+}
+
+func (h *userService) updateAvatar(ctx context.Context, user *db.User, userToken string, avatar *multipart.FileHeader) (*string, *apierror.Error) {
+	url, err := uploadAvatar(ctx, h.storage, avatar)
+	if err != nil {
+		return nil, apierror.Internal("ERR_UPLOAD_AVATAR_FAILED", "We couldn't upload your new avatar. Please try again.", err)
+	}
+
+	return nil, nil
 }
