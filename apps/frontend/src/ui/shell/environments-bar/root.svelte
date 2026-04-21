@@ -3,9 +3,7 @@
 	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
 	import PhPlusBold from "~icons/ph/plus-bold";
 	import EnvironmentsButton from "./button.svelte";
-	import { getAuthStore } from "shared/stores/auth.svelte";
-
-	const user = getAuthStore().user;
+	import { auth } from "shared/stores/auth.svelte";
 </script>
 
 <nav class="h-9 w-full flex border-b border-main-900">
@@ -18,7 +16,7 @@
 
 	<!-- ENVIRONMENTS -->
 	<ul class="flex items-center">
-		{#each user.environments as env (env.id)}
+		{#each auth.user.environments as env (env.id)}
 			<EnvironmentsButton {...env} />
 		{/each}
 	</ul>

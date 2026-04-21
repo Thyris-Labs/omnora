@@ -3,22 +3,28 @@ package users
 import (
 	"net/http"
 
+	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
+	"github.com/Thyris-Labs/omnora/internal/platform/storage"
 	"github.com/Thyris-Labs/omnora/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type userHandlers struct {
 	service *userService
+	storage *storage.Service
 }
 
-func newUserHandlers(service *userService) *userHandlers {
+func newUserHandlers(service *userService, storage *storage.Service) *userHandlers {
 	return &userHandlers{
 		service: service,
+		storage: storage,
 	}
 }
 
 func (h *userHandlers) RegisterRoutes(api *gin.RouterGroup) {
 	api.GET("/users/setup", h.setup)
+	api.PATCH("/users/edit", h.updateUser)
+	api.PATCH("/users/avatar", h.updateAvatar)
 }
 
 func (h *userHandlers) setup(c *gin.Context) {
@@ -31,4 +37,64 @@ func (h *userHandlers) setup(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, body)
+}
+
+func (h *userHandlers) updateUser(c *gin.Context) {
+	var body updateBody
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
+		return
+	}
+
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, apierror.UnauthorizedRequest())
+		return
+	}
+
+	if err := h.service.updateUser(c.Request.Context(), utils.GetUser(c), token, &body); err != nil {
+		c.JSON(err.StatusCode, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
+func (h *userHandlers) updateAvatar(c *gin.Context) {
+	cfg := storage.FileValidationConfig{
+		MaxSize:      10 << 20, // 10 MB
+		Extensions:   []string{".jpg", ".jpeg", ".png", ".webp"},
+		ContentTypes: []string{"image/jpeg", "image/png", "image/webp"},
+	}
+
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, apierror.BadRequest(errCodeAvatarRequired, errMessageAvatarRequired, err))
+		return
+	}
+
+	if _, err := h.storage.ValidateFile(file, cfg); err != nil {
+		c.JSON(err.StatusCode, err)
+		return
+	}
+
+	user := utils.GetUser(c)
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, apierror.UnauthorizedRequest())
+		return
+	}
+
+	avatarUrl, serr := h.service.updateAvatar(c.Request.Context(), updateAvatarParams{
+		User:      user,
+		UserToken: token,
+		Avatar:    file,
+	})
+	if serr != nil {
+		c.JSON(serr.StatusCode, serr)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"avatarUrl": avatarUrl})
 }

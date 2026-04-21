@@ -5,12 +5,14 @@
 	import type { ButtonRootProps } from "bits-ui";
 
 	const buttonVariants = tv({
-		base: "inline-flex active:scale-[0.98] items-center justify-center text-base transition-[background-color,box-shadow,transform,scale,color] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
+		base: "inline-flex active:scale-[0.98] items-center px-2.5 py-1 justify-center text-base transition-[background-color,box-shadow,transform,scale,color] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
 		variants: {
 			variant: {
 				default:
 					"flex w-full justify-start gap-x-2 px-2 py-1.5 text-sm text-main-500 hover:text-main-300 hover:bg-main-900 border border-transparent",
 				action: "bg-main-50 hover:bg-main-100 text-main-900",
+				positive: "bg-green-600/70 hover:bg-green-600 text-main-50",
+				danger: "bg-rose-600/70 hover:bg-rose-600 text-main-50",
 				ghost: "",
 			},
 			state: {

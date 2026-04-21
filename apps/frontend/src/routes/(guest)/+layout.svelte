@@ -3,14 +3,13 @@
 	import { resolve } from "$app/paths";
 	import { onMount } from "svelte";
 	import { apiFetch } from "shared/helpers/api";
-	import { getAuthStore } from "shared/stores/auth.svelte";
+	import { auth } from "shared/stores/auth.svelte";
 
 	let { children } = $props();
-	const authStore = getAuthStore();
 	let authCheckController: AbortController | null = null;
 
 	async function redirectIfAuthenticated() {
-		if (authStore.userData) {
+		if (auth.userData) {
 			goto(resolve("/(app)/e"), { replaceState: true });
 			return;
 		}

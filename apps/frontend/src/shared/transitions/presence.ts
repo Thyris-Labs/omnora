@@ -14,6 +14,7 @@ export type PresenceParams = {
 	y?: AxisValue;
 	opacity?: number;
 	blur?: AxisValue;
+	scale?: number;
 	respectReducedMotion?: boolean;
 };
 
@@ -28,6 +29,7 @@ export function presence(node: Element, params: PresenceParams = {}): Transition
 		easing = cubicOut,
 		x = 0,
 		y = 0,
+		scale = 1,
 		opacity = 0,
 		blur = 0,
 		respectReducedMotion = true,
@@ -53,10 +55,11 @@ export function presence(node: Element, params: PresenceParams = {}): Transition
 			const translateY = scaleCssValue(y, u);
 			const currentBlur = scaleCssValue(blur, u);
 			const nextOpacity = lerp(opacity, 1, t);
+			const nextScale = lerp(scale, 1, t);
 
 			return `
 				opacity: ${nextOpacity};
-				transform: ${joinCssValues([baseTransform, `translate3d(${translateX}, ${translateY}, 0)`])};
+				transform: ${joinCssValues([baseTransform, `translate3d(${translateX}, ${translateY}, 0)`, `scale(${nextScale})`])};
 				filter: ${joinCssValues([baseFilter, `blur(${currentBlur})`])};
 			`;
 		},

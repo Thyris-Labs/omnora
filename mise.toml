@@ -78,21 +78,21 @@ run = "go test ./... -v"
 [tasks."docker:up"]
 description = "Start local services with Docker Compose"
 run = '''
-if docker compose up --build -d 2>/dev/null; then
+if docker compose -f ./infra/docker-compose.yaml up --build -d 2>/dev/null; then
   :
 else
   echo "Falling back to Docker Compose V1"
-  docker-compose up --build -d
+  docker-compose -f ./infra/docker-compose.yaml up --build -d
 fi
 '''
 
 [tasks."docker:down"]
 description = "Stop local services with Docker Compose"
 run = '''
-if docker compose down 2>/dev/null; then
+if docker compose -f ./infra/docker-compose.yaml down 2>/dev/null; then
   :
 else
   echo "Falling back to Docker Compose V1"
-  docker-compose down
+  docker-compose -f ./infra/docker-compose.yaml down
 fi
 '''

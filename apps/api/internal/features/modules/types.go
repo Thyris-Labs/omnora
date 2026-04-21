@@ -17,5 +17,5 @@ func (t ModuleType) IsValid() bool {
 
 type addModuleBody struct {
 	Type          ModuleType `json:"type" binding:"required,module_type"`
-	EnvironmentID string     `json:"environment_id"`
+	EnvironmentID string     `json:"environmentId"`
 }

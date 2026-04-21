@@ -17,6 +17,8 @@ const (
 	errCodeUserLookupFailed              = "ERR_USER_LOOKUP_FAILED"
 	errCodeSessionTokenGeneration        = "ERR_SESSION_TOKEN_GENERATION"
 	errCodeSessionCache                  = "ERR_SESSION_CACHE"
+	errCodeDeleteSessionCache            = "ERR_DELETE_SESSION_CACHE"
+	errCodeSessionTokenNotFound          = "ERR_SESSION_TOKEN_NOT_FOUND"
 	errMessageEmailAlreadyExist          = "The email is already in use."
 	errMessageUsernameAlreadyExist       = "The username is already in use."
 	errMessageVerificationStartFailed    = "We couldn't start email verification. Please try again."
@@ -25,6 +27,8 @@ const (
 	errMessageUserCreationFailed         = "We couldn't create your account. Please try again."
 	errMessageUserNotFound               = "No account was found for this email."
 	errMessageSigninFailed               = "We couldn't sign you in. Please try again."
+	errMessageDeleteSessionCache         = "We couldn't log you out. Please try again."
+	errMessageSessionTokenNotFound       = "It seems you're not authenticated."
 )
 
 var (

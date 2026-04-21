@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createForm, Form, getInput, setErrors } from "@formisch/svelte";
-	import { createSignupSchema, getAuthStore } from "shared/stores/auth.svelte";
 	import AuthShell from "ui/auth/auth-shell.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
@@ -8,13 +7,14 @@
 	import { useDebounce } from "runed";
 	import { apiFetch } from "shared/helpers/api";
 	import ErrorMessage from "ui/auth/error-message.svelte";
+	import { createSignupSchema } from "shared/schemas/auth";
+	import { auth } from "shared/stores/auth.svelte";
 
 	type UsernameState = "idle" | "checking" | "taken" | "available" | "error";
 
-	const authStore = getAuthStore();
-	authStore.errorMessage = null;
+	auth.errorMessage = null;
 	const signupForm = createForm({
-		schema: createSignupSchema(() => authStore.verifying),
+		schema: createSignupSchema(() => auth.verifying),
 	});
 
 	let usernameState = $state<UsernameState>("idle");
@@ -75,10 +75,10 @@
 	footerHref="/signin"
 	footerLabel="Sign in"
 >
-	{#if !authStore.verifying}
+	{#if !auth.verifying}
 		<Form
 			of={signupForm}
-			onsubmit={(output) => authStore.verifyEmail(output.email, "signup")}
+			onsubmit={(output) => auth.verifyEmail(output.email, "signup")}
 			class="mt-6 w-full"
 		>
 			<InputField
@@ -108,8 +108,8 @@
 
 			<Button
 				type="submit"
-				disabled={authStore.submitting}
-				aria-busy={authStore.submitting}
+				disabled={auth.submitting}
+				aria-busy={auth.submitting}
 				class="mt-6 w-full px-4 py-2 font-medium"
 				variant="action"
 			>
@@ -119,7 +119,7 @@
 	{:else}
 		<Form
 			of={signupForm}
-			onsubmit={(output) => authStore.signup(output)}
+			onsubmit={(output) => auth.signup(output)}
 			class="mt-7 w-full flex flex-col items-center"
 		>
 			<OtpField
@@ -135,8 +135,8 @@
 				labelClass="invisible absolute"
 			/>
 
-			{#if authStore.errorMessage}
-				<ErrorMessage message={authStore.errorMessage} />
+			{#if auth.errorMessage}
+				<ErrorMessage message={auth.errorMessage} />
 			{/if}
 
 			<Button
@@ -163,7 +163,7 @@
 		</div>
 	{/if}
 
-	{#if authStore.errorMessage}
-		<ErrorMessage message={authStore.errorMessage} />
+	{#if auth.errorMessage}
+		<ErrorMessage message={auth.errorMessage} />
 	{/if}
 {/snippet}

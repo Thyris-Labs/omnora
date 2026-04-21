@@ -1,6 +1,7 @@
 package apierror
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -23,12 +24,16 @@ type Error struct {
 }
 
 func New(statusCode int, code string, message string, cause error) *Error {
-	return &Error{
+	error := &Error{
 		StatusCode: statusCode,
 		Code:       code,
 		Message:    message,
 		Cause:      cause,
 	}
+
+	fmt.Println(error)
+
+	return error
 }
 
 func BadRequest(code string, message string, cause error) *Error {

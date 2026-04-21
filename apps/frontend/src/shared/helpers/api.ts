@@ -40,13 +40,14 @@ export async function apiFetch(
 	path: string,
 	init?: RequestInit,
 ): Promise<ResultType<Response, ApiRequestError>> {
+	const isFormData = init?.body instanceof FormData
 	return Result.tryPromise({
 		try: () =>
 			fetch(import.meta.env.VITE_API_URL + path, {
 				...init,
 				credentials: "include",
 				headers: {
-					"Content-Type": "application/json",
+					...(isFormData ? {} : { "Content-Type": "application/json" }),
 					...init?.headers,
 				},
 			}),

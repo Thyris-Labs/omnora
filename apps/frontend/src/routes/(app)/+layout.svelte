@@ -3,11 +3,11 @@
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
-	import { getAuthStore } from "shared/stores/auth.svelte";
 	import { apiFetch } from "shared/helpers/api";
+	import { Settings } from "ui/settings";
+	import { auth } from "shared/stores/auth.svelte";
 
 	let { children } = $props();
-	const authStore = getAuthStore();
 	let appReady = $state(false);
 	let setupFailed = $state(false);
 	let showLoading = $state(false);
@@ -37,7 +37,7 @@
 			showLoading = true;
 		}, 200);
 
-		void authStore.setup(setupController.signal).then(async (error) => {
+		void auth.setup(setupController.signal).then(async (error) => {
 			window.clearTimeout(loadingTimer);
 
 			if (error?.status === 401) {
@@ -46,7 +46,7 @@
 				return;
 			}
 
-			const firstEnvironment = authStore.user.environments[0];
+			const firstEnvironment = auth.user.environments[0];
 			if (!page.params.environment_id && firstEnvironment) {
 				await goto(
 					resolve("/(app)/e/[environment_id]", {
@@ -68,6 +68,7 @@
 
 {#if appReady}
 	{@render children()}
+	<Settings />
 {:else if setupFailed}
 	<div
 		class="min-h-dvh bg-main-950 text-main-100 flex items-center justify-center px-6"

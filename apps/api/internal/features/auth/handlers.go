@@ -23,6 +23,7 @@ func (h *authHandlers) RegisterRoutes(api *gin.RouterGroup, protected *gin.Route
 	api.POST("/check_username", h.checkUsername)
 	api.POST("/signup", h.signup)
 	api.POST("/signin", h.signin)
+	protected.POST("/logout", h.logout)
 
 	protected.GET("/auth/check", h.check)
 }
@@ -99,4 +100,20 @@ func (h *authHandlers) signin(c *gin.Context) {
 	c.SetCookie("token", *token, UserSessionCookieMaxAge, "/", os.Getenv("DOMAIN"), false, true)
 
 	c.JSON(http.StatusCreated, nil)
+}
+
+func (h *authHandlers) logout(c *gin.Context) {
+	token, err := c.Cookie("token")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, apierror.Internal(errCodeSessionTokenNotFound, errMessageSessionTokenNotFound, err))
+		return
+	}
+
+	if err := h.service.logout(c.Request.Context(), token); err != nil {
+		c.JSON(err.StatusCode, err)
+		return
+	}
+
+	c.SetCookie("token", "", -1, "/", os.Getenv("DOMAIN"), false, true)
+	c.JSON(http.StatusOK, nil)
 }
