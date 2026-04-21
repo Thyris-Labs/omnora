@@ -2,12 +2,12 @@ package users
 
 import (
 	"context"
-	"mime/multipart"
 
 	db "github.com/Thyris-Labs/omnora/db/gen_queries"
 	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
 	"github.com/Thyris-Labs/omnora/internal/platform/cache"
 	"github.com/Thyris-Labs/omnora/internal/platform/storage"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type userService struct {
@@ -27,7 +27,7 @@ func newUserService(repo *userRepository, cache *cache.Service, storage *storage
 func (h *userService) setup(ctx context.Context, user *db.User) (*setupReturnBody, *apierror.Error) {
 	var body setupReturnBody
 
-	data, err := h.repo.GetUserData(ctx, user.ID)
+	data, err := h.repo.getUserData(ctx, user.ID)
 	if err != nil {
 		return nil, apierror.Internal(errCodeGetUserDataFailed, errMessageGetUserDataFailed, err)
 	}
@@ -39,7 +39,7 @@ func (h *userService) setup(ctx context.Context, user *db.User) (*setupReturnBod
 }
 
 func (h *userService) updateUser(ctx context.Context, user *db.User, userToken string, body *updateBody) *apierror.Error {
-	if err := h.repo.UpdateUser(ctx, user.ID, body); err != nil {
+	if err := h.repo.updateUser(ctx, user.ID, body); err != nil {
 		return apierror.Internal(errCodeUpdateUserFailed, errMessageUpdateUserFailed, err)
 	}
 
@@ -53,11 +53,25 @@ func (h *userService) updateUser(ctx context.Context, user *db.User, userToken s
 	return nil
 }
 
-func (h *userService) updateAvatar(ctx context.Context, user *db.User, userToken string, avatar *multipart.FileHeader) (*string, *apierror.Error) {
-	url, err := uploadAvatar(ctx, h.storage, avatar)
+func (h *userService) updateAvatar(ctx context.Context, params updateAvatarParams) (*string, *apierror.Error) {
+	processedAvatar, err := h.storage.ProcessImage(params.Avatar)
 	if err != nil {
-		return nil, apierror.Internal("ERR_UPLOAD_AVATAR_FAILED", "We couldn't upload your new avatar. Please try again.", err)
+		return nil, apierror.BadRequest(errCodeAvatarProcessingFailed, errMessageAvatarProcessingFailed, err)
 	}
 
-	return nil, nil
+	url, err := uploadAvatar(ctx, h.storage, processedAvatar)
+	if err != nil {
+		return nil, apierror.Internal(errCodeAvatarUploadFailed, errMessageAvatarUploadFailed, err)
+	}
+
+	if err := h.repo.updateAvatar(ctx, params.User.ID, url); err != nil {
+		return nil, apierror.Internal(errCodeUpdateAvatarFailed, errMessageUpdateAvatarFailed, err)
+	}
+
+	params.User.Avatar = pgtype.Text{String: url, Valid: true}
+	if err := cacheUser(ctx, h.cache, params.UserToken, params.User); err != nil {
+		return nil, apierror.Internal(errCodeUpdateUserInCacheFailed, errMessageUpdateUserFailed, err)
+	}
+
+	return &url, nil
 }

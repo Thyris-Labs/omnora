@@ -20,5 +20,5 @@ type Feature interface {
 func New(deps Dependencies) Feature {
 	repo := newUserRepository(deps.DB)
 	service := newUserService(&repo, deps.Cache, deps.Storage)
-	return newUserHandlers(&service)
+	return newUserHandlers(&service, deps.Storage)
 }

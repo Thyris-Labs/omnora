@@ -14,3 +14,6 @@ SELECT id FROM users WHERE username = $1;
 
 -- name: UpdateUser :exec
 UPDATE users SET username = $2, display_name = $3 WHERE id = $1;
+
+-- name: UpdateAvatar :exec
+UPDATE users SET avatar = $2 WHERE id = $1;

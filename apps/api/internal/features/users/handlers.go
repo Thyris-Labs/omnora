@@ -4,23 +4,27 @@ import (
 	"net/http"
 
 	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
+	"github.com/Thyris-Labs/omnora/internal/platform/storage"
 	"github.com/Thyris-Labs/omnora/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type userHandlers struct {
 	service *userService
+	storage *storage.Service
 }
 
-func newUserHandlers(service *userService) *userHandlers {
+func newUserHandlers(service *userService, storage *storage.Service) *userHandlers {
 	return &userHandlers{
 		service: service,
+		storage: storage,
 	}
 }
 
 func (h *userHandlers) RegisterRoutes(api *gin.RouterGroup) {
 	api.GET("/users/setup", h.setup)
-	api.PATCH("/users/update", h.updateUser)
+	api.PATCH("/users/edit", h.updateUser)
+	api.PATCH("/users/avatar", h.updateAvatar)
 }
 
 func (h *userHandlers) setup(c *gin.Context) {
@@ -58,9 +62,20 @@ func (h *userHandlers) updateUser(c *gin.Context) {
 }
 
 func (h *userHandlers) updateAvatar(c *gin.Context) {
+	cfg := storage.FileValidationConfig{
+		MaxSize:      10 << 20, // 10 MB
+		Extensions:   []string{".jpg", ".jpeg", ".png", ".webp"},
+		ContentTypes: []string{"image/jpeg", "image/png", "image/webp"},
+	}
+
 	file, err := c.FormFile("avatar")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, apierror.InvalidRequest(err))
+		c.JSON(http.StatusBadRequest, apierror.BadRequest(errCodeAvatarRequired, errMessageAvatarRequired, err))
+		return
+	}
+
+	if _, err := h.storage.ValidateFile(file, cfg); err != nil {
+		c.JSON(err.StatusCode, err)
 		return
 	}
 
@@ -71,7 +86,11 @@ func (h *userHandlers) updateAvatar(c *gin.Context) {
 		return
 	}
 
-	avatarUrl, serr := h.service.updateAvatar(c.Request.Context(), user, token, file)
+	avatarUrl, serr := h.service.updateAvatar(c.Request.Context(), updateAvatarParams{
+		User:      user,
+		UserToken: token,
+		Avatar:    file,
+	})
 	if serr != nil {
 		c.JSON(serr.StatusCode, serr)
 		return

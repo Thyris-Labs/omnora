@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { presence } from "shared/transitions/presence";
 	import Button from "ui/primitives/button.svelte";
 
 	interface Props {
@@ -10,9 +9,7 @@
 </script>
 
 <div
-	class="flex items-center absolute left-1/2 -translate-x-1/2 -bottom-4 w-2/3 bg-main-950 border border-main-900 justify-between py-2 pr-2 pl-3"
-	in:presence={{ duration: 100, y: 4, blur: 4 }}
-	out:presence={{ duration: 100, y: 8, blur: 4 }}
+	class="flex w-full items-center justify-between border border-main-900 bg-main-950 py-2 pr-2 pl-3"
 >
 	<p class="text-sm">Some changes are not saved yet!</p>
 
@@ -24,6 +21,6 @@
 		>
 			Reset
 		</Button>
-		<Button variant="positive" type="submit">Save</Button>
+		<Button variant="positive" type="submit" class="text-sm">Save</Button>
 	</div>
 </div>
