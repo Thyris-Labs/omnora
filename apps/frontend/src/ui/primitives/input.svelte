@@ -1,46 +1,33 @@
 <script lang="ts">
-	import { tv, type VariantProps, cn } from "tailwind-variants";
+	import { tv, type VariantProps } from "tailwind-variants";
 	import type { HTMLInputAttributes, SVGAttributes } from "svelte/elements";
 	import type { Component } from "svelte";
 
 	const inputVariants = tv({
-		base: "w-full text-base transition-[background-color,color,box-shadow,border-color] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-main-800 aria-disabled:cursor-not-allowed aria-invalid:ring-3 aria-invalid:ring-rose-500/20 aria-invalid:ring-offset-0 aria-invalid:focus-visible:ring-rose-500/30 placeholder:text-main-700",
+		slots: {
+			root: "flex w-full items-center text-base transition-[background-color,color,box-shadow,border-color] focus-within:outline-none focus-within:ring-3 focus-within:ring-main-800 has-aria-invalid:ring-3 has-aria-invalid:ring-rose-500/20 has-aria-invalid:focus-within:ring-rose-500/30",
+			input:
+				"w-full min-w-0 bg-transparent outline-none text-main-100 placeholder:font-[465] placeholder:text-main-700 aria-disabled:cursor-not-allowed",
+			leftIcon: "flex shrink-0 items-center pr-2 text-main-500",
+			rightIcon: "flex shrink-0 items-center pl-2 text-main-500",
+		},
 		variants: {
 			variant: {
-				default:
-					"px-3.25 py-2 bg-main-950 border border-main-900 aria-invalid:border-rose-700 text-main-100 placeholder:font-[465] focus-visible:border-main-500",
-				ghost: "",
+				default: {
+					root: "px-3.25 py-2 bg-main-950 border border-main-900 has-aria-invalid:border-rose-700 focus-within:border-main-500",
+				},
+				ghost: {},
 			},
 			state: {
-				default: "",
-				disabled: "opacity-70",
-			},
-			hasLeftIcon: {
-				true: "",
-				false: "",
-			},
-			hasRightIcon: {
-				true: "",
-				false: "",
+				default: {},
+				disabled: {
+					root: "opacity-70",
+				},
 			},
 		},
-		compoundVariants: [
-			{
-				variant: ["default", "ghost"],
-				hasLeftIcon: true,
-				class: "pl-10!",
-			},
-			{
-				variant: ["default", "ghost"],
-				hasRightIcon: true,
-				class: "pr-10!",
-			},
-		],
 		defaultVariants: {
 			variant: "default",
 			state: "default",
-			hasLeftIcon: false,
-			hasRightIcon: false,
 		},
 	});
 
@@ -75,16 +62,12 @@
 	const resolvedState = $derived(disabled ? "disabled" : state);
 	const LeftIcon = $derived(icons?.left);
 	const RightIcon = $derived(icons?.right);
+	const slots = $derived(inputVariants({ variant, state: resolvedState }));
 </script>
 
-<div class="relative w-full">
+<div class={slots.root({ class: className })}>
 	{#if LeftIcon}
-		<div
-			class={cn(
-				"pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-main-500 z-10",
-				leftIconClass,
-			)}
-		>
+		<div class={slots.leftIcon({ class: leftIconClass })}>
 			<LeftIcon class="size-4" aria-hidden="true" />
 		</div>
 	{/if}
@@ -93,24 +76,11 @@
 		{...restProps}
 		readonly={disabled || readonly}
 		aria-disabled={disabled ? "true" : undefined}
-		class={cn(
-			inputVariants({
-				variant,
-				state: resolvedState,
-				hasLeftIcon: Boolean(LeftIcon),
-				hasRightIcon: Boolean(RightIcon),
-			}),
-			className,
-		)}
+		class={slots.input()}
 	/>
 
 	{#if RightIcon}
-		<div
-			class={cn(
-				"pointer-events-none absolute inset-y-0 right-0 z-10 flex items-center pr-3 text-main-500",
-				rightIconClass,
-			)}
-		>
+		<div class={slots.rightIcon({ class: rightIconClass })}>
 			<RightIcon class="size-4" aria-hidden="true" />
 		</div>
 	{/if}
