@@ -3,8 +3,8 @@
 	import PhSignOutDuotone from "~icons/ph/sign-out-duotone";
 	import PhGearDuotone from "~icons/ph/gear-duotone";
 	import DropdownMenu from "ui/primitives/dropdown-menu";
-	import { settings } from "shared/stores/settings.svelte";
-	import { auth } from "shared/stores/auth.svelte";
+	import { settings } from "features/settings/store.svelte";
+	import { auth } from "features/auth/store.svelte";
 </script>
 
 <DropdownMenu.Root>

@@ -3,9 +3,9 @@
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
-	import { apiFetch } from "shared/helpers/api";
-	import { Settings } from "ui/settings";
-	import { auth } from "shared/stores/auth.svelte";
+	import { apiFetch } from "lib/api";
+	import { Settings } from "features/settings";
+	import { auth } from "features/auth/store.svelte";
 
 	let { children } = $props();
 	let appReady = $state(false);

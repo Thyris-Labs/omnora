@@ -4,7 +4,7 @@
 	import { page } from "$app/state";
 	import { cn } from "tailwind-variants";
 	import Button from "ui/primitives/button.svelte";
-	import type { Environment } from "shared/types";
+	import type { Environment } from "lib/types";
 
 	let { id, avatar, name }: Environment = $props();
 	const isActive = $derived(page.params.environment_id === id);

@@ -4,12 +4,12 @@
 	import SettingsSection from "./section.svelte";
 	import SaveBar from "./save-bar.svelte";
 	import ErrorBar from "./error-bar.svelte";
-	import { updateUserDataSchema } from "shared/schemas/settings";
-	import { settings } from "shared/stores/settings.svelte";
-	import { auth } from "shared/stores/auth.svelte";
+	import { updateUserDataSchema } from "features/settings/schemas";
+	import { settings } from "features/settings/store.svelte";
+	import { auth } from "features/auth/store.svelte";
 	import PhSpinnerGapBold from "~icons/ph/spinner-gap-bold";
 	import { cn } from "tailwind-variants";
-	import { presence } from "shared/transitions/presence";
+	import { presence } from "lib/transitions/presence";
 	import Spinner from "ui/icons/spinner.svelte";
 
 	const accountUpdateForm = createForm({

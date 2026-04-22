@@ -1,6 +1,6 @@
-import { apiFetch } from "shared/helpers/api"
-import type { UpdateUserDataPayload } from "shared/schemas/settings"
-import { auth } from "./auth.svelte"
+import { apiFetch } from "lib/api"
+import type { UpdateUserDataPayload } from "features/settings/schemas"
+import { auth } from "features/auth/store.svelte"
 
 class SettingsStore {
 	isOpen = $state(false)

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { createForm, Form } from "@formisch/svelte";
-	import AuthShell from "ui/auth/auth-shell.svelte";
+	import AuthShell from "features/auth/components/auth-shell.svelte";
 	import InputField from "ui/fields/input-field.svelte";
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
-	import ErrorMessage from "ui/auth/error-message.svelte";
-	import { createSigninSchema } from "shared/schemas/auth";
-	import { auth } from "shared/stores/auth.svelte";
+	import ErrorMessage from "features/auth/components/error-message.svelte";
+	import { createSigninSchema } from "features/auth/schemas";
+	import { auth } from "features/auth/store.svelte";
 
 	auth.errorMessage = null;
 

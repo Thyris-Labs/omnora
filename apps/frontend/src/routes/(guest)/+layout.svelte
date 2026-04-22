@@ -2,8 +2,8 @@
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { onMount } from "svelte";
-	import { apiFetch } from "shared/helpers/api";
-	import { auth } from "shared/stores/auth.svelte";
+	import { apiFetch } from "lib/api";
+	import { auth } from "features/auth/store.svelte";
 
 	let { children } = $props();
 	let authCheckController: AbortController | null = null;
