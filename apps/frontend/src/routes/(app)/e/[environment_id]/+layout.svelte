@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { EnvironmentsBar } from "ui/shell/environments-bar";
-	import { Sidebar } from "ui/shell/sidebar";
+	import { EnvironmentsBar } from "features/shell/components/environments-bar";
+	import { Sidebar } from "features/shell/components/sidebar";
 
 	let { children } = $props();
 </script>

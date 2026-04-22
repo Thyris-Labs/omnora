@@ -3,7 +3,7 @@
 	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
 	import PhPlusBold from "~icons/ph/plus-bold";
 	import EnvironmentsButton from "./button.svelte";
-	import { auth } from "shared/stores/auth.svelte";
+	import { auth } from "features/auth/store.svelte";
 </script>
 
 <nav class="h-9 w-full flex border-b border-main-900">

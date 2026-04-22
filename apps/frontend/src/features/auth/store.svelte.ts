@@ -1,9 +1,9 @@
 import { setContext, getContext } from "svelte"
-import { apiFetch, type ApiRequestError } from "shared/helpers/api"
+import { apiFetch, type ApiRequestError } from "lib/api"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
-import type { Environment, User } from "shared/types"
-import type { SigninPayload, SignupPayload } from "shared/schemas/auth"
+import type { Environment, User } from "lib/types"
+import type { SigninPayload, SignupPayload } from "features/auth/schemas"
 
 interface SetupResponse {
 	user: Omit<User, "environments">

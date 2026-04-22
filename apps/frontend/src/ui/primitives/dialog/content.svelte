@@ -2,7 +2,7 @@
 	import { Dialog, type WithoutChildrenOrChild } from "bits-ui";
 	import { cn } from "tailwind-variants";
 	import type { Snippet } from "svelte";
-	import { presence } from "shared/transitions/presence";
+	import { presence } from "lib/transitions/presence";
 
 	type Props = WithoutChildrenOrChild<Dialog.ContentProps> & {
 		class?: string;

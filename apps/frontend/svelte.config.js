@@ -13,8 +13,9 @@ const config = {
 		adapter: adapter(),
 
 		alias: {
-			'shared': 'src/shared',
+			'lib': 'src/lib',
 			'ui': 'src/ui',
+			'features': 'src/features',
 			'modules': 'src/modules',
 		}
 	},

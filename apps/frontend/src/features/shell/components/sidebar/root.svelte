@@ -4,7 +4,7 @@
 	import { page } from "$app/state";
 	import ModuleButton from "./module-button.svelte";
 	import UserBar from "./user-bar.svelte";
-	import { auth } from "shared/stores/auth.svelte";
+	import { auth } from "features/auth/store.svelte";
 
 	const environments = auth.user.environments;
 	const modules = $derived.by(() => {

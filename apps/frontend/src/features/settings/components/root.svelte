@@ -3,7 +3,7 @@
 	import Dialog from "ui/primitives/dialog";
 	import PhXBold from "~icons/ph/x-bold";
 	import AccountTab from "./account-tab.svelte";
-	import { settings } from "shared/stores/settings.svelte";
+	import { settings } from "features/settings/store.svelte";
 
 	const TABS = ["account"] as const;
 
