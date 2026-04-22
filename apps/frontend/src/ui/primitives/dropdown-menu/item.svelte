@@ -4,7 +4,7 @@
 	import type { Snippet } from "svelte";
 
 	const itemVariants = tv({
-		base: "group flex w-full select-none items-center justify-between gap-x-3 px-2 py-1.5 text-sm outline-none transition-[background-color,color,transform] duration-75 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+		base: "group flex w-full select-none items-center gap-x-3 px-2 py-1.5 text-sm outline-none transition-[background-color,color,transform] duration-75 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 		variants: {
 			variant: {
 				default:

@@ -13,8 +13,21 @@
 		class: className = "",
 		children,
 		sideOffset = 8,
+		side = "top",
 		...restProps
 	}: Props = $props();
+
+	const y = $derived.by(() => {
+		if (side === "top") return 4;
+		if (side === "bottom") return -4;
+		return 0;
+	});
+
+	const x = $derived.by(() => {
+		if (side === "left") return -4;
+		if (side === "right") return 4;
+		return 0;
+	});
 </script>
 
 <DropdownMenu.Content {...restProps} {sideOffset} forceMount>
@@ -24,7 +37,7 @@
 				<div
 					{...props}
 					in:presence={{ duration: 0 }}
-					out:presence={{ duration: 140, y: 4, blur: 4 }}
+					out:presence={{ duration: 140, y, x, blur: 4 }}
 					class={cn(
 						"z-50 border border-main-900 bg-main-950 p-1 shadow-xl shadow-black/20 focus-visible:outline-none",
 						className,

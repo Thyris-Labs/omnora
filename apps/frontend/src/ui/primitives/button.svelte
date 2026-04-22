@@ -5,49 +5,49 @@
 	import type { ButtonRootProps } from "bits-ui";
 
 	const buttonVariants = tv({
-		base: "inline-flex active:scale-[0.98] items-center px-2.5 py-1 justify-center text-base transition-[background-color,box-shadow,transform,scale,color] duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed",
+		base: "inline-flex items-center justify-center transition-[background-color,box-shadow,transform,scale,color] duration-75 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress aria-disabled:cursor-not-allowed aria-disabled:opacity-70 aria-disabled:active:scale-100",
 		variants: {
 			variant: {
 				default:
-					"flex w-full justify-start gap-x-2 px-2 py-1.5 text-sm text-main-500 hover:text-main-300 hover:bg-main-900 border border-transparent",
+					"flex w-full justify-start gap-x-2 text-main-500 hover:text-main-300 hover:bg-main-900 border border-transparent",
 				action: "bg-main-50 hover:bg-main-100 text-main-900",
 				positive: "bg-green-600/70 hover:bg-green-600 text-main-50",
 				danger: "bg-rose-600/70 hover:bg-rose-600 text-main-50",
-				ghost: "",
+				ghost: "hover:text-main-200 hover:bg-main-900",
 			},
-			state: {
-				default: "",
-				active:
-					"text-main-50 bg-main-900 border border-main-800 hover:text-main-50",
-				disabled: "opacity-70",
+			size: {
+				sm: "px-2 py-1.5 text-sm",
+				md: "px-2.5 py-1 text-base",
 			},
 		},
 		defaultVariants: {
 			variant: "default",
-			state: "default",
+			size: "sm",
 		},
 	});
 
 	type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
-	type ButtonState = VariantProps<typeof buttonVariants>["state"];
+	type ButtonSize = VariantProps<typeof buttonVariants>["size"];
 
 	type Props = ButtonRootProps & {
 		variant?: ButtonVariant;
-		state?: ButtonState;
+		size?: ButtonSize;
 		class?: string;
+		leading?: Snippet;
 		children?: Snippet;
+		trailing?: Snippet;
 	};
 
 	let {
 		variant = "default",
-		state = "default",
+		size = "sm",
 		class: className = "",
+		leading,
 		children,
+		trailing,
 		disabled = false,
 		...restProps
 	}: Props = $props();
-
-	const resolvedState = $derived(disabled ? "disabled" : state);
 
 	function preventDisabledInteraction(event: MouseEvent | KeyboardEvent) {
 		if (!disabled) {
@@ -73,7 +73,9 @@
 	aria-disabled={disabled ? "true" : undefined}
 	onclickcapture={preventDisabledInteraction}
 	onkeydowncapture={preventDisabledInteraction}
-	class={cn(buttonVariants({ variant, state: resolvedState }), className)}
+	class={cn(buttonVariants({ variant, size }), className)}
 >
+	{@render leading?.()}
 	{@render children?.()}
+	{@render trailing?.()}
 </BitsButton.Root>
