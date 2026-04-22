@@ -17,17 +17,14 @@
 		...restProps
 	}: Props = $props();
 
-	const y = $derived.by(() => {
-		if (side === "top") return 4;
-		if (side === "bottom") return -4;
-		return 0;
-	});
+	const offsets = {
+		top: { x: 0, y: 4 },
+		bottom: { x: 0, y: -4 },
+		left: { x: -4, y: 0 },
+		right: { x: 4, y: 0 },
+	} as const;
 
-	const x = $derived.by(() => {
-		if (side === "left") return -4;
-		if (side === "right") return 4;
-		return 0;
-	});
+	const { x, y } = $derived(offsets[side]);
 </script>
 
 <DropdownMenu.Content {...restProps} {sideOffset} forceMount>

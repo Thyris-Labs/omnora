@@ -17,7 +17,7 @@ export type ModuleTypes =
 	| "REPOSITORIES"
 	| "CHAT"
 
-interface ModuleInformations {
+export interface ModuleInformations {
 	name: string
 	slug: string
 	Icon: Component<SVGAttributes<SVGSVGElement>, {}>

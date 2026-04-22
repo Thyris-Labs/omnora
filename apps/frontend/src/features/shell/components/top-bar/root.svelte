@@ -1,25 +1,25 @@
 <script lang="ts">
 	import Button from "ui/primitives/button.svelte";
-	import PhFinnTheHumanFill from "~icons/ph/finn-the-human-fill";
 	import PhPlusBold from "~icons/ph/plus-bold";
-	import EnvironmentsButton from "./button.svelte";
+	import TabButton from "./tab-button.svelte";
 	import PhGearDuotone from "~icons/ph/gear-duotone";
-	import { auth } from "features/auth/store.svelte";
 	import { settings } from "features/settings/store.svelte";
 	import EnvironmentSelector from "./environment-selector.svelte";
+	import { shell } from "features/shell/store.svelte";
 </script>
 
-<nav class="h-9 w-full flex border-b border-main-900 justify-between">
+<nav class="h-9 w-full flex border-b border-main-800 justify-between">
 	<div class="flex">
 		<ul class="flex items-center">
-			{#each auth.user.environments as env (env.id)}
-				<EnvironmentsButton {...env} />
+			{#each shell.tabs as tab (tab.id)}
+				<TabButton {tab} />
 			{/each}
 		</ul>
 
 		<Button
 			variant="ghost"
 			class="aspect-square h-full text-main-50/30 border-r border-main-900"
+			onclick={() => shell.newTab()}
 		>
 			<PhPlusBold />
 		</Button>
