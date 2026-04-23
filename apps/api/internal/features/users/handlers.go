@@ -1,6 +1,7 @@
 package users
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Thyris-Labs/omnora/internal/platform/apierror"
@@ -29,6 +30,7 @@ func (h *userHandlers) RegisterRoutes(api *gin.RouterGroup) {
 
 func (h *userHandlers) setup(c *gin.Context) {
 	user := utils.GetUser(c)
+	fmt.Println(user)
 
 	body, err := h.service.setup(c.Request.Context(), user)
 	if err != nil {

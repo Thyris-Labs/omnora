@@ -29,6 +29,10 @@ func (h *authHandlers) RegisterRoutes(api *gin.RouterGroup, protected *gin.Route
 }
 
 func (h *authHandlers) check(c *gin.Context) {
+	if _, ok := c.Get("user"); !ok {
+		return
+	}
+
 	c.JSON(http.StatusOK, nil)
 }
 

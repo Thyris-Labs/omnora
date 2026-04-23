@@ -26,7 +26,16 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "passThroughEnv": [
+        "DISPLAY",
+        "WAYLAND_DISPLAY",
+        "XDG_RUNTIME_DIR",
+        "XDG_SESSION_TYPE",
+        "GDK_BACKEND",
+        "GTK_PATH",
+        "GTK_MODULES"
+      ]
     }
   }
 }
