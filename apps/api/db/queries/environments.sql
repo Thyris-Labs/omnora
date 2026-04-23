@@ -11,10 +11,3 @@ SELECT * FROM environments WHERE id = $1;
 
 -- name: GetEnvironmentsByUser :many
 SELECT * FROM environments WHERE owner_id = $1;
-
--- name: GetEnvironmentsWithModulesByUser :many
-SELECT e.*, json_agg_strict(m) as modules 
-FROM environments e 
-LEFT JOIN modules m ON e.id = m.environment_id 
-WHERE e.owner_id = $1
-GROUP BY e.id;

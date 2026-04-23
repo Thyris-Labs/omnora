@@ -7,8 +7,8 @@ import (
 )
 
 type setupReturnBody struct {
-	User         *db.User                                 `json:"user"`
-	Environments []db.GetEnvironmentsWithModulesByUserRow `json:"environments"`
+	User         *db.User         `json:"user"`
+	Environments []db.Environment `json:"environments"`
 }
 
 type updateBody struct {

@@ -4,13 +4,13 @@
 	import type { Snippet } from "svelte";
 
 	const itemVariants = tv({
-		base: "group flex w-full select-none items-center justify-between gap-x-3 px-2 py-1.5 text-sm outline-none transition-[background-color,color,transform] duration-75 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+		base: "group flex w-full select-none items-center gap-x-3 px-2 py-1.5 text-sm outline-none transition-[background-color,color,transform] duration-75 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 		variants: {
 			variant: {
 				default:
-					"text-main-50/85 data-[highlighted]:bg-main-900 data-[highlighted]:text-main-50",
+					"text-main-50/85 data-highlighted:bg-main-900 data-highlighted:text-main-50",
 				danger:
-					"text-main-50/85 data-[highlighted]:bg-rose-500/10 data-[highlighted]:text-rose-600",
+					"text-main-50/85 data-highlighted:bg-rose-500/10 data-highlighted:text-rose-600",
 			},
 		},
 		defaultVariants: {

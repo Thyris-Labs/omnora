@@ -18,8 +18,8 @@ func newUserRepository(db *database.Service) userRepository {
 	}
 }
 
-func (r *userRepository) getUserData(ctx context.Context, userID string) ([]db.GetEnvironmentsWithModulesByUserRow, error) {
-	environments, err := r.db.Queries.GetEnvironmentsWithModulesByUser(ctx, userID)
+func (r *userRepository) getUserData(ctx context.Context, userID string) ([]db.Environment, error) {
+	environments, err := r.db.Queries.GetEnvironmentsByUser(ctx, userID)
 	if err != nil {
 		return nil, err
 	}

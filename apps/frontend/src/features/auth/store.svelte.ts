@@ -2,6 +2,7 @@ import { setContext, getContext } from "svelte"
 import { apiFetch, type ApiRequestError } from "lib/api"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
+import { page } from "$app/state"
 import type { Environment, User } from "lib/types"
 import type { SigninPayload, SignupPayload } from "features/auth/schemas"
 
@@ -115,6 +116,12 @@ class AuthStore {
 	get user(): User {
 		if (!this.userData) throw new Error("User is not ready")
 		return this.userData
+	}
+
+	get currentEnvironment(): Environment {
+		const envs = this.user.environments
+		const envID = page.params.environment_id
+		return envs.find((env) => env.id === envID) ?? envs[0]
 	}
 }
 
