@@ -13,9 +13,9 @@
 		<Avatar
 			src={auth.currentEnvironment.avatar}
 			name={auth.currentEnvironment.name}
-			class="h-full"
+			class="size-5.5 shrink-0"
 		/>
-		{auth.currentEnvironment.name}
+		<span class="text-nowrap">{auth.currentEnvironment.name}</span>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content side="bottom" class="w-72" align="end">
 		{#each auth.user.environments as env (env.id)}
