@@ -8,14 +8,14 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
-		class="pl-2.5 pr-3 gap-x-2 items-center select-none h-full py-1.75 text-sm relative flex border-l border-main-900 text-main-50/40 hover:text-main-200 hover:bg-main-900 transition-colors duration-75 aria-expanded:text-main-200"
+		class="w-50 px-3 gap-x-2 items-center select-none h-full py-1.75 text-sm relative flex border-l border-main-900 text-main-50/40 hover:text-main-200 hover:bg-main-900 transition-colors duration-75 aria-expanded:text-main-200"
 	>
 		<Avatar
 			src={auth.currentEnvironment.avatar}
 			name={auth.currentEnvironment.name}
-			class="size-5.5 shrink-0"
+			class="size-5 shrink-0"
 		/>
-		<span class="text-nowrap">{auth.currentEnvironment.name}</span>
+		<span class="truncate">{auth.currentEnvironment.name}</span>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content side="bottom" class="w-72" align="end">
 		{#each auth.user.environments as env (env.id)}

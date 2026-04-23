@@ -24,7 +24,7 @@
 			"max-w-44 pl-3 pr-1.5 gap-x-2 select-none h-full py-1.75 text-sm relative active:scale-100 rounded-none hover:bg-transparent",
 			isActive ? "text-main-50" : "text-main-50/30",
 		)}
-		onclick={() => shell.selectTab(tab.id)}
+		onmousedown={() => shell.selectTab(tab.id)}
 	>
 		<tab.Icon class="size-4 shrink-0" />
 		<span class="truncate">{tab.name}</span>

@@ -8,7 +8,7 @@
 	import { shell } from "features/shell/store.svelte";
 </script>
 
-<nav class="h-9 w-full flex border-b border-main-800 justify-between">
+<nav class="h-9 w-full flex border-b border-main-800 relative">
 	<div class="flex">
 		<ul class="flex items-center">
 			{#each shell.tabs as tab (tab.id)}
@@ -19,18 +19,18 @@
 		<Button
 			variant="ghost"
 			class="aspect-square h-full text-main-50/30 border-r border-main-900"
-			onclick={() => shell.newTab()}
+			onmousedown={() => shell.newTab()}
 		>
 			<PhPlusBold />
 		</Button>
 	</div>
 
-	<div class="flex">
+	<div class="absolute flex items-center h-full right-0">
 		<EnvironmentSelector />
 		<Button
 			variant="ghost"
-			class="aspect-square h-full flex items-center justify-center border-l border-main-900 text-main-50/40 p-0"
-			onclick={() => settings.openSettings()}
+			class="aspect-square h-full flex items-center justify-center border-l border-main-900 text-main-50/40 p-0 active:scale-100"
+			onmousedown={() => settings.openSettings()}
 		>
 			<PhGearDuotone />
 		</Button>
