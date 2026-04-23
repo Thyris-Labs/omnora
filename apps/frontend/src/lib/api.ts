@@ -1,4 +1,5 @@
 import { Result, TaggedError, type Result as ResultType } from "better-result"
+import { fetch } from "@tauri-apps/plugin-http"
 import * as v from "valibot"
 
 const ApiErrorSchema = v.object({
