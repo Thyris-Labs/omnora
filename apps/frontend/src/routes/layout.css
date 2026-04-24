@@ -14,7 +14,7 @@
 	--main-100: oklch(26.4% 0 var(--tint));
 	--main-50: oklch(18.2% 0 var(--tint));
 
-	--accent: oklch(78.4% 0.150 149.6°);
+	--accent: oklch(78.4% 0.150 149.6);
 }
 
 .dark {
