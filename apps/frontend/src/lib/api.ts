@@ -1,5 +1,5 @@
 import { Result, TaggedError, type Result as ResultType } from "better-result"
-import { fetch } from "@tauri-apps/plugin-http"
+import { fetch as tauriFetch } from "@tauri-apps/plugin-http"
 import * as v from "valibot"
 
 const ApiErrorSchema = v.object({
@@ -21,6 +21,12 @@ export class ApiAbortError extends TaggedError("ApiAbortError")<{
 }>() { }
 
 export type ApiRequestError = ApiError | ApiAbortError
+
+const apiTransportFetch: typeof fetch =
+	typeof window !== "undefined" &&
+		("__TAURI_INTERNALS__" in window || "__TAURI__" in window)
+		? tauriFetch
+		: globalThis.fetch.bind(globalThis)
 
 async function parseApiError(response: Response): Promise<ApiError> {
 	const body = await response.json().catch(() => null)
@@ -44,7 +50,7 @@ export async function apiFetch(
 	const isFormData = init?.body instanceof FormData
 	return Result.tryPromise({
 		try: () =>
-			fetch(import.meta.env.VITE_API_URL + path, {
+			apiTransportFetch(import.meta.env.VITE_API_URL + path, {
 				...init,
 				credentials: "include",
 				headers: {
