@@ -1,4 +1,4 @@
 <script lang="ts">
 </script>
 
-notes module
+Hello notes

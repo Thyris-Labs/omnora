@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tv, type VariantProps } from "tailwind-variants";
+	import { cn, tv, type VariantProps } from "tailwind-variants";
 	import type { HTMLInputAttributes, SVGAttributes } from "svelte/elements";
 	import type { Component } from "svelte";
 
@@ -38,6 +38,7 @@
 		variant?: InputVariant;
 		state?: InputState;
 		class?: string;
+		inputClass?: string;
 		leftIconClass?: string;
 		rightIconClass?: string;
 		icons?: {
@@ -56,6 +57,7 @@
 		disabled = false,
 		readonly = false,
 		icons,
+		inputClass = "",
 		...restProps
 	}: InputProps = $props();
 
@@ -76,7 +78,7 @@
 		{...restProps}
 		readonly={disabled || readonly}
 		aria-disabled={disabled ? "true" : undefined}
-		class={slots.input()}
+		class={cn(slots.input(), inputClass)}
 	/>
 
 	{#if RightIcon}
