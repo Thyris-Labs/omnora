@@ -8,9 +8,9 @@
 	import { shell } from "features/shell/store.svelte";
 </script>
 
-<nav class="h-9 w-full flex border-b border-main-800 justify-between">
-	<div class="flex">
-		<ul class="flex items-center">
+<nav class="h-10 w-full flex border-b border-main-900 justify-between">
+	<div class="flex p-1 gap-x-1">
+		<ul class="flex items-center gap-x-1">
 			{#each shell.tabs as tab (tab.id)}
 				<TabButton {tab} />
 			{/each}
@@ -18,7 +18,7 @@
 
 		<Button
 			variant="ghost"
-			class="aspect-square h-full text-main-50/30 border-r border-main-900"
+			class="aspect-square h-full text-main-50/30 duration-0"
 			onclick={() => shell.newTab()}
 		>
 			<PhPlusBold />
