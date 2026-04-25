@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Button from "ui/primitives/button.svelte";
-	import type { Directory } from "../types";
 	import PhTrashDuotone from "~icons/ph/trash-duotone";
-	import DirectoryButton from "./directory-button.svelte";
+	import FileTree from "./file-tree.svelte";
+	import type { Directory } from "../types";
 
 	// FIXME: Delete when connected to backend
 	const DIRECTORIES: Array<Directory> = [
@@ -40,11 +40,7 @@
 <aside
 	class="w-56 h-full border-r border-main-900 flex flex-col justify-between p-2"
 >
-	<div class="flex flex-col gap-y-1">
-		{#each DIRECTORIES as directory}
-			<DirectoryButton {...directory} />
-		{/each}
-	</div>
+	<FileTree directories={DIRECTORIES} />
 
 	<Button>
 		<PhTrashDuotone />

@@ -10,8 +10,28 @@
 	import { auth } from "features/auth/store.svelte";
 	import { page } from "$app/state";
 
-	let { name, notes }: Directory = $props();
-	let open = $state(false);
+	interface Props {
+		directory: Directory;
+		currentItemKey: string | null;
+		directoryKey: string;
+		getNoteKey: (directoryId: string, noteId: string) => string;
+		open: boolean;
+		onDirectoryToggle: (directoryId: string) => void;
+		onItemFocus: (key: string) => void;
+		onItemKeydown: (event: KeyboardEvent, key: string) => void;
+	}
+
+	let {
+		directory,
+		currentItemKey,
+		directoryKey,
+		getNoteKey,
+		open,
+		onDirectoryToggle,
+		onItemFocus,
+		onItemKeydown,
+	}: Props = $props();
+	let notes = $derived(directory.notes);
 
 	const NOTE_SIZE = 2.125;
 	const GAP = 0.125;
@@ -26,32 +46,51 @@
 	style="padding-bottom: {paddingBottom}rem"
 >
 	<Button
-		class="mb-0.5 active:scale-100 active:bg-main-900/80"
-		onclick={() => (open = !open)}
+		class="mb-0.5 active:scale-100 active:bg-main-900/80 duration-0"
+		onclick={() => onDirectoryToggle(directory.id)}
+		onfocus={() => onItemFocus(directoryKey)}
+		onkeydown={(event: KeyboardEvent) => onItemKeydown(event, directoryKey)}
+		data-tree-item-key={directoryKey}
+		role="treeitem"
+		aria-expanded={notes?.length ? open : undefined}
+		aria-level={1}
+		tabindex={currentItemKey === directoryKey ? 0 : -1}
 	>
 		{#if open}
 			<PhFolderOpenDuotone />
 		{:else}
 			<PhFolderSimpleDuotone />
 		{/if}
-		{name}
+		{directory.name}
 	</Button>
 
 	<div
 		class={cn(
-			"flex flex-col gap-y-0.5 pl-6.5 absolute w-full opacity-0 blur-xs transition-[opacity,filter] ease-out-expo",
-			open ? "blur-none opacity-100 duration-300" : "duration-600",
+			"hidden flex-col gap-y-0.5 pl-6.5 absolute w-full opacity-0 blur-xs transition-[opacity,filter,display] transition-discrete ease-out-expo starting:opacity-0 starting:blur-xs",
+			open ? "flex blur-none opacity-100 duration-300" : "duration-600",
 		)}
+		role="group"
+		aria-hidden={open ? undefined : "true"}
 	>
 		<div
 			aria-hidden="true"
 			class="w-px absolute left-4 h-full bg-main-900"
 		></div>
-		{#each notes ?? [] as note (note.id)}
+		{#each directory.notes ?? [] as note (note.id)}
+			{@const noteKey = getNoteKey(directory.id, note.id)}
 			<Button
-				class={note.id === page.params.note_id
-					? "bg-main-900 text-main-50 hover:text-main-50"
-					: ""}
+				class={cn(
+					"duration-0",
+					note.id === page.params.note_id &&
+						"bg-main-900 text-main-50 hover:text-main-50",
+				)}
+				data-tree-item-key={noteKey}
+				role="treeitem"
+				aria-level={2}
+				aria-selected={note.id === page.params.note_id}
+				tabindex={open && currentItemKey === noteKey ? 0 : -1}
+				onfocus={() => onItemFocus(noteKey)}
+				onkeydown={(event: KeyboardEvent) => onItemKeydown(event, noteKey)}
 				onclick={() =>
 					goto(
 						resolve("/(app)/e/[environment_id]/m/notes/[note_id]", {
