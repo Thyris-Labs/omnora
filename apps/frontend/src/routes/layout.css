@@ -1,4 +1,17 @@
 @import "tailwindcss";
+@import "./tiptap.css";
+
+@custom-variant hocus {
+	@media (hover: hover) {
+		&:hover {
+			@slot;
+		}
+	}
+
+	&:focus-visible {
+		@slot;
+	}
+}
 
 :root {
 	--tint: 0;
@@ -60,4 +73,3 @@ html, body {
 	color: var(--color-main-50);
 	font-family: "Inter Variable";
 }
-
