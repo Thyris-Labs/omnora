@@ -1,26 +1,39 @@
 import vine from '@vinejs/vine'
 
-/**
- * Shared rules for email and password.
- */
-const email = () => vine.string().email().maxLength(254)
-const password = () => vine.string().minLength(8).maxLength(32)
+type AuthFlow = 'signup' | 'signin'
 
 /**
- * Validator to use when performing self-signup
+ * Shared rules
  */
-export const signupValidator = vine.create({
-  fullName: vine.string().nullable(),
-  email: email().unique({ table: 'users', column: 'email' }),
-  password: password(),
-  passwordConfirmation: password().sameAs('password'),
+const code = () => vine.string().alphaNumeric().fixedLength(6)
+const email = (flow: AuthFlow) => {
+  const base = vine.string().email().maxLength(254)
+
+  if (flow === 'signup') return base.unique({ table: 'users', column: 'email' })
+  return base
+}
+
+/**
+ * Validator to use when performing email verification
+ */
+export const verifyEmailValidator = vine.create({
+  email: vine.string().email().maxLength(254),
+  flow: vine.enum(['signup', 'signin']),
 })
 
 /**
- * Validator to use before validating user credentials
- * during login
+ * Validator to use for signup
  */
-export const loginValidator = vine.create({
-  email: email(),
-  password: vine.string(),
+export const signupValidator = vine.create({
+  email: email('signup'),
+  username: vine.string().alphaNumeric({ allowUnderscores: true }).maxLength(24),
+  code: code(),
+})
+
+/**
+ * Validator to use for signin
+ */
+export const signinValidator = vine.create({
+  email: email('signin'),
+  code: code(),
 })

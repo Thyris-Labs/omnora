@@ -7,7 +7,7 @@ const authConfig = defineConfig({
   /**
    * Default guard used when no guard is explicitly specified.
    */
-  default: 'api',
+  default: 'web',
 
   guards: {
     /**
@@ -27,10 +27,10 @@ const authConfig = defineConfig({
       /**
        * Enable persistent login using remember-me tokens.
        */
-      useRememberMeTokens: false,
-
+      useRememberMeTokens: true,
+      rememberMeTokensAge: '30 days',
       provider: sessionUserProvider({
-        model: () => import('#models/user'),
+        model: () => import('#features/users/models/user'),
       }),
     }),
   },
@@ -43,8 +43,8 @@ export default authConfig
  * guards.
  */
 declare module '@adonisjs/auth/types' {
-  export interface Authenticators extends InferAuthenticators<typeof authConfig> { }
+  export interface Authenticators extends InferAuthenticators<typeof authConfig> {}
 }
 declare module '@adonisjs/core/types' {
-  interface EventsList extends InferAuthEvents<Authenticators> { }
+  interface EventsList extends InferAuthEvents<Authenticators> {}
 }

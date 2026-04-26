@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "license": "MIT",
   "exports": {
     "./data": "./.adonisjs/client/data.d.ts",
     "./registry": "./.adonisjs/client/registry/index.ts"
@@ -18,6 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "imports": {
+    "#shared/*": "./app/shared/*.js",
     "#features/*": "./app/features/*.js",
     "#modules/*": "./app/features/*.js",
     "#mails/*": "./app/mails/*.js",
