@@ -32,6 +32,23 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class EnvironmentSchema extends BaseModel {
+  static $columns = ['avatar', 'createdAt', 'id', 'name', 'ownerId', 'updatedAt'] as const
+  $columns = EnvironmentSchema.$columns
+  @column()
+  declare avatar: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column()
+  declare name: string
+  @column()
+  declare ownerId: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class RememberMeTokenSchema extends BaseModel {
   static $columns = ['createdAt', 'expiresAt', 'hash', 'id', 'tokenableId', 'updatedAt'] as const
   $columns = RememberMeTokenSchema.$columns
@@ -42,7 +59,7 @@ export class RememberMeTokenSchema extends BaseModel {
   @column()
   declare hash: string
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
   @column()
   declare tokenableId: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })

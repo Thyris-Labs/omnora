@@ -66,8 +66,11 @@
     "@vinejs/vine": "^4.3.1",
     "better-sqlite3": "^12.9.0",
     "luxon": "^3.7.2",
+    "node-addon-api": "^8.7.0",
+    "node-gyp": "^12.3.0",
     "pg": "^8.20.0",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "sharp": "^0.34.5"
   },
   "hotHook": {
     "boundaries": [
