@@ -1,127 +1,125 @@
-import { setContext, getContext } from "svelte"
-import { apiFetch, type ApiRequestError } from "lib/api"
-import { goto } from "$app/navigation"
-import { resolve } from "$app/paths"
-import { page } from "$app/state"
-import type { Environment, User } from "lib/types"
-import type { SigninPayload, SignupPayload } from "features/auth/schemas"
+import { apiErrorMessage, client } from "lib/api";
+import type { TuyauError } from "@tuyau/core/client";
+import { goto } from "$app/navigation";
+import { resolve } from "$app/paths";
+import { page } from "$app/state";
+import type { Environment, User } from "lib/types";
+import type { SigninPayload, SignupPayload } from "features/auth/schemas";
 
-interface SetupResponse {
-	user: Omit<User, "environments">
-	environments: Array<Environment>
-}
-
-type VerifyFlow = "signup" | "signin"
+type VerifyFlow = "signup" | "signin";
 
 class AuthStore {
-	userData = $state<User | null>(null)
+	userData = $state<User | null>(null);
 
-	verifying = $state(false)
-	submitting = $state(false)
-	errorMessage = $state<string | null>(null)
+	verifying = $state(false);
+	submitting = $state(false);
+	errorMessage = $state<string | null>(null);
 
-	async setup(signal?: AbortSignal): Promise<ApiRequestError | null> {
-		if (this.userData) return null
+	async setup(signal?: AbortSignal): Promise<TuyauError | null> {
+		if (this.userData) return null;
 
-		const result = await apiFetch("/users/setup", { signal })
+		const [body, error] = await client.get("/api/v1/users/setup", { signal }).safe();
 
-		if (result.isErr()) {
-			if (result.error.status === 401) this.userData = null
-			return result.error
+		if (error) {
+			if (error.status === 401) this.userData = null;
+			return error;
 		}
 
-		const body = await result.value.json().catch(() => null) as SetupResponse | null
-		if (!body) return null
+		if (!body) return null;
 
 		this.userData = {
 			...body.user,
 			environments: body.environments,
-		}
+		};
 
-		return null
+		return null;
 	}
 
 	async verifyEmail(email: string, flow: VerifyFlow) {
-		this.submitting = true
-		this.errorMessage = null
+		this.submitting = true;
+		this.errorMessage = null;
 
-		const result = await apiFetch("/verify", {
-			method: "POST",
-			body: JSON.stringify({ email, flow }),
-		})
+		const [, error] = await client.post("/api/v1/auth/verify", { body: { email, flow } }).safe();
 
-		this.submitting = false
+		this.submitting = false;
 
-		if (result.isErr()) {
-			this.errorMessage = result.error.message
-			return
+		if (error) {
+			this.errorMessage = apiErrorMessage(error);
+			return;
 		}
 
-		this.verifying = true
+		this.verifying = true;
 	}
 
 	async signup(body: SignupPayload) {
-		this.submitting = true
-		this.errorMessage = null
+		this.submitting = true;
+		this.errorMessage = null;
 
-		const result = await apiFetch("/signup", {
-			method: "POST",
-			body: JSON.stringify(body)
-		})
+		const [, error] = await client
+			.post("/api/v1/auth/signup", {
+				body: {
+					email: body.email,
+					username: body.username,
+					code: body.code ?? "",
+				},
+			})
+			.safe();
 
-		this.submitting = false
+		this.submitting = false;
 
-		if (result.isErr()) {
-			this.errorMessage = result.error.message
-			return
+		if (error) {
+			this.errorMessage = apiErrorMessage(error);
+			return;
 		}
 
-		goto(resolve("/(app)/e"))
+		goto(resolve("/(app)/e"));
 	}
 
 	async signin(body: SigninPayload) {
-		this.submitting = true
-		this.errorMessage = null
+		this.submitting = true;
+		this.errorMessage = null;
 
-		const result = await apiFetch("/signin", {
-			method: "POST",
-			body: JSON.stringify(body)
-		})
+		const [, error] = await client
+			.post("/api/v1/auth/signin", {
+				body: {
+					email: body.email,
+					code: body.code ?? "",
+				},
+			})
+			.safe();
 
-		this.submitting = false
+		this.submitting = false;
 
-		if (result.isErr()) {
-			this.errorMessage = result.error.message
-			return
+		if (error) {
+			this.errorMessage = apiErrorMessage(error);
+			return;
 		}
 
-		goto(resolve("/(app)/e"))
+		goto(resolve("/(app)/e"));
 	}
 
 	async logout() {
-		const result = await apiFetch("/logout", {
-			method: "POST",
-		})
+		const [, error] = await client.post("/api/v1/auth/logout", {}).safe();
 
-		if (result.isErr()) {
-			console.error(result.error)
-			return
+		if (error) {
+			console.error(error);
+			return;
 		}
 
-		this.userData = null
+		this.userData = null;
 
-		goto(resolve("/signin"))
+		goto(resolve("/signin"));
 	}
 
 	get user(): User {
-		if (!this.userData) throw new Error("User is not ready")
-		return this.userData
+		if (!this.userData) throw new Error("User is not ready");
+		return this.userData;
 	}
 
 	get currentEnvironment(): Environment {
-		const envs = this.user.environments
-		const envID = page.params.environment_id
-		return envs.find((env) => env.id === envID) ?? envs[0]
+		const envs = this.user.environments;
+		const envID = page.params.environment_id;
+		return envs.find((env) => env.id === envID) ?? envs[0];
 	}
 }
 

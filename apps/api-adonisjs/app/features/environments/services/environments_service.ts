@@ -2,8 +2,8 @@ import User from "#features/users/models/user";
 import { MultipartFile } from "@adonisjs/core/bodyparser";
 import Environment from "../models/environment.ts";
 import { inject } from "@adonisjs/core";
-import SaveAvatarImageAction, { SaveAvatarError } from "../actions/save_avatar_image.ts";
-import { isErr, Result } from "#shared/errors";
+import SaveAvatarImageAction, { type SaveAvatarError } from "../actions/save_avatar_image.ts";
+import { isErr, type Result } from "#shared/errors";
 
 type CreateEnvironmentError = SaveAvatarError
 

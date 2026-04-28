@@ -2,7 +2,7 @@
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import { onMount } from "svelte";
-	import { apiFetch } from "lib/api";
+	import { client } from "lib/api";
 	import { auth } from "features/auth/store.svelte";
 
 	let { children } = $props();
@@ -17,11 +17,11 @@
 		authCheckController?.abort();
 		authCheckController = new AbortController();
 
-		const result = await apiFetch("/auth/check", {
+		const [, error] = await client.get("/api/v1/auth/check", {
 			signal: authCheckController.signal,
-		});
+		}).safe();
 
-		if (result.isOk()) {
+		if (!error) {
 			goto(resolve("/(app)/e"), { replaceState: true });
 		}
 	}

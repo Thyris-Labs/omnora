@@ -1,5 +1,5 @@
 {
-  "name": "api-adonisjs",
+  "name": "@omnora/api-adonisjs",
   "version": "0.0.0",
   "private": true,
   "type": "module",
