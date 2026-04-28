@@ -3,7 +3,7 @@
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
-	import { apiFetch } from "lib/api";
+	import { client } from "lib/api";
 	import { Settings } from "features/settings";
 	import { auth } from "features/auth/store.svelte";
 
@@ -17,12 +17,12 @@
 		authCheckController?.abort();
 		authCheckController = new AbortController();
 
-		const result = await apiFetch("/auth/check", {
+		const [, error] = await client.get("/api/v1/auth/check", {
 			signal: authCheckController.signal,
-		});
+		}).safe();
 
-		if (result.isOk()) return;
-		if (result.error.status !== 401) return;
+		if (!error) return;
+		if (error.status !== 401) return;
 
 		goto(resolve("/(guest)/signin"), { replaceState: true });
 	}

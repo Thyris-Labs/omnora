@@ -1,90 +1,82 @@
-import { apiFetch } from "lib/api"
-import type { UpdateUserDataPayload } from "features/settings/schemas"
-import { auth } from "features/auth/store.svelte"
+import { apiErrorMessage, client } from "lib/api";
+import type { UpdateUserDataPayload } from "features/settings/schemas";
+import { auth } from "features/auth/store.svelte";
 
 class SettingsStore {
-	isOpen = $state(false)
-	avatarUploading = $state(false)
-	errorMessage = $state<string | null>(null)
-	errorTimeout: ReturnType<typeof setTimeout> | null = null
+  isOpen = $state(false);
+  avatarUploading = $state(false);
+  errorMessage = $state<string | null>(null);
+  errorTimeout: ReturnType<typeof setTimeout> | null = null;
 
-	openSettings() {
-		this.isOpen = true
-	}
+  openSettings() {
+    this.isOpen = true;
+  }
 
-	clearError() {
-		if (this.errorTimeout) clearTimeout(this.errorTimeout)
-		this.errorTimeout = null
-		this.errorMessage = null
-	}
+  clearError() {
+    if (this.errorTimeout) clearTimeout(this.errorTimeout);
+    this.errorTimeout = null;
+    this.errorMessage = null;
+  }
 
-	setError(message: string) {
-		this.clearError()
-		this.errorMessage = message
-		this.errorTimeout = setTimeout(() => {
-			this.errorMessage = null
-			this.errorTimeout = null
-		}, 2000)
-	}
+  setError(message: string) {
+    this.clearError();
+    this.errorMessage = message;
+    this.errorTimeout = setTimeout(() => {
+      this.errorMessage = null;
+      this.errorTimeout = null;
+    }, 2000);
+  }
 
-	async saveAccountData(body: UpdateUserDataPayload) {
-		this.clearError()
+  async saveAccountData(body: UpdateUserDataPayload) {
+    this.clearError();
 
-		const result = await apiFetch("/users/edit", {
-			method: "PATCH",
-			body: JSON.stringify(body)
-		})
+    const [, error] = await client.patch("/api/v1/users/edit", { body }).safe();
 
-		if (result.isErr()) {
-			console.error(result.error)
-			this.setError(result.error.message)
-			return false
-		}
+    if (error) {
+      this.setError(apiErrorMessage(error));
+      console.error(error);
+      return false;
+    }
 
-		if (!auth.userData) return false
-		auth.userData = {
-			...auth.userData,
-			displayName: body.displayName,
-			username: body.username
-		}
+    if (!auth.userData) return false;
+    auth.userData = {
+      ...auth.userData,
+      displayName: body.displayName,
+      username: body.username,
+    };
 
-		return true
-	}
+    return true;
+  }
 
-	async updateAvatar(avatar: File) {
-		this.avatarUploading = true
-		this.clearError()
+  async updateAvatar(avatar: File) {
+    this.avatarUploading = true;
+    this.clearError();
 
-		const formData = new FormData()
-		formData.append("avatar", avatar)
+    const formData = new FormData();
+    formData.append("avatar", avatar);
 
-		const result = await apiFetch("/users/avatar", {
-			method: "PATCH",
-			body: formData,
-		})
+    const [body, error] = await client.patch("/api/v1/users/avatar", { body: formData }).safe();
 
-		this.avatarUploading = false
+    this.avatarUploading = false;
 
-		if (result.isErr()) {
-			console.error(result.error)
-			this.setError(result.error.message)
-			return false
-		}
+    if (error) {
+      this.setError(apiErrorMessage(error));
+      console.error(error);
+      return false;
+    }
 
-		const body = await result.value.json() as { avatarUrl: string }
+    if (!auth.userData) {
+      this.setError("Your session is not ready. Please try again.");
+      return false;
+    }
 
-		if (!auth.userData) {
-			this.setError("Your session is not ready. Please try again.")
-			return false
-		}
+    auth.userData = {
+      ...auth.userData,
+      avatar: body.avatarUrl,
+    };
 
-		auth.userData = {
-			...auth.userData,
-			avatar: body.avatarUrl
-		}
-
-		return true
-	}
+    return true;
+  }
 }
 
 export const settings = new SettingsStore();

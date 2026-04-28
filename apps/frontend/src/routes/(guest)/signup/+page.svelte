@@ -5,7 +5,7 @@
 	import OtpField from "ui/fields/otp-field.svelte";
 	import Button from "ui/primitives/button.svelte";
 	import { useDebounce } from "runed";
-	import { apiFetch } from "lib/api";
+	import { client } from "lib/api";
 	import ErrorMessage from "features/auth/components/error-message.svelte";
 	import { createSignupSchema } from "features/auth/schemas";
 	import { auth } from "features/auth/store.svelte";
@@ -39,20 +39,20 @@
 			errors: null,
 		});
 
-		const result = await apiFetch(`/check_username`, {
-			method: "POST",
-			body: JSON.stringify({ username }),
-			signal: currentController.signal,
-		});
+		const [_, err] = await client
+			.post("/api/v1/auth/check_username", {
+				body: { username },
+				signal: controller.signal,
+			})
+			.safe();
 
-		if (result.isErr()) {
-			if (result.error.code === "ERR_ABORTED") return;
+		if (currentController.signal.aborted) return;
 
-			controller = null;
+		if (err?.isStatus(400)) {
 			usernameState = "taken";
 			setErrors(signupForm, {
 				path: ["username"],
-				errors: [result.error.message],
+				errors: [err.response.message],
 			});
 			return;
 		}
