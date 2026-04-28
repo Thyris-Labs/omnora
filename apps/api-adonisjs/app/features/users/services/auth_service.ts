@@ -4,6 +4,7 @@ import User from '../models/user.ts'
 import mail from '@adonisjs/mail/services/main'
 
 type VerifyEmailErr = 'ERR_USER_ALREADY_EXIST'
+type CheckUsernameErr = 'ERR_USERNAME_ALREADY_EXIST'
 type SignupErr =
   | 'ERR_USER_ALREADY_EXIST'
   | 'ERR_USERNAME_ALREADY_EXIST'
@@ -36,6 +37,10 @@ export default class AuthService {
     })
 
     return ok()
+  }
+
+  async checkUsername({ username }: { username: string }): Promise<Result<void, CheckUsernameErr>> {
+    return this.#checkUsernameUniqueness(username)
   }
 
   async signup({

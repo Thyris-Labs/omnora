@@ -1,5 +1,6 @@
 import { HttpContext } from '@adonisjs/core/http'
 import {
+  checkUsernameValidator,
   signinValidator,
   signupValidator,
   verifyEmailValidator,
@@ -11,7 +12,7 @@ import UserTransformer from '../transformers/user_transformer.ts'
 
 @inject()
 export default class AuthController {
-  constructor(protected readonly authService: AuthService) { }
+  constructor(protected readonly authService: AuthService) {}
 
   async verifyEmail({ request, response }: HttpContext) {
     const data = await request.validateUsing(verifyEmailValidator)
@@ -19,6 +20,16 @@ export default class AuthController {
 
     return match(res, {
       ERR_USER_ALREADY_EXIST: (e) => response.conflict(e),
+      ok: () => response.noContent(),
+    })
+  }
+
+  async checkUsername({ request, response }: HttpContext) {
+    const data = await request.validateUsing(checkUsernameValidator)
+    const res = await this.authService.checkUsername(data)
+
+    return match(res, {
+      ERR_USERNAME_ALREADY_EXIST: (e) => response.badRequest(e),
       ok: () => response.noContent(),
     })
   }
@@ -61,5 +72,10 @@ export default class AuthController {
   async check({ auth, serialize }: HttpContext) {
     const user = await auth.use('web').authenticate()
     return serialize({ user: UserTransformer.transform(user) })
+  }
+
+  async logout({ auth, response }: HttpContext) {
+    await auth.use('web').logout()
+    return response.noContent()
   }
 }

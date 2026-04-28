@@ -37,3 +37,7 @@ export const signinValidator = vine.create({
   email: email('signin'),
   code: code(),
 })
+
+export const checkUsernameValidator = vine.create({
+  username: vine.string().alphaNumeric({ allowUnderscores: true }).maxLength(24),
+})
