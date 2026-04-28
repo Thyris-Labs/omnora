@@ -11,7 +11,7 @@ import UserTransformer from '../transformers/user_transformer.ts'
 
 @inject()
 export default class AuthController {
-  constructor(protected readonly authService: AuthService) {}
+  constructor(protected readonly authService: AuthService) { }
 
   async verifyEmail({ request, response }: HttpContext) {
     const data = await request.validateUsing(verifyEmailValidator)
@@ -60,9 +60,6 @@ export default class AuthController {
 
   async check({ auth, serialize }: HttpContext) {
     const user = await auth.use('web').authenticate()
-
-    return serialize({
-      user: UserTransformer.transform(user),
-    })
+    return serialize({ user: UserTransformer.transform(user) })
   }
 }
