@@ -57,7 +57,8 @@ export default defineConfig({
     () => import('#providers/api_provider'),
     () => import('@adonisjs/cache/cache_provider'),
     () => import('@adonisjs/mail/mail_provider'),
-    () => import('@adonisjs/drive/drive_provider')
+    () => import('@adonisjs/drive/drive_provider'),
+    () => import('@adonisjs/redis/redis_provider')
   ],
 
   /*

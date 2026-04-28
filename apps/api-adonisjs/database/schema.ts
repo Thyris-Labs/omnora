@@ -53,17 +53,17 @@ export class RememberMeTokenSchema extends BaseModel {
   static $columns = ['createdAt', 'expiresAt', 'hash', 'id', 'tokenableId', 'updatedAt'] as const
   $columns = RememberMeTokenSchema.$columns
   @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime | null
+  declare createdAt: DateTime
   @column.dateTime()
-  declare expiresAt: DateTime | null
+  declare expiresAt: DateTime
   @column()
   declare hash: string
   @column({ isPrimary: true })
-  declare id: string
+  declare id: number
   @column()
   declare tokenableId: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  declare updatedAt: DateTime
 }
 
 export class UserSchema extends BaseModel {

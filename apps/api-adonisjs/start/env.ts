@@ -32,6 +32,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_PASSWORD: Env.schema.string(),
   DB_DATABASE: Env.schema.string(),
 
+  // Cache
+  CACHE_HOST: Env.schema.string({ format: 'host' }),
+  CACHE_PORT: Env.schema.number(),
+  CACHE_PASSWORD: Env.schema.secret.optional(),
+
   /*
   |----------------------------------------------------------
   | Variables for configuring the mail package
@@ -51,5 +56,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   AWS_ACCESS_KEY_ID: Env.schema.string(),
   AWS_SECRET_ACCESS_KEY: Env.schema.string(),
   AWS_REGION: Env.schema.string(),
-  S3_BUCKET: Env.schema.string()
+  S3_BUCKET: Env.schema.string(),
 })

@@ -13,7 +13,6 @@ const cacheConfig = defineConfig({
       .useL2Layer(drivers.redis({
         connectionName: 'main',
       }))
-
   }
 })
 

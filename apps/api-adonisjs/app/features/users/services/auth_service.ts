@@ -2,6 +2,7 @@ import cache from '@adonisjs/cache/services/main'
 import { err, isErr, ok, type Result } from '../../../shared/errors.ts'
 import User from '../models/user.ts'
 import mail from '@adonisjs/mail/services/main'
+import Environment from '#features/environments/models/environment'
 
 type VerifyEmailErr = 'ERR_USER_ALREADY_EXIST'
 type CheckUsernameErr = 'ERR_USERNAME_ALREADY_EXIST'
@@ -68,9 +69,15 @@ export default class AuthService {
       displayName: username,
       avatar: USER_AVATAR,
     })
-    return ok({
-      user,
+
+    await Environment.create({
+      id: crypto.randomUUID(),
+      avatar: USER_AVATAR,
+      name: `${user.displayName}'s environment`,
+      ownerId: user.id,
     })
+
+    return ok({ user })
   }
 
   async signin({

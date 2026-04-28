@@ -12,7 +12,7 @@ import UserTransformer from '../transformers/user_transformer.ts'
 
 @inject()
 export default class AuthController {
-  constructor(protected readonly authService: AuthService) {}
+  constructor(protected readonly authService: AuthService) { }
 
   async verifyEmail({ request, response }: HttpContext) {
     const data = await request.validateUsing(verifyEmailValidator)
@@ -34,7 +34,7 @@ export default class AuthController {
     })
   }
 
-  async signup({ request, response, serialize, auth }: HttpContext) {
+  async signup({ request, response, auth }: HttpContext) {
     const data = await request.validateUsing(signupValidator)
     const res = await this.authService.signup(data)
 
@@ -44,10 +44,7 @@ export default class AuthController {
       ERR_INVALID_VERIFICATION_CODE: (e) => response.badRequest(e),
       ok: async ({ user }) => {
         await auth.use('web').login(user, true)
-
-        return serialize({
-          user: UserTransformer.transform(user),
-        })
+        return response.created()
       },
     })
   }
