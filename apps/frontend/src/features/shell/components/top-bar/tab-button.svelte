@@ -14,11 +14,11 @@
 	data-active={isActive}
 >
 	<Button
-		variant="ghost"
+		variant="unstyled"
 		aria-current={isActive ? "page" : undefined}
 		class={cn(
-			"max-w-44 pl-2 pr-1.5 gap-x-2 select-none h-full py-1.75 text-sm relative active:scale-100 rounded-none hover:bg-transparent duration-0",
-			isActive ? "text-main-50 hover:text-main-50" : "text-main-50/30",
+			"flex h-full max-w-44 items-center gap-x-2 py-1.75 pl-2 pr-1.5 text-sm outline-none transition-ds",
+			isActive ? "text-main-100" : "text-main-500 hover:text-main-200",
 		)}
 		onclick={() => shell.selectTab(tab.id)}
 	>
@@ -27,10 +27,11 @@
 	</Button>
 
 	<Button
-		variant="ghost"
-		class="p-0 size-4.5 text-main-500 duration-0"
+		variant="unstyled"
+		aria-label={`Close ${tab.name}`}
+		class="flex size-4.5 shrink-0 items-center justify-center text-main-500 outline-none transition-ds hover:text-main-200"
 		onclick={() => shell.closeTab(tab.id)}
 	>
-		<PhXBold width={12} />
+		<PhXBold width={12} aria-hidden="true" />
 	</Button>
 </li>

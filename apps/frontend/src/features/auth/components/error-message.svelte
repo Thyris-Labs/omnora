@@ -10,8 +10,8 @@
 
 <div
 	role="alert"
-	class="mt-6 text-sm bg-rose-500/20 w-fit py-1.5 px-2.5 text-rose-500 flex items-center gap-x-2"
+	class="mt-6 text-sm bg-main-900 w-fit py-1.5 px-2.5 text-main-100 flex items-center gap-x-2"
 >
-	<PhWarningDuotone />
+	<PhWarningDuotone aria-hidden="true" />
 	{message}
 </div>

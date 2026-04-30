@@ -5,18 +5,18 @@
 
 	const inputVariants = tv({
 		slots: {
-			root: "flex w-full items-center text-base transition-[background-color,color,box-shadow,border-color] focus-within:outline-none focus-within:ring-3 focus-within:ring-main-800 has-aria-invalid:ring-3 has-aria-invalid:ring-rose-500/20 has-aria-invalid:focus-within:ring-rose-500/30",
+			root: "flex w-full items-center text-base transition-[background-color,color,box-shadow,border-color] focus-within:outline-none focus-within:ring-3 focus-within:ring-main-800 has-aria-invalid:ring-3 has-aria-invalid:ring-main-900",
 			input:
-				"w-full min-w-0 bg-transparent outline-none text-main-100 placeholder:font-[465] placeholder:text-main-700 aria-disabled:cursor-not-allowed",
+				"w-full min-w-0 bg-transparent outline-none text-main-100 placeholder:font-[465] placeholder:text-main-500/60 aria-disabled:cursor-not-allowed",
 			leftIcon: "flex shrink-0 items-center pr-2 text-main-500",
 			rightIcon: "flex shrink-0 items-center pl-2 text-main-500",
 		},
 		variants: {
 			variant: {
 				default: {
-					root: "px-3.25 py-2 bg-main-950 border border-main-900 has-aria-invalid:border-rose-700 focus-within:border-main-500",
+					root: "px-3.25 py-2 bg-main-950 border border-main-800 has-aria-invalid:border-main-100 focus-within:border-main-500",
 				},
-				ghost: {},
+				unstyled: {},
 			},
 			state: {
 				default: {},

@@ -18,7 +18,7 @@
 			<div
 				{...props}
 				transition:fade={{ duration: 120 }}
-				class={cn("fixed inset-0 bg-black/60 z-9998", className)}
+				class={cn("fixed inset-0 bg-main-950/60 z-9998", className)}
 			>
 				{@render children?.()}
 			</div>

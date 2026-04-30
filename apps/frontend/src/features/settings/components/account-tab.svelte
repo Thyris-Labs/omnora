@@ -7,10 +7,9 @@
 	import { updateUserDataSchema } from "features/settings/schemas";
 	import { settings } from "features/settings/store.svelte";
 	import { auth } from "features/auth/store.svelte";
-	import PhSpinnerGapBold from "~icons/ph/spinner-gap-bold";
 	import { cn } from "tailwind-variants";
 	import { presence } from "lib/transitions/presence";
-	import Spinner from "ui/icons/spinner.svelte";
+	import AvatarUploadButton from "./avatar-upload-button.svelte";
 
 	const accountUpdateForm = createForm({
 		schema: updateUserDataSchema,
@@ -55,28 +54,11 @@
 			class="flex flex-col gap-y-6"
 		>
 			<div class="size-24">
-				<button
-					type="button"
-					aria-label="Upload avatar"
-					aria-busy={settings.avatarUploading}
-					disabled={settings.avatarUploading}
+				<AvatarUploadButton
+					src={auth.user.avatar}
+					uploading={settings.avatarUploading}
 					onclick={() => avatarInput.click()}
-					class="relative aspect-square size-full border border-main-900 p-2 transition-colors duration-75 hover:border-main-700 hover:bg-main-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main-500 focus-visible:ring-offset-2 focus-visible:ring-offset-main-950 aria-busy:cursor-progress disabled:pointer-events-none"
-				>
-					<img
-						src={auth.user.avatar}
-						alt=""
-						class="h-full w-full object-cover"
-					/>
-					{#if settings.avatarUploading}
-						<div
-							class="absolute inset-2 flex items-center justify-center bg-main-950/70 text-main-50/60"
-							aria-hidden="true"
-						>
-							<Spinner width={18} />
-						</div>
-					{/if}
-				</button>
+				/>
 				<input
 					bind:this={avatarInput}
 					id="avatar-input"

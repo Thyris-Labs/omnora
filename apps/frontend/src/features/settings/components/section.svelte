@@ -12,13 +12,13 @@
 	let { title, description, class: className = "", children }: Props = $props();
 </script>
 
-<section class="last:border-0 border-b border-main-900">
+<section class="last:border-0 border-b border-main-800">
 	<header
-		class="border-b border-main-900 px-4.5 py-2.5 flex items-center gap-x-2"
+		class="border-b border-main-800 px-4.5 py-2.5 flex items-center gap-x-2"
 	>
 		<h2 class="text-sm font-[465] text-main-200">{title}</h2>
 		{#if description}
-			<p class="text-sm text-main-600 mt-px">{description}</p>
+			<p class="text-sm text-main-500/70 mt-px">{description}</p>
 		{/if}
 	</header>
 

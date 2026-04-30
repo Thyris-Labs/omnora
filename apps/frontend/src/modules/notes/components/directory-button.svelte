@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from "ui/primitives/button.svelte";
 	import PhFolderSimpleDuotone from "~icons/ph/folder-simple-duotone";
 	import type { Directory } from "../types";
 	import { cn } from "tailwind-variants";
@@ -9,6 +8,7 @@
 	import { resolve } from "$app/paths";
 	import { auth } from "features/auth/store.svelte";
 	import { page } from "$app/state";
+	import TreeItemButton from "./tree-item-button.svelte";
 
 	interface Props {
 		directory: Directory;
@@ -45,8 +45,8 @@
 	class="overflow-hidden relative transition-[padding] ease-out-expo duration-300"
 	style="padding-bottom: {paddingBottom}rem"
 >
-	<Button
-		class="mb-0.5 active:scale-100 active:bg-main-900/80 duration-0"
+	<TreeItemButton
+		class="mb-0.5"
 		onclick={() => onDirectoryToggle(directory.id)}
 		onfocus={() => onItemFocus(directoryKey)}
 		onkeydown={(event: KeyboardEvent) => onItemKeydown(event, directoryKey)}
@@ -57,12 +57,12 @@
 		tabindex={currentItemKey === directoryKey ? 0 : -1}
 	>
 		{#if open}
-			<PhFolderOpenDuotone />
+			<PhFolderOpenDuotone aria-hidden="true" />
 		{:else}
-			<PhFolderSimpleDuotone />
+			<PhFolderSimpleDuotone aria-hidden="true" />
 		{/if}
 		{directory.name}
-	</Button>
+	</TreeItemButton>
 
 	<div
 		class={cn(
@@ -78,12 +78,7 @@
 		></div>
 		{#each directory.notes ?? [] as note (note.id)}
 			{@const noteKey = getNoteKey(directory.id, note.id)}
-			<Button
-				class={cn(
-					"duration-0",
-					note.id === page.params.note_id &&
-						"bg-main-900 text-main-50 hover:text-main-50",
-				)}
+			<TreeItemButton
 				data-tree-item-key={noteKey}
 				role="treeitem"
 				aria-level={2}
@@ -99,9 +94,9 @@
 						}),
 					)}
 			>
-				<PhNoteDuotone />
+				<PhNoteDuotone aria-hidden="true" />
 				{note.title ?? "No name"}
-			</Button>
+			</TreeItemButton>
 		{/each}
 	</div>
 </div>

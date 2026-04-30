@@ -8,7 +8,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
-		class="pl-2.5 pr-3 gap-x-2 items-center select-none h-full py-1.75 text-sm relative flex border-l border-main-900 text-main-50/40 hover:text-main-200 hover:bg-main-900 transition-colors duration-75 aria-expanded:text-main-200"
+		class="relative flex h-full select-none items-center gap-x-2 border-l border-main-800 py-1.75 pl-2.5 pr-3 text-sm text-main-500 outline-none transition-ds hover:bg-main-900 hover:text-main-200 aria-expanded:text-main-200"
 	>
 		<Avatar
 			src={auth.currentEnvironment.avatar}
@@ -22,8 +22,8 @@
 			{@const isActive = env.id === auth.currentEnvironment.id}
 			<DropdownMenu.Item
 				class={cn(
-					"pl-2.5 pr-3 gap-x-2 select-none h-full py-1.75 text-sm relative flex text-main-50/40",
-					isActive && "data-highlighted:bg-main-900/35",
+					"relative flex h-full select-none gap-x-2 py-1.75 pl-2.5 pr-3 text-sm text-main-500",
+					isActive && "data-highlighted:bg-main-900",
 				)}
 				onSelect={() => goto(`/e/${env.id}`)}
 			>
@@ -31,7 +31,7 @@
 				<div
 					class={cn(
 						"flex gap-x-1.5 items-center min-w-0 w-full",
-						isActive && "text-main-50",
+						isActive && "text-main-100",
 					)}
 				>
 					<span class="truncate min-w-0">{env.name}</span>

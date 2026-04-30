@@ -29,7 +29,7 @@
 <Avatar.Root
 	{...restProps}
 	class={cn(
-		"inline-flex aspect-square items-center justify-center overflow-hidden rounded-full select-none bg-main-900 text-main-50/60 text-xs",
+		"inline-flex aspect-square items-center justify-center overflow-hidden rounded-full select-none bg-main-900 text-main-200 text-xs",
 		className,
 	)}
 >

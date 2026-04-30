@@ -36,7 +36,7 @@
 					in:presence={{ duration: 0 }}
 					out:presence={{ duration: 140, y, x, blur: 4 }}
 					class={cn(
-						"z-50 border border-main-900 bg-main-950 p-1 shadow-xl shadow-black/20 focus-visible:outline-none",
+						"z-50 border border-main-800 bg-main-950 p-1 shadow-xl shadow-main-950",
 						className,
 					)}
 				>

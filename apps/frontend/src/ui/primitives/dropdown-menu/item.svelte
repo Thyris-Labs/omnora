@@ -8,9 +8,9 @@
 		variants: {
 			variant: {
 				default:
-					"text-main-50/85 data-highlighted:bg-main-900 data-highlighted:text-main-50",
+					"text-main-200 data-highlighted:bg-main-900 data-highlighted:text-main-100",
 				danger:
-					"text-main-50/85 data-highlighted:bg-rose-500/10 data-highlighted:text-rose-600",
+					"text-main-200 data-highlighted:bg-main-900 data-highlighted:text-main-100",
 			},
 		},
 		defaultVariants: {

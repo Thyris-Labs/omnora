@@ -73,7 +73,7 @@
 	<div
 		class="min-h-dvh bg-main-950 text-main-100 flex items-center justify-center px-6"
 	>
-		<p class="text-sm text-main-400">Could not load your session.</p>
+		<p class="text-sm text-main-500">Could not load your session.</p>
 	</div>
 {:else}
 	<div
@@ -81,8 +81,8 @@
 		aria-busy="true"
 	>
 		{#if showLoading}
-			<div class="flex items-center gap-x-3 text-sm text-main-400">
-				<div class="size-2 rounded-full bg-main-400 animate-pulse"></div>
+			<div class="flex items-center gap-x-3 text-sm text-main-500">
+				<div class="size-2 rounded-full bg-main-500 animate-pulse"></div>
 				Loading your workspace...
 			</div>
 		{/if}

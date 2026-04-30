@@ -44,10 +44,9 @@
 
 			<Button
 				type="submit"
-				variant="action"
 				disabled={auth.submitting}
 				aria-busy={auth.submitting}
-				class="mt-6 w-full px-4 py-2"
+				class="mt-6 w-full"
 			>
 				Sign in
 			</Button>
@@ -75,7 +74,7 @@
 				<ErrorMessage message={auth.errorMessage} />
 			{/if}
 
-			<Button type="submit" variant="action" class="mt-8 w-full px-4 py-2">
+			<Button type="submit" class="mt-8 w-full">
 				Verify Email
 			</Button>
 		</Form>

@@ -14,42 +14,21 @@
 }
 
 :root {
-	--tint: 0;
-	--main-950: oklch(100% 0 var(--tint));
-	--main-900: oklch(92.0% 0 var(--tint));
-	--main-800: oklch(83.8% 0 var(--tint));
-	--main-700: oklch(75.6% 0 var(--tint));
-	--main-600: oklch(67.4% 0 var(--tint));
-	--main-500: oklch(59.2% 0 var(--tint));
-	--main-400: oklch(51.0% 0 var(--tint));
-	--main-300: oklch(42.8% 0 var(--tint));
-	--main-200: oklch(34.6% 0 var(--tint));
-	--main-100: oklch(26.4% 0 var(--tint));
-	--main-50: oklch(18.2% 0 var(--tint));
-
-	--accent: oklch(78.4% 0.150 149.6);
-}
-
-.dark {
-	--main-50: oklch(100% 0 var(--tint));
-	--main-100: oklch(92.0% 0 var(--tint));
-	--main-200: oklch(83.8% 0 var(--tint));
-	--main-300: oklch(75.6% 0 var(--tint));
-	--main-400: oklch(67.4% 0 var(--tint));
-	--main-500: oklch(59.2% 0 var(--tint));
-	--main-600: oklch(51.0% 0 var(--tint));
-	--main-700: oklch(42.8% 0 var(--tint));
-	--main-800: oklch(34.6% 0 var(--tint));
-	--main-900: oklch(26.4% 0 var(--tint));
-	--main-950: oklch(18.2% 0 var(--tint));
-
-	--accent: oklch(78.4% 0.150 149.6);
+	--main-950: #121212;
+	--main-900: #141414;
+	--main-800: #191919;
+	--main-700: #1c1c1c;
+	--main-600: #252525;
+	--main-500: #3d3d3d;
+	--main-400: #444444;
+	--main-300: #606060;
+	--main-200: #666666;
+	--main-100: #ffffff;
 }
 
 @theme {
 	--font-inter: "Inter Variable", sans-serif;
 
-	--color-accent: var(--accent);
 	--color-main-950: var(--main-950);
 	--color-main-900: var(--main-900);
 	--color-main-800: var(--main-800);
@@ -60,16 +39,40 @@
 	--color-main-300: var(--main-300);
 	--color-main-200: var(--main-200);
 	--color-main-100: var(--main-100);
-	--color-main-50: var(--main-50);
 
-  --ease-out-expo: cubic-bezier(.19, 1, .22, 1);
-  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+	--color-negative: var(--color-rose-600);
+	--color-negative-back: var(--color-rose-900);
+	--color-positive: var(--color-emerald-600);
+	--color-positive-back: var(--color-emerald-900);
+
+	--ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+	--ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
 
 	--default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-html, body {
+.transition-ds {
+	transition-duration: 75ms;
+	transition-property: background-color, border-color, color, transform;
+	transition-timing-function: var(--default-transition-timing-function);
+}
+
+html,
+body {
 	background-color: var(--color-main-950);
-	color: var(--color-main-50);
+	color: var(--color-main-100);
 	font-family: "Inter Variable";
+}
+
+:where(
+	button,
+	[role="button"],
+	a,
+	input,
+	textarea,
+	select,
+	[tabindex]:not([tabindex="-1"])
+):focus-visible {
+	outline: 2px solid var(--color-main-100);
+	outline-offset: 2px;
 }

@@ -13,8 +13,8 @@
 	const fieldVariants = tv({
 		slots: {
 			root: "flex flex-col",
-			label: "text-sm font-[435] text-main-400",
-			error: "mt-2 text-sm text-rose-500",
+			label: "text-sm font-[435] text-main-500",
+			error: "mt-2 text-sm text-main-100",
 		},
 		variants: {
 			spacing: {

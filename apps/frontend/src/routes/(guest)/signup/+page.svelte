@@ -101,7 +101,7 @@
 				data-1p-ignore
 				placeholder="johndoe"
 				oninput={onInput}
-				inputClass={usernameState === "available" ? "border-accent!" : ""}
+				inputClass={usernameState === "available" ? "border-main-500!" : ""}
 			/>
 
 			{@render messages()}
@@ -110,8 +110,7 @@
 				type="submit"
 				disabled={auth.submitting}
 				aria-busy={auth.submitting}
-				class="mt-6 w-full px-4 py-2 font-medium"
-				variant="action"
+				class="mt-6 w-full"
 			>
 				Sign up
 			</Button>
@@ -141,8 +140,7 @@
 
 			<Button
 				type="submit"
-				class="mt-8 w-full px-4 py-2 font-medium"
-				variant="action"
+				class="mt-8 w-full"
 			>
 				Verify Email
 			</Button>
@@ -152,13 +150,13 @@
 
 {#snippet messages()}
 	{#if usernameState === "checking"}
-		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-main-600">
+		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-main-500/70">
 			Checking availability...
 		</div>
 	{/if}
 
 	{#if usernameState === "available"}
-		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-accent">
+		<div class="mt-2 text-sm w-fit flex items-center gap-x-2 text-main-200">
 			{usernameMessage}
 		</div>
 	{/if}
