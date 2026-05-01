@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from "svelte";
 	import type { Directory } from "../../types";
-	import DirectoryButton from "../buttons/directory-button.svelte";
+	import DirectoryTreeItem from "./directory-tree-item.svelte";
 	import { notes } from "modules/notes/store.svelte";
 	import TreeItemButton from "../buttons/tree-item-button.svelte";
 	import PhNoteDuotone from "~icons/ph/note-duotone";
@@ -188,7 +188,7 @@
 	aria-label="Notes"
 >
 	{#each notes.noteTree?.directories ?? [] as directory}
-		<DirectoryButton
+		<DirectoryTreeItem
 			{directory}
 			{currentItemKey}
 			directoryKey={getDirectoryKey(directory.id)}
