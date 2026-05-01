@@ -12,12 +12,12 @@ export const Close = BitsDialog.Close;
 export { Content, Overlay };
 
 export default {
-	Root,
-	Trigger,
-	Portal,
-	Title,
-	Description,
-	Close,
-	Content,
-	Overlay,
+  Root,
+  Trigger,
+  Portal,
+  Title,
+  Description,
+  Close,
+  Content,
+  Overlay,
 };

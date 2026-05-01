@@ -10,10 +10,10 @@ export const Separator = BitsDropdownMenu.Separator;
 export { Content, Item };
 
 export default {
-	Root,
-	Trigger,
-	Portal,
-	Separator,
-	Content,
-	Item,
+  Root,
+  Trigger,
+  Portal,
+  Separator,
+  Content,
+  Item,
 };

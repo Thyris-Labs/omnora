@@ -2,70 +2,70 @@
 @import "./tiptap.css";
 
 @custom-variant hocus {
-	@media (hover: hover) {
-		&:hover {
-			@slot;
-		}
-	}
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
 
-	&:focus-visible {
-		@slot;
-	}
+  &:focus-visible {
+    @slot;
+  }
 }
 
 :root {
-	--main-950: #0F0F0F;
-	--main-900: #141414;
-	--main-800: #1F1F1F;
-	--main-700: #1c1c1c;
-	--main-600: #252525;
-	--main-500: #3d3d3d;
-	--main-400: #444444;
-	--main-300: #606060;
-	--main-200: #666666;
-	--main-100: #A6A6A6;
-	--main-50: #ffffff;
+  --main-950: #0f0f0f;
+  --main-900: #141414;
+  --main-800: #1f1f1f;
+  --main-700: #1c1c1c;
+  --main-600: #252525;
+  --main-500: #3d3d3d;
+  --main-400: #444444;
+  --main-300: #606060;
+  --main-200: #666666;
+  --main-100: #a6a6a6;
+  --main-50: #ffffff;
 }
 
 @theme {
-	--font-inter: "Inter Variable", sans-serif;
+  --font-inter: "Inter Variable", sans-serif;
 
-	--color-main-950: var(--main-950);
-	--color-main-900: var(--main-900);
-	--color-main-800: var(--main-800);
-	--color-main-700: var(--main-700);
-	--color-main-600: var(--main-600);
-	--color-main-500: var(--main-500);
-	--color-main-400: var(--main-400);
-	--color-main-300: var(--main-300);
-	--color-main-200: var(--main-200);
-	--color-main-100: var(--main-100);
-	--color-main-50: var(--main-50);
+  --color-main-950: var(--main-950);
+  --color-main-900: var(--main-900);
+  --color-main-800: var(--main-800);
+  --color-main-700: var(--main-700);
+  --color-main-600: var(--main-600);
+  --color-main-500: var(--main-500);
+  --color-main-400: var(--main-400);
+  --color-main-300: var(--main-300);
+  --color-main-200: var(--main-200);
+  --color-main-100: var(--main-100);
+  --color-main-50: var(--main-50);
 
-	--color-negative: var(--color-rose-600);
-	--color-negative-back: var(--color-rose-900);
-	--color-positive: var(--color-emerald-600);
-	--color-positive-back: var(--color-emerald-900);
+  --color-negative: var(--color-rose-600);
+  --color-negative-back: var(--color-rose-900);
+  --color-positive: var(--color-emerald-600);
+  --color-positive-back: var(--color-emerald-900);
 
-	--ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-	--ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
 
-	--default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .transition-ds {
-	transition-duration: 75ms;
-	transition-property: background-color, border-color, color, transform;
-	transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: 75ms;
+  transition-property: background-color, border-color, color, transform;
+  transition-timing-function: var(--default-transition-timing-function);
 }
 
 html,
 body {
-	background-color: var(--color-main-950);
-	color: var(--color-main-50);
-	font-family: "Inter Variable";
+  background-color: var(--color-main-950);
+  color: var(--color-main-50);
+  font-family: "Inter Variable";
 }
 
 * {
-	border-color: var(--color-main-800);
+  border-color: var(--color-main-800);
 }

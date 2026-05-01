@@ -1,1 +1,1 @@
-export { default as Settings } from "./components/root.svelte"
+export { default as Settings } from "./components/root.svelte";
