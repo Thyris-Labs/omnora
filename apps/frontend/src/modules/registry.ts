@@ -23,6 +23,10 @@ export interface ModuleInformations {
 	Icon: Component<SVGAttributes<SVGSVGElement>, {}>
 }
 
+export interface ModuleEntry extends ModuleInformations {
+	type: ModuleTypes
+}
+
 export const MODULES: Record<ModuleTypes, ModuleInformations> = {
 	NOTES: { name: "Notes", slug: "notes", Icon: PhNotePencilDuotone },
 	INBOX: { name: "Inbox", slug: "inbox", Icon: PhEnvelopeDuotone },
@@ -40,8 +44,8 @@ export const MODULES: Record<ModuleTypes, ModuleInformations> = {
 export const MODULE_ENTRIES = Object.entries(MODULES).map(([type, module]) => ({
 	type: type as ModuleTypes,
 	...module,
-}))
+})) satisfies ModuleEntry[]
 
 export const MODULES_BY_SLUG = Object.fromEntries(
 	MODULE_ENTRIES.map((module) => [module.slug, module]),
-) as Record<string, (typeof MODULE_ENTRIES)[number]>
+) as Record<string, ModuleEntry>

@@ -1,11 +1,6 @@
-export interface Directory {
-	id: string
-	name: string
-	notes?: Array<Note>
-}
+import type { routes } from "@omnora/api/registry"
+import type { EndpointByMethodPattern, ResponseOf } from "@tuyau/core/types"
 
-export interface Note {
-	id: string
-	title?: string
-	content?: string
-}
+export type AllNotes = ResponseOf<EndpointByMethodPattern<typeof routes, "GET", "/api/v1/notes">>
+export type Directory = AllNotes['directories'][number]
+export type Note = AllNotes['notes'][number]
