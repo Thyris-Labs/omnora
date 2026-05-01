@@ -4,7 +4,10 @@ type ParamValue = string | number | bigint | boolean
 
 export type ScannedRoutes = {
   ALL: {
+    'directories.directories.store': { paramsTuple?: []; params?: {} }
     'environments.environments.store': { paramsTuple?: []; params?: {} }
+    'notes.notes.index': { paramsTuple?: []; params?: {} }
+    'notes.notes.store': { paramsTuple?: []; params?: {} }
     'auth.auth.verify_email': { paramsTuple?: []; params?: {} }
     'auth.auth.check_username': { paramsTuple?: []; params?: {} }
     'auth.auth.signup': { paramsTuple?: []; params?: {} }
@@ -16,7 +19,9 @@ export type ScannedRoutes = {
     'users.users.update_avatar': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'directories.directories.store': { paramsTuple?: []; params?: {} }
     'environments.environments.store': { paramsTuple?: []; params?: {} }
+    'notes.notes.store': { paramsTuple?: []; params?: {} }
     'auth.auth.verify_email': { paramsTuple?: []; params?: {} }
     'auth.auth.check_username': { paramsTuple?: []; params?: {} }
     'auth.auth.signup': { paramsTuple?: []; params?: {} }
@@ -24,10 +29,12 @@ export type ScannedRoutes = {
     'auth.auth.logout': { paramsTuple?: []; params?: {} }
   }
   GET: {
+    'notes.notes.index': { paramsTuple?: []; params?: {} }
     'auth.auth.check': { paramsTuple?: []; params?: {} }
     'users.users.setup': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
+    'notes.notes.index': { paramsTuple?: []; params?: {} }
     'auth.auth.check': { paramsTuple?: []; params?: {} }
     'users.users.setup': { paramsTuple?: []; params?: {} }
   }

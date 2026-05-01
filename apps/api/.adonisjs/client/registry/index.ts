@@ -6,11 +6,29 @@ import type { ApiDefinition } from './tree.d.ts'
 const placeholder: any = {}
 
 const routes = {
+  'directories.directories.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/directories/create',
+    tokens: [{"old":"/api/v1/directories/create","type":0,"val":"api","end":""},{"old":"/api/v1/directories/create","type":0,"val":"v1","end":""},{"old":"/api/v1/directories/create","type":0,"val":"directories","end":""},{"old":"/api/v1/directories/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['directories.directories.store']['types'],
+  },
   'environments.environments.store': {
     methods: ["POST"],
     pattern: '/api/v1/environments/create',
     tokens: [{"old":"/api/v1/environments/create","type":0,"val":"api","end":""},{"old":"/api/v1/environments/create","type":0,"val":"v1","end":""},{"old":"/api/v1/environments/create","type":0,"val":"environments","end":""},{"old":"/api/v1/environments/create","type":0,"val":"create","end":""}],
     types: placeholder as Registry['environments.environments.store']['types'],
+  },
+  'notes.notes.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/notes',
+    tokens: [{"old":"/api/v1/notes","type":0,"val":"api","end":""},{"old":"/api/v1/notes","type":0,"val":"v1","end":""},{"old":"/api/v1/notes","type":0,"val":"notes","end":""}],
+    types: placeholder as Registry['notes.notes.index']['types'],
+  },
+  'notes.notes.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/notes/save',
+    tokens: [{"old":"/api/v1/notes/save","type":0,"val":"api","end":""},{"old":"/api/v1/notes/save","type":0,"val":"v1","end":""},{"old":"/api/v1/notes/save","type":0,"val":"notes","end":""},{"old":"/api/v1/notes/save","type":0,"val":"save","end":""}],
+    types: placeholder as Registry['notes.notes.store']['types'],
   },
   'auth.auth.verify_email': {
     methods: ["POST"],

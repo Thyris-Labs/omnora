@@ -2,9 +2,20 @@
 import type { routes } from './index.ts'
 
 export interface ApiDefinition {
+  directories: {
+    directories: {
+      store: typeof routes['directories.directories.store']
+    }
+  }
   environments: {
     environments: {
       store: typeof routes['environments.environments.store']
+    }
+  }
+  notes: {
+    notes: {
+      index: typeof routes['notes.notes.index']
+      store: typeof routes['notes.notes.store']
     }
   }
   auth: {

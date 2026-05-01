@@ -7,6 +7,18 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
+  'directories.directories.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/directories/create'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').createDirectoryValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').createDirectoryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'environments.environments.store': {
     methods: ["POST"]
     pattern: '/api/v1/environments/create'
@@ -17,6 +29,30 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#app/features/environments/validators/environment_validator').createEnvironmentValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#features/environments/controllers/environments_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/environments/controllers/environments_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'notes.notes.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/notes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['index']>>>
+    }
+  }
+  'notes.notes.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/notes/save'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/notes/validators/note_validator').saveNoteValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').saveNoteValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.auth.verify_email': {

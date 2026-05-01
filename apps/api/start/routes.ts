@@ -10,7 +10,9 @@
 // import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 // import { controllers } from '#generated/controllers'
+import '#features/directories/routes'
 import '#features/environments/routes'
+import '#features/notes/routes'
 import '#features/users/routes'
 
 router.get('/', () => {
