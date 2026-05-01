@@ -5,6 +5,7 @@ export interface ApiDefinition {
   directories: {
     directories: {
       store: typeof routes['directories.directories.store']
+      update: typeof routes['directories.directories.update']
     }
   }
   environments: {

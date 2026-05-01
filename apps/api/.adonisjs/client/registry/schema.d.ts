@@ -19,6 +19,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'directories.directories.update': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/directories/edit'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').editDirectoryValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').editDirectoryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'environments.environments.store': {
     methods: ["POST"]
     pattern: '/api/v1/environments/create'

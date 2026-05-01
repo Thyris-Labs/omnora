@@ -12,6 +12,12 @@ const routes = {
     tokens: [{"old":"/api/v1/directories/create","type":0,"val":"api","end":""},{"old":"/api/v1/directories/create","type":0,"val":"v1","end":""},{"old":"/api/v1/directories/create","type":0,"val":"directories","end":""},{"old":"/api/v1/directories/create","type":0,"val":"create","end":""}],
     types: placeholder as Registry['directories.directories.store']['types'],
   },
+  'directories.directories.update': {
+    methods: ["PATCH"],
+    pattern: '/api/v1/directories/edit',
+    tokens: [{"old":"/api/v1/directories/edit","type":0,"val":"api","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"v1","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"directories","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['directories.directories.update']['types'],
+  },
   'environments.environments.store': {
     methods: ["POST"],
     pattern: '/api/v1/environments/create',

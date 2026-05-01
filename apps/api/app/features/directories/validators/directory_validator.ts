@@ -7,4 +7,9 @@ export const createDirectoryValidator = vine.create({
   type: vine.enum(['NOTES', 'ARCHIVE']),
 })
 
+export const editDirectoryValidator = vine.create({
+  directoryId: vine.string().uuid(),
+  title: vine.string(),
+})
+
 export type CreateDirectoryPayload = Infer<typeof createDirectoryValidator>
