@@ -1,42 +1,70 @@
-import type { Directory, Note } from "./types"
-import { goto } from "$app/navigation"
-import { resolve } from "$app/paths"
-import { auth } from "features/auth/store.svelte"
-
-// FIXME: Delete when connected to backend
-const DIRECTORIES: Array<Directory> = [
-	{
-		id: "all-notes",
-		name: "All notes",
-		notes: [
-			{ id: "11729", title: "First note", content: "hello world" },
-			{ id: "237U918", title: "Second note" },
-			{ id: "38213E", title: "Third note", content: "bye world" },
-			{ id: "121827", title: "Some random thing", content: "yes" },
-			{ id: "292723" },
-		],
-	},
-];
+import type { AllNotes, Note } from "./types"
+import { page } from "$app/state"
+import { shell } from "features/shell/store.svelte"
+import { client } from "lib/api";
 
 class NotesStore {
-	currentNote = $state<Note | null>(null)
-	directories = $state<Directory[]>(DIRECTORIES)
+	noteTree = $state<AllNotes | null>(null)
 
-	open(noteId: string) {
-		let match: Note | null = null
+	get currentNote() {
+		const activeTab = shell.activeTab
 
-		for (const directory of this.directories) {
-			if (!directory.notes?.length) continue
+		if (activeTab?.type !== "NOTES" || !activeTab.noteId) return null
 
-			for (const note of directory.notes) {
-				if (note.id === noteId) match = note
-			}
+		return this.findNote(activeTab.noteId)
+	}
+
+	get allNotes() {
+		const noteTree = this.noteTree
+		if (!noteTree) return []
+
+		return [
+			...noteTree.directories.flatMap((directory) => directory.notes),
+			...noteTree.notes,
+		]
+	}
+
+	async init() {
+		const [data, err] = await client.get("/api/v1/notes", {}).safe()
+
+		if (err) {
+			console.error(err)
+			return
 		}
+
+		this.noteTree = data
+
+		if (page.params.note_id) {
+			shell.openNote({ noteId: page.params.note_id })
+		}
+	}
+
+	async open(noteId: string) {
+		const match = this.findNote(noteId)
 
 		if (!match) return
 
-		this.currentNote = match
-		goto(resolve('/(app)/e/[environment_id]/m/notes/[note_id]', { environment_id: auth.currentEnvironment.id, note_id: match.id }))
+		shell.openNote({ noteId: match.id })
+	}
+
+	findNote(noteId: string) {
+		return this.allNotes.find((note) => note.id === noteId) ?? null
+	}
+
+	addStandaloneNote(note: Note) {
+		if (!this.noteTree) {
+			this.noteTree = { directories: [], notes: [note] }
+			return
+		}
+
+		this.noteTree.notes.push(note)
+	}
+
+	updateNote(noteId: string, patch: Partial<Note>) {
+		const note = this.findNote(noteId)
+		if (!note) return
+
+		Object.assign(note, patch)
 	}
 
 }

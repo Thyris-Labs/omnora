@@ -59,7 +59,7 @@
 		{:else}
 			<PhFolderSimpleDuotone aria-hidden="true" />
 		{/if}
-		{directory.name}
+		{directory.title}
 	</TreeItemButton>
 
 	<div

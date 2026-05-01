@@ -3,17 +3,26 @@
 	import type { Directory } from "../../types";
 	import DirectoryButton from "../buttons/directory-button.svelte";
 	import { notes } from "modules/notes/store.svelte";
+	import TreeItemButton from "../buttons/tree-item-button.svelte";
+	import PhNoteDuotone from "~icons/ph/note-duotone";
+	import { page } from "$app/state";
 
 	let treeElement = $state<HTMLDivElement | null>(null);
 	let currentItemKey = $state<string | null>(null);
 	let openDirectoryIds = $state<Set<string>>(new Set());
 
-	type TreeItem = {
-		key: string;
-		kind: "directory" | "note";
-		directory: Directory;
-		noteId?: string;
-	};
+	type TreeItem =
+		| {
+				key: string;
+				kind: "directory";
+				directory: Directory;
+		  }
+		| {
+				key: string;
+				kind: "note";
+				noteId: string;
+				directory?: Directory;
+		  };
 
 	function getDirectoryKey(directoryId: string) {
 		return `directory:${directoryId}`;
@@ -23,10 +32,14 @@
 		return `note:${directoryId}:${noteId}`;
 	}
 
+	function getStandaloneNoteKey(noteId: string) {
+		return `note:${noteId}`;
+	}
+
 	const visibleItems = $derived.by(() => {
 		const items: Array<TreeItem> = [];
 
-		for (const directory of notes.directories) {
+		for (const directory of notes.noteTree?.directories ?? []) {
 			items.push({
 				key: getDirectoryKey(directory.id),
 				kind: "directory",
@@ -45,6 +58,14 @@
 					noteId: note.id,
 				});
 			}
+		}
+
+		for (const note of notes.noteTree?.notes ?? []) {
+			items.push({
+				key: getStandaloneNoteKey(note.id),
+				kind: "note",
+				noteId: note.id,
+			});
 		}
 
 		return items;
@@ -153,7 +174,9 @@
 				return;
 			}
 
-			focusItem(getDirectoryKey(currentItem.directory.id));
+			if (currentItem.directory) {
+				focusItem(getDirectoryKey(currentItem.directory.id));
+			}
 		}
 	}
 </script>
@@ -164,7 +187,7 @@
 	role="tree"
 	aria-label="Notes"
 >
-	{#each notes.directories as directory}
+	{#each notes.noteTree?.directories ?? [] as directory}
 		<DirectoryButton
 			{directory}
 			{currentItemKey}
@@ -175,5 +198,24 @@
 			onItemFocus={(key) => (currentItemKey = key)}
 			onItemKeydown={handleItemKeydown}
 		/>
+	{/each}
+
+	{#each notes.noteTree?.notes ?? [] as note (note.id)}
+		{@const noteKey = getStandaloneNoteKey(note.id)}
+		{@const title = note.title === "" || !note.title ? "No name" : note.title}
+
+		<TreeItemButton
+			data-tree-item-key={noteKey}
+			role="treeitem"
+			aria-level={1}
+			aria-selected={note.id === page.params.note_id}
+			tabindex={currentItemKey === noteKey ? 0 : -1}
+			onfocus={() => (currentItemKey = noteKey)}
+			onkeydown={(event: KeyboardEvent) => handleItemKeydown(event, noteKey)}
+			onclick={() => notes.open(note.id)}
+		>
+			<PhNoteDuotone aria-hidden="true" />
+			{title}
+		</TreeItemButton>
 	{/each}
 </div>
