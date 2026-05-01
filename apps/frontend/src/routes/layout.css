@@ -14,16 +14,17 @@
 }
 
 :root {
-	--main-950: #121212;
+	--main-950: #0F0F0F;
 	--main-900: #141414;
-	--main-800: #191919;
+	--main-800: #1F1F1F;
 	--main-700: #1c1c1c;
 	--main-600: #252525;
 	--main-500: #3d3d3d;
 	--main-400: #444444;
 	--main-300: #606060;
 	--main-200: #666666;
-	--main-100: #ffffff;
+	--main-100: #A6A6A6;
+	--main-50: #ffffff;
 }
 
 @theme {
@@ -39,6 +40,7 @@
 	--color-main-300: var(--main-300);
 	--color-main-200: var(--main-200);
 	--color-main-100: var(--main-100);
+	--color-main-50: var(--main-50);
 
 	--color-negative: var(--color-rose-600);
 	--color-negative-back: var(--color-rose-900);
@@ -60,19 +62,10 @@
 html,
 body {
 	background-color: var(--color-main-950);
-	color: var(--color-main-100);
+	color: var(--color-main-50);
 	font-family: "Inter Variable";
 }
 
-:where(
-	button,
-	[role="button"],
-	a,
-	input,
-	textarea,
-	select,
-	[tabindex]:not([tabindex="-1"])
-):focus-visible {
-	outline: 2px solid var(--color-main-100);
-	outline-offset: 2px;
+* {
+	border-color: var(--color-main-800);
 }

@@ -8,12 +8,12 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger
-		class="relative flex h-full select-none items-center gap-x-2 border-l border-main-800 py-1.75 pl-2.5 pr-3 text-sm text-main-500 outline-none transition-ds hover:bg-main-900 hover:text-main-200 aria-expanded:text-main-200"
+		class="relative flex h-full select-none items-center gap-x-2 pl-1.25 pr-3 text-sm text-main-300 outline-none transition-ds hover:bg-main-600 hover:text-main-100 aria-expanded:text-main-100 aria-expanded:bg-main-600 rounded"
 	>
 		<Avatar
 			src={auth.currentEnvironment.avatar}
 			name={auth.currentEnvironment.name}
-			class="size-5.5 shrink-0"
+			class="size-4.5 shrink-0"
 		/>
 		<span class="text-nowrap">{auth.currentEnvironment.name}</span>
 	</DropdownMenu.Trigger>
@@ -23,7 +23,7 @@
 			<DropdownMenu.Item
 				class={cn(
 					"relative flex h-full select-none gap-x-2 py-1.75 pl-2.5 pr-3 text-sm text-main-500",
-					isActive && "data-highlighted:bg-main-900",
+					isActive && "data-highlighted:bg-main-700",
 				)}
 				onSelect={() => goto(`/e/${env.id}`)}
 			>
@@ -31,12 +31,12 @@
 				<div
 					class={cn(
 						"flex gap-x-1.5 items-center min-w-0 w-full",
-						isActive && "text-main-100",
+						isActive && "text-main-50",
 					)}
 				>
 					<span class="truncate min-w-0">{env.name}</span>
 					{#if isActive}
-						<span class="text-main-500 text-xs mt-0.5 shrink-0">
+						<span class="text-main-300 text-xs mt-0.5 shrink-0">
 							- CURRENT
 						</span>
 					{/if}

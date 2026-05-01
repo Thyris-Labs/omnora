@@ -1,14 +1,12 @@
 <script lang="ts">
 	import PhFolderSimpleDuotone from "~icons/ph/folder-simple-duotone";
-	import type { Directory } from "../types";
+	import type { Directory } from "../../types";
 	import { cn } from "tailwind-variants";
 	import PhNoteDuotone from "~icons/ph/note-duotone";
 	import PhFolderOpenDuotone from "~icons/ph/folder-open-duotone";
-	import { goto } from "$app/navigation";
-	import { resolve } from "$app/paths";
-	import { auth } from "features/auth/store.svelte";
 	import { page } from "$app/state";
 	import TreeItemButton from "./tree-item-button.svelte";
+	import { notes as notesStore } from "modules/notes/store.svelte";
 
 	interface Props {
 		directory: Directory;
@@ -74,7 +72,7 @@
 	>
 		<div
 			aria-hidden="true"
-			class="w-px absolute left-4 h-full bg-main-900"
+			class="w-px absolute left-4 h-full bg-main-600"
 		></div>
 		{#each directory.notes ?? [] as note (note.id)}
 			{@const noteKey = getNoteKey(directory.id, note.id)}
@@ -86,13 +84,7 @@
 				tabindex={open && currentItemKey === noteKey ? 0 : -1}
 				onfocus={() => onItemFocus(noteKey)}
 				onkeydown={(event: KeyboardEvent) => onItemKeydown(event, noteKey)}
-				onclick={() =>
-					goto(
-						resolve("/(app)/e/[environment_id]/m/notes/[note_id]", {
-							environment_id: auth.currentEnvironment.id,
-							note_id: note.id,
-						}),
-					)}
+				onclick={() => notesStore.open(note.id)}
 			>
 				<PhNoteDuotone aria-hidden="true" />
 				{note.title ?? "No name"}

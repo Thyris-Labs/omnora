@@ -16,7 +16,7 @@
 	{...restProps}
 	variant="unstyled"
 	class={cn(
-		"flex w-full items-center justify-start gap-x-2 border border-transparent px-2 py-1.5 text-sm text-main-500 outline-none transition-ds hover:bg-main-900 hover:text-main-200 active:bg-main-900/80 aria-selected:border-main-800 aria-selected:bg-main-900 aria-selected:text-main-100",
+		"flex w-full items-center justify-start gap-x-2 px-2 py-1.5 text-sm text-main-300 outline-none hover:bg-main-700 hover:text-main-100 aria-selected:bg-main-600 aria-selected:text-main-50 rounded",
 		className,
 	)}
 >

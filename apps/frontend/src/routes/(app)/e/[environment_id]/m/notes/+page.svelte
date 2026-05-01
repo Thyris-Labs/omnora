@@ -1,4 +1,1 @@
-<script lang="ts">
-</script>
-
-Hello notes
+<script lang="ts"></script>

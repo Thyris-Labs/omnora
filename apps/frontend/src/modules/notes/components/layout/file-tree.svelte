@@ -1,13 +1,9 @@
 <script lang="ts">
 	import { tick } from "svelte";
-	import type { Directory } from "../types";
-	import DirectoryButton from "./directory-button.svelte";
+	import type { Directory } from "../../types";
+	import DirectoryButton from "../buttons/directory-button.svelte";
+	import { notes } from "modules/notes/store.svelte";
 
-	interface Props {
-		directories: Array<Directory>;
-	}
-
-	let { directories }: Props = $props();
 	let treeElement = $state<HTMLDivElement | null>(null);
 	let currentItemKey = $state<string | null>(null);
 	let openDirectoryIds = $state<Set<string>>(new Set());
@@ -30,7 +26,7 @@
 	const visibleItems = $derived.by(() => {
 		const items: Array<TreeItem> = [];
 
-		for (const directory of directories) {
+		for (const directory of notes.directories) {
 			items.push({
 				key: getDirectoryKey(directory.id),
 				kind: "directory",
@@ -168,7 +164,7 @@
 	role="tree"
 	aria-label="Notes"
 >
-	{#each directories as directory}
+	{#each notes.directories as directory}
 		<DirectoryButton
 			{directory}
 			{currentItemKey}

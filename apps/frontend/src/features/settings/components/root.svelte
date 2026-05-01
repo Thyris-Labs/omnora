@@ -14,7 +14,7 @@
 <Dialog.Root bind:open={settings.isOpen}>
 	<Dialog.Portal>
 		<Dialog.Overlay />
-		<Dialog.Content class="flex h-150 w-200">
+		<Dialog.Content class="flex h-150 w-200 rounded-lg outline-none">
 			<Tabs.Root
 				bind:value={activeTab}
 				orientation="vertical"

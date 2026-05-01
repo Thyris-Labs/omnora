@@ -8,8 +8,8 @@
 	import TopBarIconButton from "./top-bar-icon-button.svelte";
 </script>
 
-<nav class="h-10 w-full flex border-b border-main-800 justify-between">
-	<div class="flex p-1 gap-x-1">
+<nav class="h-7 w-full flex justify-between">
+	<div class="flex gap-x-1">
 		<ul class="flex items-center gap-x-1">
 			{#each shell.tabs as tab (tab.id)}
 				<TabButton {tab} />
@@ -17,15 +17,14 @@
 		</ul>
 
 		<TopBarIconButton label="New tab" onclick={() => shell.newTab()}>
-			<PhPlusBold aria-hidden="true" />
+			<PhPlusBold aria-hidden="true" class="size-4" />
 		</TopBarIconButton>
 	</div>
 
-	<div class="flex">
+	<div class="flex gap-x-1">
 		<EnvironmentSelector />
 		<TopBarIconButton
 			label="Open settings"
-			bordered
 			onclick={() => settings.openSettings()}
 		>
 			<PhGearDuotone aria-hidden="true" />

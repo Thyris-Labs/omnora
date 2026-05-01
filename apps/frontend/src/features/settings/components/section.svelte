@@ -16,9 +16,9 @@
 	<header
 		class="border-b border-main-800 px-4.5 py-2.5 flex items-center gap-x-2"
 	>
-		<h2 class="text-sm font-[465] text-main-200">{title}</h2>
+		<h2 class="text-sm font-[465] text-main-50">{title}</h2>
 		{#if description}
-			<p class="text-sm text-main-500/70 mt-px">{description}</p>
+			<p class="text-sm text-main-300 mt-px">{description}</p>
 		{/if}
 	</header>
 
