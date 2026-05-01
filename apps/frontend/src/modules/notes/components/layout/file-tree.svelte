@@ -183,7 +183,7 @@
 
 <div
 	bind:this={treeElement}
-	class="flex flex-col gap-y-1"
+	class="flex flex-col gap-y-1 relative z-1"
 	role="tree"
 	aria-label="Notes"
 >
