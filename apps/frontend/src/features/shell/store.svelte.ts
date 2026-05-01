@@ -1,18 +1,10 @@
 import { goto } from "$app/navigation";
 import { resolve } from "$app/paths";
 import { auth } from "features/auth/store.svelte";
-import type { ModuleInformations } from "modules/registry";
-import PhSquareDuotone from "~icons/ph/square-duotone";
-
-export interface ShellTab extends ModuleInformations {
-	id: string;
-}
-
-const NEW_TAB: ModuleInformations = {
-	name: "New Tab",
-	Icon: PhSquareDuotone,
-	slug: "",
-};
+import { MODULES } from "modules/registry";
+import type { ModuleEntry } from "modules/registry";
+import { DEFAULT_SHELL_TAB } from "./types";
+import type { ShellTab, ShellTabContent } from "./types";
 
 function getEnvironmentPath() {
 	return resolve("/(app)/e/[environment_id]", {
@@ -22,7 +14,13 @@ function getEnvironmentPath() {
 
 function getTabPath(tab: ShellTab) {
 	const base = getEnvironmentPath();
-	return tab.slug ? `${base}/m/${tab.slug}` : base;
+	const modulePath = tab.slug ? `${base}/m/${tab.slug}` : base;
+
+	if (tab.type === "NOTES" && tab.noteId) {
+		return `${modulePath}/${tab.noteId}`;
+	}
+
+	return modulePath;
 }
 
 class ShellStore {
@@ -30,7 +28,7 @@ class ShellStore {
 	activeTabId = $state<string | null>(null);
 	activeTab = $derived(this.tabs.find((tab) => tab.id === this.activeTabId));
 
-	#createTab(content: ModuleInformations): ShellTab {
+	#createTab(content: ShellTabContent): ShellTab {
 		return { ...content, id: crypto.randomUUID() };
 	}
 
@@ -40,7 +38,7 @@ class ShellStore {
 	}
 
 	newTab() {
-		const tab = this.#createTab(NEW_TAB);
+		const tab = this.#createTab(DEFAULT_SHELL_TAB);
 		this.tabs.push(tab);
 		this.#activate(tab);
 	}
@@ -51,7 +49,7 @@ class ShellStore {
 		this.#activate(tab);
 	}
 
-	openModule(module: ModuleInformations) {
+	openModule(module: ModuleEntry) {
 		const active = this.activeTab;
 		if (!active) {
 			const tab = this.#createTab(module);
@@ -59,7 +57,23 @@ class ShellStore {
 			this.#activate(tab);
 			return;
 		}
+
 		Object.assign(active, module);
+		this.#activate(active);
+	}
+
+	openNote({ noteId, newTab = false }: { noteId: string, newTab?: boolean }) {
+		const active = this.activeTab;
+		const notesModule = MODULES.NOTES;
+
+		if (!active || newTab) {
+			const tab = this.#createTab({ ...notesModule, type: "NOTES", noteId });
+			this.tabs.push(tab);
+			this.#activate(tab);
+			return;
+		}
+
+		Object.assign(active, { ...notesModule, type: "NOTES", noteId });
 		this.#activate(active);
 	}
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { shell, type ShellTab } from "features/shell/store.svelte";
+	import { shell } from "features/shell/store.svelte";
+	import type { ShellTab } from "features/shell/types";
 	import { cn } from "tailwind-variants";
 	import Button from "ui/primitives/button.svelte";
 	import PhXBold from "~icons/ph/x-bold";
