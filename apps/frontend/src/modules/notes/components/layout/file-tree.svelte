@@ -6,6 +6,11 @@
 	import TreeItemButton from "../buttons/tree-item-button.svelte";
 	import PhNoteDuotone from "~icons/ph/note-duotone";
 	import { page } from "$app/state";
+	import { ContextMenu } from "bits-ui";
+	import {
+		ContextMenuContent,
+		ContextMenuItem,
+	} from "ui/primitives/context-menu";
 
 	let treeElement = $state<HTMLDivElement | null>(null);
 	let currentItemKey = $state<string | null>(null);
@@ -205,19 +210,31 @@
 			{@const title =
 				treeItem.title === "" || !treeItem.title ? "No name" : treeItem.title}
 
-			<TreeItemButton
-				data-tree-item-key={noteKey}
-				role="treeitem"
-				aria-level={1}
-				aria-selected={treeItem.id === page.params.note_id}
-				tabindex={currentItemKey === noteKey ? 0 : -1}
-				onfocus={() => (currentItemKey = noteKey)}
-				onkeydown={(event: KeyboardEvent) => handleItemKeydown(event, noteKey)}
-				onclick={() => notes.open(treeItem.id)}
-			>
-				<PhNoteDuotone aria-hidden="true" />
-				{title}
-			</TreeItemButton>
+			<ContextMenu.Root>
+				<ContextMenu.Trigger>
+					<TreeItemButton
+						data-tree-item-key={noteKey}
+						role="treeitem"
+						aria-level={1}
+						aria-selected={treeItem.id === page.params.note_id}
+						tabindex={currentItemKey === noteKey ? 0 : -1}
+						onfocus={() => (currentItemKey = noteKey)}
+						onkeydown={(event: KeyboardEvent) =>
+							handleItemKeydown(event, noteKey)}
+						onclick={() => notes.open(treeItem.id)}
+					>
+						<PhNoteDuotone aria-hidden="true" />
+						{title}
+					</TreeItemButton>
+				</ContextMenu.Trigger>
+				<ContextMenu.Portal>
+					<ContextMenuContent>
+						<ContextMenuItem onclick={() => void notes.deleteNote(treeItem.id)}>
+							Delete note
+						</ContextMenuItem>
+					</ContextMenuContent>
+				</ContextMenu.Portal>
+			</ContextMenu.Root>
 		{/if}
 	{/each}
 </div>

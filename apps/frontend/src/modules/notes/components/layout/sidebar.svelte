@@ -4,6 +4,7 @@
 	import SidebarActionButton from "../buttons/sidebar-action-button.svelte";
 	import { ContextMenu, ContextMenuItem } from "ui/primitives/context-menu";
 	import { notes } from "modules/notes/store.svelte";
+	import { shell } from "features/shell/store.svelte";
 </script>
 
 <aside
@@ -11,12 +12,15 @@
 >
 	<FileTree />
 
-	<SidebarActionButton>
+	<SidebarActionButton onclick={() => shell.openNotesTrash()}>
 		<PhTrashDuotone aria-hidden="true" />
 		Trash
 	</SidebarActionButton>
 
 	<ContextMenu>
+		<ContextMenuItem onclick={() => void notes.createNote()}>
+			Create a note
+		</ContextMenuItem>
 		<ContextMenuItem
 			onclick={() => void notes.createDirectory({ moduleType: "NOTES" })}
 		>

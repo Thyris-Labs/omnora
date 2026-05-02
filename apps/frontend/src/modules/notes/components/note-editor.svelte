@@ -2,7 +2,7 @@
 	import type { JSONContent } from "@tiptap/core";
 	import { page } from "$app/state";
 	import { client } from "lib/api";
-	import { notes } from "modules/notes/store.svelte";
+	import { EMPTY_DOCUMENT, notes } from "modules/notes/store.svelte";
 	import type { Note } from "modules/notes/types";
 	import { useDebounce } from "runed";
 	import { onDestroy, onMount } from "svelte";
@@ -15,10 +15,6 @@
 		mode: "create" | "edit";
 	}
 
-	const EMPTY_DOCUMENT: JSONContent = {
-		type: "doc",
-		content: [{ type: "paragraph" }],
-	};
 	const SAVE_DELAY = 600;
 
 	let { mode }: Props = $props();
@@ -86,6 +82,7 @@
 			rawContent: draftRawContent,
 			directoryId: null,
 			positionIdx: notes.tree.length ?? 0,
+			isDeleted: false,
 			createdAt: null,
 			updatedAt: null,
 		};

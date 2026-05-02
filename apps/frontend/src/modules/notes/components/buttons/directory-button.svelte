@@ -81,6 +81,14 @@
 			cancelEditing();
 		}
 	}
+
+	async function handleCreateNote() {
+		if (!open) {
+			onDirectoryToggle(directory.id);
+		}
+
+		await notesStore.createNote({ directoryId: directory.id });
+	}
 </script>
 
 <ContextMenu.Root>
@@ -132,8 +140,14 @@
 	</ContextMenu.Trigger>
 	<ContextMenu.Portal>
 		<ContextMenuContent>
+			<ContextMenuItem onclick={() => void handleCreateNote()}>
+				Create a note
+			</ContextMenuItem>
 			<ContextMenuItem onclick={() => (notesStore.editingDirectoryId = directory.id)}>
 				Rename
+			</ContextMenuItem>
+			<ContextMenuItem onclick={() => void notesStore.deleteDirectory(directory.id)}>
+				Delete directory
 			</ContextMenuItem>
 		</ContextMenuContent>
 	</ContextMenu.Portal>

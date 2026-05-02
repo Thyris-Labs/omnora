@@ -6,6 +6,11 @@
 	import { notes as notesStore } from "modules/notes/store.svelte";
 	import { cn } from "tailwind-variants";
 	import PhNoteDuotone from "~icons/ph/note-duotone";
+	import { ContextMenu } from "bits-ui";
+	import {
+		ContextMenuContent,
+		ContextMenuItem,
+	} from "ui/primitives/context-menu";
 
 	interface Props {
 		directory: Directory;
@@ -69,19 +74,30 @@
 			{@const noteKey = getNoteKey(directory.id, note.id)}
 			{@const title = note.title === "" || !note.title ? "No name" : note.title}
 
-			<TreeItemButton
-				data-tree-item-key={noteKey}
-				role="treeitem"
-				aria-level={2}
-				aria-selected={note.id === page.params.note_id}
-				tabindex={open && currentItemKey === noteKey ? 0 : -1}
-				onfocus={() => onItemFocus(noteKey)}
-				onkeydown={(event: KeyboardEvent) => onItemKeydown(event, noteKey)}
-				onclick={() => notesStore.open(note.id)}
-			>
-				<PhNoteDuotone aria-hidden="true" />
-				{title}
-			</TreeItemButton>
+			<ContextMenu.Root>
+				<ContextMenu.Trigger>
+					<TreeItemButton
+						data-tree-item-key={noteKey}
+						role="treeitem"
+						aria-level={2}
+						aria-selected={note.id === page.params.note_id}
+						tabindex={open && currentItemKey === noteKey ? 0 : -1}
+						onfocus={() => onItemFocus(noteKey)}
+						onkeydown={(event: KeyboardEvent) => onItemKeydown(event, noteKey)}
+						onclick={() => notesStore.open(note.id)}
+					>
+						<PhNoteDuotone aria-hidden="true" />
+						{title}
+					</TreeItemButton>
+				</ContextMenu.Trigger>
+				<ContextMenu.Portal>
+					<ContextMenuContent>
+						<ContextMenuItem onclick={() => void notesStore.deleteNote(note.id)}>
+							Delete note
+						</ContextMenuItem>
+					</ContextMenuContent>
+				</ContextMenu.Portal>
+			</ContextMenu.Root>
 		{/each}
 	</div>
 </div>
