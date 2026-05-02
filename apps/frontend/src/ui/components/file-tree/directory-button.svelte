@@ -1,25 +1,38 @@
 <script lang="ts">
-	import PhFolderSimpleDuotone from "~icons/ph/folder-simple-duotone";
-	import type { Directory } from "../../types";
+	import { tick } from "svelte";
 	import { cn } from "tailwind-variants";
 	import PhFolderOpenDuotone from "~icons/ph/folder-open-duotone";
-	import TreeItemButton from "./tree-item-button.svelte";
-	import { notes as notesStore } from "modules/notes/store.svelte";
+	import PhFolderSimpleDuotone from "~icons/ph/folder-simple-duotone";
 	import { ContextMenu } from "bits-ui";
 	import {
 		ContextMenuContent,
 		ContextMenuItem,
 	} from "ui/primitives/context-menu";
-	import { tick } from "svelte";
+	import type {
+		FileTreeContextMenuItem,
+		FileTreeDirectory,
+		FileTreeDirectoryActionContext,
+	} from "./types";
+	import TreeItemButton from "./tree-item-button.svelte";
 
 	interface Props {
-		directory: Directory;
+		directory: FileTreeDirectory;
 		currentItemKey: string | null;
 		directoryKey: string;
 		open: boolean;
+		hasChildren: boolean;
+		editingDirectoryId?: string | null;
 		onDirectoryToggle: (directoryId: string) => void;
 		onItemFocus: (key: string) => void;
 		onItemKeydown: (event: KeyboardEvent, key: string) => void;
+		onEditingDirectoryChange?: (directoryId: string | null) => void;
+		onRenameDirectory?: (
+			directory: FileTreeDirectory,
+			title: string,
+		) => void | Promise<void>;
+		getDirectoryActions?: (
+			context: FileTreeDirectoryActionContext,
+		) => FileTreeContextMenuItem[];
 	}
 
 	let {
@@ -27,24 +40,44 @@
 		currentItemKey,
 		directoryKey,
 		open,
+		hasChildren,
+		editingDirectoryId = null,
 		onDirectoryToggle,
 		onItemFocus,
 		onItemKeydown,
+		onEditingDirectoryChange,
+		onRenameDirectory,
+		getDirectoryActions,
 	}: Props = $props();
-	let notes = $derived(directory.notes);
-	let isEditing = $derived(notesStore.editingDirectoryId === directory.id);
+
+	let isEditing = $derived(editingDirectoryId === directory.id);
 	let draftTitle = $state("");
 	let inputElement = $state<HTMLInputElement | null>(null);
 
 	const directoryItemClass =
 		"mb-0.5 flex w-full items-center justify-start gap-x-2 px-2 py-1.5 text-sm text-main-300 outline-none hover:bg-main-700 hover:text-main-100 aria-selected:bg-main-600 aria-selected:text-main-50 rounded";
 
-	$effect(() => {
-		if (!isEditing) return;
-		void startEditing();
+	const contextMenuItems = $derived.by(() => {
+		return (
+			getDirectoryActions?.({
+				directory,
+				open,
+				toggle: () => onDirectoryToggle(directory.id),
+				startEditing,
+			}) ?? []
+		);
 	});
 
-	async function startEditing() {
+	$effect(() => {
+		if (!isEditing) return;
+		void focusInput();
+	});
+
+	function startEditing() {
+		onEditingDirectoryChange?.(directory.id);
+	}
+
+	async function focusInput() {
 		draftTitle = directory.title;
 
 		await tick();
@@ -55,18 +88,18 @@
 
 	function cancelEditing() {
 		draftTitle = directory.title;
-		notesStore.editingDirectoryId = null;
+		onEditingDirectoryChange?.(null);
 	}
 
 	async function saveEditing() {
 		if (!isEditing) return;
 
 		const title = draftTitle.trim() || directory.title;
-		notesStore.editingDirectoryId = null;
+		onEditingDirectoryChange?.(null);
 
 		if (title === directory.title) return;
 
-		await notesStore.updateDirectoryTitle(directory.id, title);
+		await onRenameDirectory?.(directory, title);
 	}
 
 	function handleEditKeydown(event: KeyboardEvent) {
@@ -81,14 +114,6 @@
 			cancelEditing();
 		}
 	}
-
-	async function handleCreateNote() {
-		if (!open) {
-			onDirectoryToggle(directory.id);
-		}
-
-		await notesStore.createNote({ directoryId: directory.id });
-	}
 </script>
 
 <ContextMenu.Root>
@@ -98,7 +123,7 @@
 				class={cn(directoryItemClass, "text-main-100 hover:bg-transparent")}
 				data-tree-item-key={directoryKey}
 				role="treeitem"
-				aria-expanded={notes?.length ? open : undefined}
+				aria-expanded={hasChildren ? open : undefined}
 				aria-level={1}
 				aria-selected={false}
 			>
@@ -125,7 +150,7 @@
 				onkeydown={(event: KeyboardEvent) => onItemKeydown(event, directoryKey)}
 				data-tree-item-key={directoryKey}
 				role="treeitem"
-				aria-expanded={notes?.length ? open : undefined}
+				aria-expanded={hasChildren ? open : undefined}
 				aria-level={1}
 				tabindex={currentItemKey === directoryKey ? 0 : -1}
 			>
@@ -138,17 +163,18 @@
 			</TreeItemButton>
 		{/if}
 	</ContextMenu.Trigger>
-	<ContextMenu.Portal>
-		<ContextMenuContent>
-			<ContextMenuItem onclick={() => void handleCreateNote()}>
-				Create a note
-			</ContextMenuItem>
-			<ContextMenuItem onclick={() => (notesStore.editingDirectoryId = directory.id)}>
-				Rename
-			</ContextMenuItem>
-			<ContextMenuItem onclick={() => void notesStore.deleteDirectory(directory.id)}>
-				Delete directory
-			</ContextMenuItem>
-		</ContextMenuContent>
-	</ContextMenu.Portal>
+	{#if contextMenuItems.length}
+		<ContextMenu.Portal>
+			<ContextMenuContent>
+				{#each contextMenuItems as item}
+					<ContextMenuItem
+						disabled={item.disabled}
+						onclick={() => void item.action()}
+					>
+						{item.label}
+					</ContextMenuItem>
+				{/each}
+			</ContextMenuContent>
+		</ContextMenu.Portal>
+	{/if}
 </ContextMenu.Root>
