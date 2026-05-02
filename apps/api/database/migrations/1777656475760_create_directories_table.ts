@@ -14,6 +14,7 @@ export default class extends BaseSchema {
         .inTable('users')
         .onDelete('CASCADE')
       table.integer('position_idx').notNullable()
+      table.boolean('is_deleted').defaultTo(false)
 
 
       table.timestamp('created_at')

@@ -33,12 +33,14 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class DirectorySchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'moduleType', 'ownerId', 'positionIdx', 'title', 'updatedAt'] as const
+  static $columns = ['createdAt', 'id', 'isDeleted', 'moduleType', 'ownerId', 'positionIdx', 'title', 'updatedAt'] as const
   $columns = DirectorySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column({ isPrimary: true })
   declare id: string
+  @column()
+  declare isDeleted: boolean | null
   @column()
   declare moduleType: string | null
   @column()
@@ -69,7 +71,7 @@ export class EnvironmentSchema extends BaseModel {
 }
 
 export class NoteSchema extends BaseModel {
-  static $columns = ['content', 'cover', 'createdAt', 'directoryId', 'id', 'ownerId', 'positionIdx', 'rawContent', 'title', 'updatedAt'] as const
+  static $columns = ['content', 'cover', 'createdAt', 'directoryId', 'id', 'isDeleted', 'ownerId', 'positionIdx', 'rawContent', 'title', 'updatedAt'] as const
   $columns = NoteSchema.$columns
   @column()
   declare content: string | null
@@ -81,6 +83,8 @@ export class NoteSchema extends BaseModel {
   declare directoryId: string | null
   @column({ isPrimary: true })
   declare id: string
+  @column()
+  declare isDeleted: boolean | null
   @column()
   declare ownerId: string
   @column()
