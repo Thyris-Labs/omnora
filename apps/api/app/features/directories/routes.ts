@@ -8,6 +8,7 @@ router
   .group(() => {
     router.post('create', [DirectoriesController, 'store'])
     router.patch('edit', [DirectoriesController, 'update'])
+    router.patch('move', [DirectoriesController, 'move'])
   })
   .prefix('/api/v1/directories')
   .as('directories')

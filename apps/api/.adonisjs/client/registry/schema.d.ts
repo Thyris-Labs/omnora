@@ -31,6 +31,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'directories.directories.move': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/directories/move'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').moveDirectoryValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').moveDirectoryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['move']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['move']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'environments.environments.store': {
     methods: ["POST"]
     pattern: '/api/v1/environments/create'
@@ -65,6 +77,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').saveNoteValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'notes.notes.move': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/notes/move'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/notes/validators/note_validator').moveNoteValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').moveNoteValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['move']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['move']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.auth.verify_email': {

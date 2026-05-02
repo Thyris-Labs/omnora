@@ -5,6 +5,7 @@ import DirectoryTransformer from '../transformers/directory_transformer.ts'
 import {
   createDirectoryValidator,
   editDirectoryValidator,
+  moveDirectoryValidator,
 } from '../validators/directory_validator.ts'
 
 @inject()
@@ -21,6 +22,14 @@ export default class DirectoriesController {
   async update({ request, caller, response }: HttpContext) {
     const { title, directoryId } = await request.validateUsing(editDirectoryValidator)
     await this.directoriesService.editDirectory({ caller, directoryId, title })
+
+    return response.noContent()
+  }
+
+  async move({ request, caller, response }: HttpContext) {
+    const directory = await request.validateUsing(moveDirectoryValidator)
+
+    await this.directoriesService.moveDirectory({ caller, directory })
 
     return response.noContent()
   }

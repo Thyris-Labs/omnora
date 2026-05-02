@@ -2,6 +2,7 @@ import type User from '#features/users/models/user'
 import Directory from '../models/directory.ts'
 import type {
   CreateDirectoryPayload,
+  MoveDirectoryPayload,
 } from '../validators/directory_validator.ts'
 
 export default class DirectoriesService {
@@ -36,6 +37,22 @@ export default class DirectoriesService {
       .firstOrFail()
 
     existingDirectory.merge({ title })
+    await existingDirectory.save()
+  }
+
+  async moveDirectory({
+    caller,
+    directory,
+  }: {
+    caller: User
+    directory: MoveDirectoryPayload
+  }) {
+    const existingDirectory = await Directory.query()
+      .where('id', directory.directoryId)
+      .where('owner_id', caller.id)
+      .firstOrFail()
+
+    existingDirectory.merge({ positionIdx: directory.positionIdx })
     await existingDirectory.save()
   }
 }

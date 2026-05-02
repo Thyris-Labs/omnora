@@ -18,6 +18,12 @@ const routes = {
     tokens: [{"old":"/api/v1/directories/edit","type":0,"val":"api","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"v1","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"directories","end":""},{"old":"/api/v1/directories/edit","type":0,"val":"edit","end":""}],
     types: placeholder as Registry['directories.directories.update']['types'],
   },
+  'directories.directories.move': {
+    methods: ["PATCH"],
+    pattern: '/api/v1/directories/move',
+    tokens: [{"old":"/api/v1/directories/move","type":0,"val":"api","end":""},{"old":"/api/v1/directories/move","type":0,"val":"v1","end":""},{"old":"/api/v1/directories/move","type":0,"val":"directories","end":""},{"old":"/api/v1/directories/move","type":0,"val":"move","end":""}],
+    types: placeholder as Registry['directories.directories.move']['types'],
+  },
   'environments.environments.store': {
     methods: ["POST"],
     pattern: '/api/v1/environments/create',
@@ -35,6 +41,12 @@ const routes = {
     pattern: '/api/v1/notes/save',
     tokens: [{"old":"/api/v1/notes/save","type":0,"val":"api","end":""},{"old":"/api/v1/notes/save","type":0,"val":"v1","end":""},{"old":"/api/v1/notes/save","type":0,"val":"notes","end":""},{"old":"/api/v1/notes/save","type":0,"val":"save","end":""}],
     types: placeholder as Registry['notes.notes.store']['types'],
+  },
+  'notes.notes.move': {
+    methods: ["PATCH"],
+    pattern: '/api/v1/notes/move',
+    tokens: [{"old":"/api/v1/notes/move","type":0,"val":"api","end":""},{"old":"/api/v1/notes/move","type":0,"val":"v1","end":""},{"old":"/api/v1/notes/move","type":0,"val":"notes","end":""},{"old":"/api/v1/notes/move","type":0,"val":"move","end":""}],
+    types: placeholder as Registry['notes.notes.move']['types'],
   },
   'auth.auth.verify_email': {
     methods: ["POST"],

@@ -6,6 +6,7 @@ export interface ApiDefinition {
     directories: {
       store: typeof routes['directories.directories.store']
       update: typeof routes['directories.directories.update']
+      move: typeof routes['directories.directories.move']
     }
   }
   environments: {
@@ -17,6 +18,7 @@ export interface ApiDefinition {
     notes: {
       index: typeof routes['notes.notes.index']
       store: typeof routes['notes.notes.store']
+      move: typeof routes['notes.notes.move']
     }
   }
   auth: {

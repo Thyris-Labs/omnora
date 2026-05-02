@@ -1,6 +1,6 @@
 import Directory from '#features/directories/models/directory'
 import type User from '#features/users/models/user'
-import type { SaveNotePayload } from '../validators/note_validator.ts'
+import type { MoveNotePayload, SaveNotePayload } from '../validators/note_validator.ts'
 import Note from '../models/note.ts'
 
 export default class NotesService {
@@ -41,5 +41,18 @@ export default class NotesService {
       ownerId: caller.id,
       ...note,
     })
+  }
+
+  async moveNote({ caller, note }: { caller: User; note: MoveNotePayload }) {
+    const existingNote = await Note.query()
+      .where('id', note.noteId)
+      .where('owner_id', caller.id)
+      .firstOrFail()
+
+    existingNote.merge({
+      directoryId: note.directoryId,
+      positionIdx: note.positionIdx,
+    })
+    await existingNote.save()
   }
 }

@@ -1,7 +1,7 @@
 import DirectoryTransformer from '#features/directories/transformers/directory_transformer'
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
-import { saveNoteValidator } from '../validators/note_validator.ts'
+import { moveNoteValidator, saveNoteValidator } from '../validators/note_validator.ts'
 import NotesService from '../services/notes_service.ts'
 import NoteTransformer from '../transformers/note_transformer.ts'
 
@@ -22,6 +22,14 @@ export default class NotesController {
     const note = await request.validateUsing(saveNoteValidator)
 
     await this.notesService.saveNote({ caller, note })
+
+    return response.noContent()
+  }
+
+  async move({ request, caller, response }: HttpContext) {
+    const note = await request.validateUsing(moveNoteValidator)
+
+    await this.notesService.moveNote({ caller, note })
 
     return response.noContent()
   }

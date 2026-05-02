@@ -6,9 +6,11 @@ export type ScannedRoutes = {
   ALL: {
     'directories.directories.store': { paramsTuple?: []; params?: {} }
     'directories.directories.update': { paramsTuple?: []; params?: {} }
+    'directories.directories.move': { paramsTuple?: []; params?: {} }
     'environments.environments.store': { paramsTuple?: []; params?: {} }
     'notes.notes.index': { paramsTuple?: []; params?: {} }
     'notes.notes.store': { paramsTuple?: []; params?: {} }
+    'notes.notes.move': { paramsTuple?: []; params?: {} }
     'auth.auth.verify_email': { paramsTuple?: []; params?: {} }
     'auth.auth.check_username': { paramsTuple?: []; params?: {} }
     'auth.auth.signup': { paramsTuple?: []; params?: {} }
@@ -31,6 +33,8 @@ export type ScannedRoutes = {
   }
   PATCH: {
     'directories.directories.update': { paramsTuple?: []; params?: {} }
+    'directories.directories.move': { paramsTuple?: []; params?: {} }
+    'notes.notes.move': { paramsTuple?: []; params?: {} }
     'users.users.update': { paramsTuple?: []; params?: {} }
     'users.users.update_avatar': { paramsTuple?: []; params?: {} }
   }
