@@ -40,13 +40,7 @@ export default class DirectoriesService {
     await existingDirectory.save()
   }
 
-  async moveDirectory({
-    caller,
-    directory,
-  }: {
-    caller: User
-    directory: MoveDirectoryPayload
-  }) {
+  async moveDirectory({ caller, directory }: { caller: User; directory: MoveDirectoryPayload }) {
     const existingDirectory = await Directory.query()
       .where('id', directory.directoryId)
       .where('owner_id', caller.id)
@@ -54,5 +48,34 @@ export default class DirectoriesService {
 
     existingDirectory.merge({ positionIdx: directory.positionIdx })
     await existingDirectory.save()
+  }
+
+  async softDeleteDirectory({ caller, directoryId }: { caller: User; directoryId: string }) {
+    const existingDirectory = await Directory.query()
+      .where('id', directoryId)
+      .where('owner_id', caller.id)
+      .firstOrFail()
+
+    existingDirectory.merge({ isDeleted: true })
+    await existingDirectory.save()
+  }
+
+  async recoverDirectory({ caller, directoryId }: { caller: User; directoryId: string }) {
+    const existingDirectory = await Directory.query()
+      .where('id', directoryId)
+      .where('owner_id', caller.id)
+      .firstOrFail()
+
+    existingDirectory.merge({ isDeleted: false })
+    await existingDirectory.save()
+  }
+
+  async deleteDirectory({ caller, directoryId }: { caller: User; directoryId: string }) {
+    const existingDirectory = await Directory.query()
+      .where('id', directoryId)
+      .where('owner_id', caller.id)
+      .firstOrFail()
+
+    await existingDirectory.delete()
   }
 }

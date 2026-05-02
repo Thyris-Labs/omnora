@@ -40,7 +40,7 @@ export class DirectorySchema extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
   @column()
-  declare isDeleted: boolean | null
+  declare isDeleted: boolean
   @column()
   declare moduleType: string | null
   @column()
@@ -84,7 +84,7 @@ export class NoteSchema extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
   @column()
-  declare isDeleted: boolean | null
+  declare isDeleted: boolean
   @column()
   declare ownerId: string
   @column()

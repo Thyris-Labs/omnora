@@ -17,5 +17,10 @@ export const moveDirectoryValidator = vine.create({
   positionIdx: vine.number(),
 })
 
+export const directoryIdValidator = vine.create({
+  directoryId: vine.string().uuid(),
+})
+
 export type CreateDirectoryPayload = Infer<typeof createDirectoryValidator>
 export type MoveDirectoryPayload = Infer<typeof moveDirectoryValidator>
+export type DirectoryIdPayload = Infer<typeof directoryIdValidator>

@@ -9,6 +9,7 @@ export default class DirectoryTransformer extends BaseTransformer<Directory> {
       'title',
       'moduleType',
       'positionIdx',
+      'isDeleted',
       'createdAt',
       'updatedAt',
     ])
