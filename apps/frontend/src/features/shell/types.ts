@@ -9,6 +9,7 @@ export interface NewShellTabContent extends ModuleInformations {
 interface ShellTabModuleOverrides {
   NOTES: {
     noteId?: string;
+    view?: "trash";
   };
 }
 
