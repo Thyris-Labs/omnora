@@ -6,8 +6,12 @@ export function comparePositions(a: string, b: string): number {
 	return 0;
 }
 
-export function nextPositionAfter(
-	sibling: { positionIdx: string } | null | undefined,
-): string {
+type Sibling = { positionIdx: string } | null | undefined
+
+export function nextPositionAfter(sibling: Sibling): string {
 	return generateKeyBetween(sibling?.positionIdx, null);
+}
+
+export function moveBetween(prevSibling: Sibling, nextSibling: Sibling) {
+	return generateKeyBetween(prevSibling?.positionIdx, nextSibling?.positionIdx)
 }
