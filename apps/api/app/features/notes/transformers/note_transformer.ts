@@ -11,6 +11,7 @@ export default class NoteTransformer extends BaseTransformer<Note> {
       'rawContent',
       'directoryId',
       'positionIdx',
+      'isDeleted',
       'createdAt',
       'updatedAt',
     ])

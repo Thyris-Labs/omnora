@@ -16,5 +16,10 @@ export const moveNoteValidator = vine.create({
   positionIdx: vine.number(),
 })
 
+export const noteIdValidator = vine.create({
+  noteId: vine.string().uuid(),
+})
+
 export type SaveNotePayload = Infer<typeof saveNoteValidator>
 export type MoveNotePayload = Infer<typeof moveNoteValidator>
+export type NoteIdPayload = Infer<typeof noteIdValidator>
