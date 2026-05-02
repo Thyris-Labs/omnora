@@ -7,10 +7,17 @@ export type ScannedRoutes = {
     'directories.directories.store': { paramsTuple?: []; params?: {} }
     'directories.directories.update': { paramsTuple?: []; params?: {} }
     'directories.directories.move': { paramsTuple?: []; params?: {} }
+    'directories.directories.soft_delete': { paramsTuple?: []; params?: {} }
+    'directories.directories.recover': { paramsTuple?: []; params?: {} }
+    'directories.directories.destroy': { paramsTuple?: []; params?: {} }
     'environments.environments.store': { paramsTuple?: []; params?: {} }
     'notes.notes.index': { paramsTuple?: []; params?: {} }
+    'notes.notes.trash': { paramsTuple?: []; params?: {} }
     'notes.notes.store': { paramsTuple?: []; params?: {} }
     'notes.notes.move': { paramsTuple?: []; params?: {} }
+    'notes.notes.soft_delete': { paramsTuple?: []; params?: {} }
+    'notes.notes.recover': { paramsTuple?: []; params?: {} }
+    'notes.notes.destroy': { paramsTuple?: []; params?: {} }
     'auth.auth.verify_email': { paramsTuple?: []; params?: {} }
     'auth.auth.check_username': { paramsTuple?: []; params?: {} }
     'auth.auth.signup': { paramsTuple?: []; params?: {} }
@@ -34,17 +41,27 @@ export type ScannedRoutes = {
   PATCH: {
     'directories.directories.update': { paramsTuple?: []; params?: {} }
     'directories.directories.move': { paramsTuple?: []; params?: {} }
+    'directories.directories.soft_delete': { paramsTuple?: []; params?: {} }
+    'directories.directories.recover': { paramsTuple?: []; params?: {} }
     'notes.notes.move': { paramsTuple?: []; params?: {} }
+    'notes.notes.soft_delete': { paramsTuple?: []; params?: {} }
+    'notes.notes.recover': { paramsTuple?: []; params?: {} }
     'users.users.update': { paramsTuple?: []; params?: {} }
     'users.users.update_avatar': { paramsTuple?: []; params?: {} }
   }
+  DELETE: {
+    'directories.directories.destroy': { paramsTuple?: []; params?: {} }
+    'notes.notes.destroy': { paramsTuple?: []; params?: {} }
+  }
   GET: {
     'notes.notes.index': { paramsTuple?: []; params?: {} }
+    'notes.notes.trash': { paramsTuple?: []; params?: {} }
     'auth.auth.check': { paramsTuple?: []; params?: {} }
     'users.users.setup': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'notes.notes.index': { paramsTuple?: []; params?: {} }
+    'notes.notes.trash': { paramsTuple?: []; params?: {} }
     'auth.auth.check': { paramsTuple?: []; params?: {} }
     'users.users.setup': { paramsTuple?: []; params?: {} }
   }

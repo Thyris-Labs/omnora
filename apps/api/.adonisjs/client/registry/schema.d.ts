@@ -43,6 +43,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['move']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'directories.directories.soft_delete': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/directories/soft-delete'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['softDelete']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['softDelete']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'directories.directories.recover': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/directories/recover'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['recover']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['recover']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'directories.directories.destroy': {
+    methods: ["DELETE"]
+    pattern: '/api/v1/directories/delete'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/directories/validators/directory_validator').directoryIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/directories/controllers/directories_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'environments.environments.store': {
     methods: ["POST"]
     pattern: '/api/v1/environments/create'
@@ -67,6 +103,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['index']>>>
     }
   }
+  'notes.notes.trash': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/notes/trash'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['trash']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['trash']>>>
+    }
+  }
   'notes.notes.store': {
     methods: ["POST"]
     pattern: '/api/v1/notes/save'
@@ -89,6 +137,42 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').moveNoteValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['move']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['move']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'notes.notes.soft_delete': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/notes/soft-delete'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['softDelete']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['softDelete']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'notes.notes.recover': {
+    methods: ["PATCH"]
+    pattern: '/api/v1/notes/recover'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['recover']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['recover']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'notes.notes.destroy': {
+    methods: ["DELETE"]
+    pattern: '/api/v1/notes/delete'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/features/notes/validators/note_validator').noteIdValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#features/notes/controllers/notes_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'auth.auth.verify_email': {
