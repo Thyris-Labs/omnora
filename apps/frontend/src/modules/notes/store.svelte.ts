@@ -8,23 +8,29 @@ interface CreateDirectoryParams {
 }
 
 class NotesStore {
-	noteTree = $state<AllNotes | null>(null);
+	#noteTree = $state<AllNotes | null>(null);
 	editingDirectoryId = $state<string | null>(null);
 
-	get currentNote() {
-		const activeTab = shell.activeTab;
+	tree = $derived.by(() => {
+		const noteTree = this.#noteTree
+		if (!noteTree) return [];
 
-		if (activeTab?.type !== "NOTES" || !activeTab.noteId) return null;
+		return [...noteTree.directories, ...noteTree.notes].sort((a, b) => a.positionIdx - b.positionIdx)
+	})
 
-		return this.findNote(activeTab.noteId);
-	}
-
-	get allNotes() {
-		const noteTree = this.noteTree;
+	allNotes = $derived.by(() => {
+		const noteTree = this.#noteTree;
 		if (!noteTree) return [];
 
 		return [...noteTree.directories.flatMap((directory) => directory.notes), ...noteTree.notes];
-	}
+	})
+
+	currentNote = $derived.by(() => {
+		const activeTab = shell.activeTab;
+		if (activeTab?.type !== "NOTES" || !activeTab.noteId) return null;
+
+		return this.findNote(activeTab.noteId);
+	})
 
 	async init() {
 		const [data, err] = await client.get("/api/v1/notes", {}).safe();
@@ -34,7 +40,7 @@ class NotesStore {
 			return;
 		}
 
-		this.noteTree = data;
+		this.#noteTree = data;
 
 		if (page.params.note_id) {
 			shell.openNote({ noteId: page.params.note_id });
@@ -54,12 +60,12 @@ class NotesStore {
 	}
 
 	addStandaloneNote(note: Note) {
-		if (!this.noteTree) {
-			this.noteTree = { directories: [], notes: [note] };
+		if (!this.#noteTree) {
+			this.#noteTree = { directories: [], notes: [note] };
 			return;
 		}
 
-		this.noteTree.notes.push(note);
+		this.#noteTree.notes.push(note);
 	}
 
 	updateNote(noteId: string, patch: Partial<Note>) {
@@ -72,7 +78,7 @@ class NotesStore {
 	async createDirectory({ moduleType }: CreateDirectoryParams) {
 		const body = {
 			title: "New directory",
-			positionIdx: (this.noteTree?.directories.length ?? -1) + 1,
+			positionIdx: (this.#noteTree?.directories.length ?? -1) + 1,
 			type: moduleType,
 		};
 		const [data, error] = await client
@@ -89,18 +95,18 @@ class NotesStore {
 			notes: [],
 		};
 
-		if (!this.noteTree) {
-			this.noteTree = { directories: [directory], notes: [] };
+		if (!this.#noteTree) {
+			this.#noteTree = { directories: [directory], notes: [] };
 			this.editingDirectoryId = directory.id;
 			return;
 		}
 
-		this.noteTree.directories.push(directory);
+		this.#noteTree.directories.push(directory);
 		this.editingDirectoryId = directory.id;
 	}
 
 	async updateDirectoryTitle(directoryId: string, title: string) {
-		const directory = this.noteTree?.directories.find(
+		const directory = this.#noteTree?.directories.find(
 			(directory) => directory.id === directoryId,
 		);
 		if (!directory) return;

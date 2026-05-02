@@ -21,7 +21,7 @@
 				key: string;
 				kind: "note";
 				noteId: string;
-				directory?: Directory;
+				directoryId?: string;
 		  };
 
 	function getDirectoryKey(directoryId: string) {
@@ -39,32 +39,33 @@
 	const visibleItems = $derived.by(() => {
 		const items: Array<TreeItem> = [];
 
-		for (const directory of notes.noteTree?.directories ?? []) {
-			items.push({
-				key: getDirectoryKey(directory.id),
-				kind: "directory",
-				directory,
-			});
+		for (const item of notes.tree) {
+			if ("notes" in item) {
+				items.push({
+					key: getDirectoryKey(item.id),
+					kind: "directory",
+					directory: item,
+				});
 
-			if (!openDirectoryIds.has(directory.id)) {
+				if (!openDirectoryIds.has(item.id)) {
+					continue;
+				}
+
+				for (const note of item.notes ?? []) {
+					items.push({
+						key: getNoteKey(item.id, note.id),
+						kind: "note",
+						directoryId: item.id,
+						noteId: note.id,
+					});
+				}
 				continue;
 			}
 
-			for (const note of directory.notes ?? []) {
-				items.push({
-					key: getNoteKey(directory.id, note.id),
-					kind: "note",
-					directory,
-					noteId: note.id,
-				});
-			}
-		}
-
-		for (const note of notes.noteTree?.notes ?? []) {
 			items.push({
-				key: getStandaloneNoteKey(note.id),
+				key: getStandaloneNoteKey(item.id),
 				kind: "note",
-				noteId: note.id,
+				noteId: item.id,
 			});
 		}
 
@@ -174,8 +175,8 @@
 				return;
 			}
 
-			if (currentItem.directory) {
-				focusItem(getDirectoryKey(currentItem.directory.id));
+			if (currentItem.directoryId) {
+				focusItem(getDirectoryKey(currentItem.directoryId));
 			}
 		}
 	}
@@ -187,35 +188,36 @@
 	role="tree"
 	aria-label="Notes"
 >
-	{#each notes.noteTree?.directories ?? [] as directory}
-		<DirectoryTreeItem
-			{directory}
-			{currentItemKey}
-			directoryKey={getDirectoryKey(directory.id)}
-			{getNoteKey}
-			open={openDirectoryIds.has(directory.id)}
-			onDirectoryToggle={toggleDirectory}
-			onItemFocus={(key) => (currentItemKey = key)}
-			onItemKeydown={handleItemKeydown}
-		/>
-	{/each}
+	{#each notes.tree as treeItem (treeItem.id)}
+		{#if "notes" in treeItem}
+			<DirectoryTreeItem
+				directory={treeItem}
+				{currentItemKey}
+				directoryKey={getDirectoryKey(treeItem.id)}
+				{getNoteKey}
+				open={openDirectoryIds.has(treeItem.id)}
+				onDirectoryToggle={toggleDirectory}
+				onItemFocus={(key) => (currentItemKey = key)}
+				onItemKeydown={handleItemKeydown}
+			/>
+		{:else}
+			{@const noteKey = getStandaloneNoteKey(treeItem.id)}
+			{@const title =
+				treeItem.title === "" || !treeItem.title ? "No name" : treeItem.title}
 
-	{#each notes.noteTree?.notes ?? [] as note (note.id)}
-		{@const noteKey = getStandaloneNoteKey(note.id)}
-		{@const title = note.title === "" || !note.title ? "No name" : note.title}
-
-		<TreeItemButton
-			data-tree-item-key={noteKey}
-			role="treeitem"
-			aria-level={1}
-			aria-selected={note.id === page.params.note_id}
-			tabindex={currentItemKey === noteKey ? 0 : -1}
-			onfocus={() => (currentItemKey = noteKey)}
-			onkeydown={(event: KeyboardEvent) => handleItemKeydown(event, noteKey)}
-			onclick={() => notes.open(note.id)}
-		>
-			<PhNoteDuotone aria-hidden="true" />
-			{title}
-		</TreeItemButton>
+			<TreeItemButton
+				data-tree-item-key={noteKey}
+				role="treeitem"
+				aria-level={1}
+				aria-selected={treeItem.id === page.params.note_id}
+				tabindex={currentItemKey === noteKey ? 0 : -1}
+				onfocus={() => (currentItemKey = noteKey)}
+				onkeydown={(event: KeyboardEvent) => handleItemKeydown(event, noteKey)}
+				onclick={() => notes.open(treeItem.id)}
+			>
+				<PhNoteDuotone aria-hidden="true" />
+				{title}
+			</TreeItemButton>
+		{/if}
 	{/each}
 </div>

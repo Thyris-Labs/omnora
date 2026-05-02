@@ -76,7 +76,7 @@
 
 		isCreating = true;
 
-		if (!notes.noteTree) await notes.init();
+		if (!notes.tree) await notes.init();
 
 		const draft: Note = {
 			id: draftId,
@@ -85,7 +85,7 @@
 			content: draftContent,
 			rawContent: draftRawContent,
 			directoryId: null,
-			positionIdx: notes.noteTree?.notes.length ?? 0,
+			positionIdx: notes.tree.length ?? 0,
 			createdAt: null,
 			updatedAt: null,
 		};
