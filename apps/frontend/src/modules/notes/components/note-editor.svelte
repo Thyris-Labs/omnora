@@ -2,6 +2,7 @@
 	import type { JSONContent } from "@tiptap/core";
 	import { page } from "$app/state";
 	import { client } from "lib/api";
+	import { nextPositionAfter } from "lib/position";
 	import { EMPTY_DOCUMENT, notes } from "modules/notes/store.svelte";
 	import type { Note } from "modules/notes/types";
 	import { useDebounce } from "runed";
@@ -74,6 +75,7 @@
 
 		if (!notes.tree) await notes.init();
 
+		const lastNote = notes.tree.at(-1);
 		const draft: Note = {
 			id: draftId,
 			title: draftTitle.trim(),
@@ -81,7 +83,7 @@
 			content: draftContent,
 			rawContent: draftRawContent,
 			directoryId: null,
-			positionIdx: notes.tree.length ?? 0,
+			positionIdx: nextPositionAfter(lastNote),
 			isDeleted: false,
 			createdAt: null,
 			updatedAt: null,

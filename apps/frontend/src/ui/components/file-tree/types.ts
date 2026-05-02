@@ -8,7 +8,7 @@ export interface FileTreeItem<TData = unknown> {
 	id: string;
 	type: string;
 	title: string | null;
-	positionIdx: number;
+	positionIdx: string;
 	data: TData;
 	icon?: FileTreeIcon;
 }
@@ -17,7 +17,7 @@ export interface FileTreeDirectory<TDirectory = unknown, TItem = unknown> {
 	kind: "directory";
 	id: string;
 	title: string;
-	positionIdx: number;
+	positionIdx: string;
 	data: TDirectory;
 	items: Array<FileTreeItem<TItem>>;
 }

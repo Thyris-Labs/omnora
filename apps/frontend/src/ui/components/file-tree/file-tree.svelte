@@ -5,6 +5,7 @@
 		ContextMenuContent,
 		ContextMenuItem,
 	} from "ui/primitives/context-menu";
+	import { comparePositions } from "lib/position";
 	import type {
 		FileTreeContextMenuItem,
 		FileTreeDirectory,
@@ -89,7 +90,9 @@
 	}
 
 	const sortedItems = $derived.by(() => {
-		return [...items].sort((a, b) => a.positionIdx - b.positionIdx);
+		return [...items].sort((a, b) =>
+			comparePositions(a.positionIdx, b.positionIdx),
+		);
 	});
 
 	const visibleItems = $derived.by(() => {

@@ -2,6 +2,7 @@ import type { AllNotes, Directory, Note } from "./types";
 import { page } from "$app/state";
 import { shell } from "features/shell/store.svelte";
 import { client } from "lib/api";
+import { comparePositions, nextPositionAfter } from "lib/position";
 
 interface CreateDirectoryParams {
 	moduleType: "NOTES" | "ARCHIVE";
@@ -24,7 +25,7 @@ class NotesStore {
 		const noteTree = this.#noteTree
 		if (!noteTree) return [];
 
-		return [...noteTree.directories, ...noteTree.notes].sort((a, b) => a.positionIdx - b.positionIdx)
+		return [...noteTree.directories, ...noteTree.notes].sort((a, b) => comparePositions(a.positionIdx, b.positionIdx))
 	})
 
 	allNotes = $derived.by(() => {
@@ -93,9 +94,10 @@ class NotesStore {
 	}
 
 	async createDirectory({ moduleType }: CreateDirectoryParams) {
+		const directories = this.#noteTree?.directories ?? [];
 		const body = {
 			title: "New directory",
-			positionIdx: (this.#noteTree?.directories.length ?? -1) + 1,
+			positionIdx: nextPositionAfter(directories.at(-1)),
 			type: moduleType,
 		};
 		const [data, error] = await client
@@ -130,6 +132,7 @@ class NotesStore {
 		if (directoryId && !directory) return;
 
 		const siblings = directory ? directory.notes : this.tree;
+		const lastSibling = siblings.at(-1);
 		const note: Note = {
 			id: crypto.randomUUID(),
 			title: "",
@@ -137,8 +140,7 @@ class NotesStore {
 			content: "",
 			rawContent: EMPTY_DOCUMENT,
 			directoryId,
-			positionIdx:
-				Math.max(-1, ...siblings.map((item) => item.positionIdx)) + 1,
+			positionIdx: nextPositionAfter(lastSibling),
 			isDeleted: false,
 			createdAt: null,
 			updatedAt: null,

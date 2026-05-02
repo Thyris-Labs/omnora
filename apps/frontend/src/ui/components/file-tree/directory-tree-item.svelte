@@ -5,6 +5,7 @@
 		ContextMenuContent,
 		ContextMenuItem,
 	} from "ui/primitives/context-menu";
+	import { comparePositions } from "lib/position";
 	import type {
 		FileTreeContextMenuItem,
 		FileTreeDirectory,
@@ -63,7 +64,9 @@
 	}: Props = $props();
 
 	const directoryItems = $derived.by(() => {
-		return [...directory.items].sort((a, b) => a.positionIdx - b.positionIdx);
+		return [...directory.items].sort((a, b) =>
+			comparePositions(a.positionIdx, b.positionIdx),
+		);
 	});
 
 	const ITEM_SIZE = 2.125;
