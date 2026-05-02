@@ -3,7 +3,7 @@ import type { Infer } from '@vinejs/vine/types'
 
 export const createDirectoryValidator = vine.create({
   title: vine.string(),
-  positionIdx: vine.number(),
+  positionIdx: vine.string(),
   type: vine.enum(['NOTES', 'ARCHIVE']),
 })
 
@@ -14,7 +14,7 @@ export const editDirectoryValidator = vine.create({
 
 export const moveDirectoryValidator = vine.create({
   directoryId: vine.string().uuid(),
-  positionIdx: vine.number(),
+  positionIdx: vine.string(),
 })
 
 export const directoryIdValidator = vine.create({

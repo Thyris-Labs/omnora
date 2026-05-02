@@ -13,7 +13,7 @@ export default class extends BaseSchema {
         .references('id')
         .inTable('users')
         .onDelete('CASCADE')
-      table.integer('position_idx').notNullable()
+      table.string('position_idx').notNullable()
       table.boolean('is_deleted').notNullable().defaultTo(false)
 
 

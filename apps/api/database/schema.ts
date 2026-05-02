@@ -46,7 +46,7 @@ export class DirectorySchema extends BaseModel {
   @column()
   declare ownerId: string
   @column()
-  declare positionIdx: number
+  declare positionIdx: string
   @column()
   declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
@@ -88,7 +88,7 @@ export class NoteSchema extends BaseModel {
   @column()
   declare ownerId: string
   @column()
-  declare positionIdx: number
+  declare positionIdx: string
   @column()
   declare rawContent: any | null
   @column()

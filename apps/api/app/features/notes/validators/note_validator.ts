@@ -3,8 +3,8 @@ import type { Infer } from '@vinejs/vine/types'
 
 export const saveNoteValidator = vine.create({
   id: vine.string().uuid(),
+  positionIdx: vine.string(),
   directoryId: vine.string().uuid().nullable().optional(),
-  positionIdx: vine.number().optional(),
   title: vine.string().optional(),
   rawContent: vine.any().optional(),
   content: vine.string().optional(),
@@ -13,7 +13,7 @@ export const saveNoteValidator = vine.create({
 export const moveNoteValidator = vine.create({
   noteId: vine.string().uuid(),
   directoryId: vine.string().uuid().nullable(),
-  positionIdx: vine.number(),
+  positionIdx: vine.string(),
 })
 
 export const noteIdValidator = vine.create({
