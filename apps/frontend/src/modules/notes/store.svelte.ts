@@ -94,10 +94,10 @@ class NotesStore {
 	}
 
 	async createDirectory({ moduleType }: CreateDirectoryParams) {
-		const directories = this.#noteTree?.directories ?? [];
+		const lastItem = this.tree.at(-1)
 		const body = {
 			title: "New directory",
-			positionIdx: nextPositionAfter(directories.at(-1)),
+			positionIdx: nextPositionAfter(lastItem),
 			type: moduleType,
 		};
 		const [data, error] = await client

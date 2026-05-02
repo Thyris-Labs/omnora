@@ -81,14 +81,6 @@
 		return `item:${item.type}:${item.id}`;
 	}
 
-	function getRenderKey(item: FileTreeEntry) {
-		if (item.kind === "directory") {
-			return getDirectoryKey(item.id);
-		}
-
-		return getStandaloneItemKey(item);
-	}
-
 	const sortedItems = $derived.by(() => {
 		return [...items].sort((a, b) =>
 			comparePositions(a.positionIdx, b.positionIdx),
@@ -255,7 +247,7 @@
 	role="tree"
 	aria-label={ariaLabel}
 >
-	{#each sortedItems as treeItem (getRenderKey(treeItem))}
+	{#each sortedItems as treeItem (treeItem.id)}
 		{#if treeItem.kind === "directory"}
 			<DirectoryTreeItem
 				directory={treeItem}
