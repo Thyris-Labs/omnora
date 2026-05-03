@@ -1,7 +1,6 @@
 import { goto } from "$app/navigation";
 import { resolve } from "$app/paths";
 import { auth } from "features/auth/store.svelte";
-import { MODULES } from "modules/registry";
 import type { ModuleEntry } from "modules/registry";
 import { DEFAULT_SHELL_TAB } from "./types";
 import type { ShellTab, ShellTabContent } from "./types";
@@ -14,14 +13,7 @@ function getEnvironmentPath() {
 
 function getTabPath(tab: ShellTab) {
 	const base = getEnvironmentPath();
-	const modulePath = tab.slug ? `${base}/m/${tab.slug}` : base;
-
-	if (tab.type === "NOTES") {
-		if (tab.view === "trash") return `${modulePath}/trash`;
-		if (tab.noteId) return `${modulePath}/${tab.noteId}`;
-	}
-
-	return modulePath;
+	return tab.slug ? `${base}/m/${tab.slug}` : base;
 }
 
 class ShellStore {
@@ -60,76 +52,6 @@ class ShellStore {
 		}
 
 		Object.assign(active, module);
-		this.#activate(active);
-	}
-
-	openNote({ noteId, newTab = false }: { noteId: string; newTab?: boolean }) {
-		const active = this.activeTab;
-		const notesModule = MODULES.NOTES;
-
-		if (!active || newTab) {
-			const tab = this.#createTab({
-				...notesModule,
-				type: "NOTES",
-				noteId,
-				view: undefined,
-			});
-			this.tabs.push(tab);
-			this.#activate(tab);
-			return;
-		}
-
-		Object.assign(active, { ...notesModule, type: "NOTES", noteId, view: undefined });
-		this.#activate(active);
-	}
-
-	openNotesHome() {
-		const active = this.activeTab;
-		const notesModule = MODULES.NOTES;
-
-		if (!active) {
-			const tab = this.#createTab({
-				...notesModule,
-				type: "NOTES",
-				noteId: undefined,
-				view: undefined,
-			});
-			this.tabs.push(tab);
-			this.#activate(tab);
-			return;
-		}
-
-		Object.assign(active, {
-			...notesModule,
-			type: "NOTES",
-			noteId: undefined,
-			view: undefined,
-		});
-		this.#activate(active);
-	}
-
-	openNotesTrash() {
-		const active = this.activeTab;
-		const notesModule = MODULES.NOTES;
-
-		if (!active) {
-			const tab = this.#createTab({
-				...notesModule,
-				type: "NOTES",
-				noteId: undefined,
-				view: "trash",
-			});
-			this.tabs.push(tab);
-			this.#activate(tab);
-			return;
-		}
-
-		Object.assign(active, {
-			...notesModule,
-			type: "NOTES",
-			noteId: undefined,
-			view: "trash",
-		});
 		this.#activate(active);
 	}
 

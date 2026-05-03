@@ -6,17 +6,10 @@ export interface NewShellTabContent extends ModuleInformations {
   slug: "";
 }
 
-interface ShellTabModuleOverrides {
-  NOTES: {
-    noteId?: string;
-    view?: "trash";
-  };
-}
-
 export type ModuleShellTabContent<T extends ModuleTypes = ModuleTypes> = T extends ModuleTypes
   ? ModuleInformations & {
       type: T;
-    } & (T extends keyof ShellTabModuleOverrides ? ShellTabModuleOverrides[T] : {})
+    }
   : never;
 
 export interface ShellTabBase {

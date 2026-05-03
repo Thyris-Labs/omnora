@@ -6,10 +6,8 @@ import PhImageSquareDuotone from "~icons/ph/image-square-duotone";
 import PhEnvelopeDuotone from "~icons/ph/envelope-duotone";
 import PhKeyDuotone from "~icons/ph/key-duotone";
 import PhVaultDuotone from "~icons/ph/vault-duotone";
-import PhNotePencilDuotone from "~icons/ph/note-pencil-duotone";
 
 export type ModuleTypes =
-  | "NOTES"
   | "INBOX"
   | "GALLERY"
   | "VAULT"
@@ -28,7 +26,6 @@ export interface ModuleEntry extends ModuleInformations {
 }
 
 export const MODULES: Record<ModuleTypes, ModuleInformations> = {
-  NOTES: { name: "Notes", slug: "notes", Icon: PhNotePencilDuotone },
   INBOX: { name: "Inbox", slug: "inbox", Icon: PhEnvelopeDuotone },
   GALLERY: { name: "Gallery", slug: "gallery", Icon: PhImageSquareDuotone },
   VAULT: { name: "Vault", slug: "vault", Icon: PhVaultDuotone },
